@@ -203,6 +203,7 @@ const eraseProduct = async (req: Request) => {
 const updateProduct = async (req: Request) => {
   const {
     product_name,
+    tag,
     url,
     code,
     description,

@@ -63,9 +63,13 @@ const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
     product_name: Yup.string().required('Product Name Required'),  
-    price: Yup.number().required('Price Required'),
-    sku: Yup.number().required('SKU Required'),
-    categories: Yup.string().required('Category Required'),
+    code: Yup.string().required('Product Code Required'),
+    sku: Yup.number().min(1, "quantity should be more than 0"),
+    price: Yup.number().min(1, "price should be more than 0"),
+    bulk_dp: Yup.number().min(1, "discount should be more than 0"),
+    categories: Yup.string().required('Category Required'), 
+    brand: Yup.string().required('Product brand Required'),
+    vendor: Yup.string().required('Product vendor Required'),
 })
 
 const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
@@ -129,7 +133,7 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
             img: {},
             url: '',
             imgList: [], 
-            category: '',
+            categories: '',
             price: 0,
             sku: 0,
             status: 0,

@@ -51,17 +51,16 @@ export const ProductEdit = () => {
         values: FormModel,
         setSubmitting: SetSubmitting
     ) => {
-
         setSubmitting(true)
 
         console.log(values)
 
+        // data -> update, image-> update, image -> delete
         if (values.imgList) {
-            if(values.imgList[0] === undefined){
-
+            if (values.imgList[0] === undefined) {
                 const remImage = {
                     ...values,
-                    url: ""
+                    url: '',
                 }
 
                 const success = await updateProduct(remImage)
@@ -71,34 +70,78 @@ export const ProductEdit = () => {
                     popNotification('updated')
                 }
             }
-            else{
+            else if (!values.imgList[0].url) {
+                const success = await updateProduct(values)
+
+                setSubmitting(false)
+                if (success) {
+                    popNotification('updated')
+                }
+            } else if (values.imgList[0].url[0] === 'b') {
                 const fileData = {
                     img: values.imgList[0].img,
                 }
                 console.log(fileData)
                 const getUrl: ImageUrlResponse = await getImageUrl(fileData)
-    
+
                 const data = {
                     ...values,
                     url: getUrl.fileUrl,
                 }
                 console.log(data)
                 const success = await updateProduct(data)
-    
+
                 setSubmitting(false)
                 if (success) {
                     popNotification('updated')
                 }
             }
-            
-        } else {
-            const success = await updateProduct(values)
-
-            setSubmitting(false)
-            if (success) {
-                popNotification('updated')
-            }
         }
+
+        // if (values.imgList) {
+        //     console.log("img values - > ", values.imgList[0].img)
+        //     if(values.imgList[0].img === null){
+
+        //         const remImage = {
+        //             ...values,
+        //             url: ""
+        //         }
+
+        //         const success = await updateProduct(remImage)
+
+        //         setSubmitting(false)
+        //         if (success) {
+        //             popNotification('updated')
+        //         }
+        //     }
+        //     else{
+        //         const fileData = {
+        //             img: values.imgList[0].img,
+        //         }
+        //         console.log(fileData)
+        //         const getUrl: ImageUrlResponse = await getImageUrl(fileData)
+
+        //         const data = {
+        //             ...values,
+        //             url: getUrl.fileUrl,
+        //         }
+        //         console.log(data)
+        //         const success = await updateProduct(data)
+
+        //         setSubmitting(false)
+        //         if (success) {
+        //             popNotification('updated')
+        //         }
+        //     }
+
+        // } else {
+        //     const success = await updateProduct(values)
+
+        //     setSubmitting(false)
+        //     if (success) {
+        //         popNotification('updated')
+        //     }
+        // }
     }
 
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
