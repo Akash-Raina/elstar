@@ -9,7 +9,8 @@ import { ConfirmDialog, StickyFooter } from "@/components/shared"
 import { HiOutlineTrash } from "react-icons/hi"
 import { AiOutlineSave } from 'react-icons/ai'
 import cloneDeep from "lodash/cloneDeep"
-import { ProductImages } from "./ProductImages"
+import  {ProductImages}  from "./ProductImages"
+
 
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -19,6 +20,14 @@ type InitialData = {
     product_id?: string
     product_name?: string
     code?: string
+    img?: File
+    url?: string
+    imgList?:{
+        id: string
+        name: string
+        img: File
+        url: string
+    }[]
     categories?: string
     price?: number
     sku?: number
@@ -106,6 +115,9 @@ const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
     )
 }
 
+
+  
+
 export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
 
     const {
@@ -114,6 +126,9 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
             product_id: '',
             product_name: '',
             code: '',
+            img: {},
+            url: '',
+            imgList: [], 
             category: '',
             price: 0,
             sku: 0,
@@ -142,8 +157,8 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values: FormModel, { setSubmitting }) => {
-                    console.log("here")
                     const formData = cloneDeep(values)
+                    console.log(formData)
                     formData.tags = formData.tags.map((tag) => {
                         if (typeof tag !== 'string') {
                             return tag.value
@@ -152,6 +167,11 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                     })
                     if (type === 'new') {
                         formData.product_id = newId
+                        if(formData.imgList && formData.imgList.length > 0){
+                            console.log(formData.imgList[0].img)
+                            formData.img = formData.imgList[0].img
+                            formData.url = formData.imgList[0].url
+                        }
                     }
                     onFormSubmit?.(formData, setSubmitting)
                 }}
@@ -166,7 +186,7 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                                     <OrganizationFields touched={touched} errors={errors} values={values} />
                                 </div>
                                 <div className="lg:col-span-1">
-                                    <ProductImages/>
+                                    <ProductImages values={values}/>
                                 </div>
                             </div>
                             <StickyFooter

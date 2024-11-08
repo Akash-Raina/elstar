@@ -1,0 +1,1 @@
+{"root":["./app/index.ts","./app/controller/sales.controller.ts","./app/routes/index.ts","./app/routes/sales.route.ts","./app/services/product.services.ts","./app/types/types.d.ts","./app/utils/mysql.ts"],"version":"5.6.2"}

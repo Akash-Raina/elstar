@@ -31,7 +31,9 @@ export const ProductEdit = ()=>{
         values: FormModel,
         setSubmitting: SetSubmitting
     ) => {
+        
         setSubmitting(true)
+        
         const success = await updateProduct(values)
         setSubmitting(false)
         if (success) {

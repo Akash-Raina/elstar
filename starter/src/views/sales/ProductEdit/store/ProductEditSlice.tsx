@@ -5,6 +5,8 @@ type ProductData = {
     product_id?: string
     product_name?: string
     code?: string
+    img?:File
+    url?:string
     categories?: string
     price?: number
     sku?: number
@@ -33,6 +35,7 @@ export const getProduct = createAsyncThunk(
             GetSalesProductResponse,
             {id: string}
         >(data)
+        console.log(response.data)
         return response.data
     }
 )
@@ -42,6 +45,7 @@ export const updateProduct = async<T, U extends Record<string, unknown>> (data: 
     console.log(response.data)
     return response.data
 }
+
 
 export const deleteProduct = async <T, U extends Record<string, unknown>>(
     data: U
