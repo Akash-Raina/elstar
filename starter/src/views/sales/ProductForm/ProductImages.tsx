@@ -63,17 +63,18 @@ const ImageList = (props: ImageListProps)=>{
         setDeleteConfirmationOpen(false)
     }
 
-    return (
-        <>
-            {imgList.map((img) => (
-                <div
+    if(imgList[0].url){
+        return (
+            <>
+                {imgList.map((img) => (
+                    <div
                     key={img.id}
                     className="group relative rounded border p-2 flex"
-                >
-                    <img
-                        className="rounded max-h-[140px] max-w-full"
-                        src={img.url}
-                        alt={img.name}
+                >                    
+                     <img
+                            className="rounded max-h-[140px] max-w-full"
+                            src={img.url}
+                            alt={img.name}
                     />
                     <div className="absolute inset-2 bg-gray-900/[.7] group-hover:flex hidden text-xl items-center justify-center">
                         <span
@@ -90,33 +91,37 @@ const ImageList = (props: ImageListProps)=>{
                         </span>
                     </div>
                 </div>
-            ))}
-            <Dialog
-                isOpen={viewOpen}
-                onClose={onDialogClose}
-                onRequestClose={onDialogClose}
-            >
-                <h5 className="mb-4">{selectedImg.name}</h5>
-                <img
-                    className="w-full"
-                    src={selectedImg.url}
-                    alt={selectedImg.name}
-                />
-            </Dialog>
-            <ConfirmDialog
-                isOpen={deleteConfirmationOpen}
-                type="danger"
-                title="Remove image"
-                confirmButtonColor="red-600"
-                onClose={onDeleteConfirmationClose}
-                onRequestClose={onDeleteConfirmationClose}
-                onCancel={onDeleteConfirmationClose}
-                onConfirm={onDelete} 
-            >
-                <p> Are you sure you want to remove this image? </p>
-            </ConfirmDialog>
-        </>
-    )
+                ))}
+                <Dialog
+                    isOpen={viewOpen}
+                    onClose={onDialogClose}
+                    onRequestClose={onDialogClose}
+                >
+                    <h5 className="mb-4">{selectedImg.name}</h5>
+                    <img
+                        className="w-full"
+                        src={selectedImg.url}
+                        alt={selectedImg.name}
+                    />
+                </Dialog>
+                <ConfirmDialog
+                    isOpen={deleteConfirmationOpen}
+                    type="danger"
+                    title="Remove image"
+                    confirmButtonColor="red-600"
+                    onClose={onDeleteConfirmationClose}
+                    onRequestClose={onDeleteConfirmationClose}
+                    onCancel={onDeleteConfirmationClose}
+                    onConfirm={onDelete} 
+                >
+                    <p> Are you sure you want to remove this image? </p>
+                </ConfirmDialog>
+            </>
+        )
+    }
+    return <div></div>
+
+    
 }
 
 export const ProductImages = (props: ProductImagesProps)=>{
@@ -166,8 +171,9 @@ export const ProductImages = (props: ProductImagesProps)=>{
         field: FieldInputProps<FormModel>,
         deletedImg: Image
     ) =>{
+        console.log(values.imgList)
         let imgList = cloneDeep(values.imgList)
-        imgList = imgList.filter((img)=> img.id !== deletedImg.id)
+        imgList = imgList.filter((img)=> img.url !== deletedImg.id)
         form.setFieldValue(field.name, imgList)
     }
 

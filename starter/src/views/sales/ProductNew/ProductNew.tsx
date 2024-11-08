@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 type ImageUrlResponse = {
     response: any;
     fileUrl: string;
-  };
+};
 
 export const ProductNew = ()=>{
 

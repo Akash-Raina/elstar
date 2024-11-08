@@ -1,23 +1,43 @@
-import DoubleSidedImage from "@/components/shared/DoubleSidedImage"
-import reducer, {getProduct, deleteProduct, useAppDispatch, useAppSelector, updateProduct } from "./store"
-import Loading from "@/components/shared/Loading"
-import  isEmpty from "lodash/isEmpty"
-import ProductForm, { FormModel, OnDeleteCallback, SetSubmitting } from "@/views/sales/ProductForm"
-import {useNavigate, useLocation } from "react-router-dom"
-import { useEffect } from "react"
-import { injectReducer } from "@/store"
-import { toast } from "@/components/ui"
-import Notification from "@/components/ui/Notification"
+import DoubleSidedImage from '@/components/shared/DoubleSidedImage'
+import reducer, {
+    getProduct,
+    deleteProduct,
+    useAppDispatch,
+    useAppSelector,
+    updateProduct,
+    getImageUrl,
+} from './store'
+import Loading from '@/components/shared/Loading'
+import isEmpty from 'lodash/isEmpty'
+import ProductForm, {
+    FormModel,
+    OnDeleteCallback,
+    SetSubmitting,
+} from '@/views/sales/ProductForm'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import { injectReducer } from '@/store'
+import { toast } from '@/components/ui'
+import Notification from '@/components/ui/Notification'
 
 injectReducer('salesProductEdit', reducer)
 
-export const ProductEdit = ()=>{
+type ImageUrlResponse = {
+    response: any
+    fileUrl: string
+}
+
+export const ProductEdit = () => {
     const location = useLocation()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const productData = useAppSelector((state)=>state.salesProductEdit.data.productData)
-    const loading = useAppSelector((state) => state.salesProductEdit.data.loading)
+    const productData = useAppSelector(
+        (state) => state.salesProductEdit.data.productData
+    )
+    const loading = useAppSelector(
+        (state) => state.salesProductEdit.data.loading
+    )
 
     const fetchData = (data: { id: string }) => {
         dispatch(getProduct(data))
@@ -31,36 +51,77 @@ export const ProductEdit = ()=>{
         values: FormModel,
         setSubmitting: SetSubmitting
     ) => {
-        
+
         setSubmitting(true)
-        
-        const success = await updateProduct(values)
-        setSubmitting(false)
-        if (success) {
-            popNotification('updated')
+
+        console.log(values)
+
+        if (values.imgList) {
+            if(values.imgList[0] === undefined){
+
+                const remImage = {
+                    ...values,
+                    url: ""
+                }
+
+                const success = await updateProduct(remImage)
+
+                setSubmitting(false)
+                if (success) {
+                    popNotification('updated')
+                }
+            }
+            else{
+                const fileData = {
+                    img: values.imgList[0].img,
+                }
+                console.log(fileData)
+                const getUrl: ImageUrlResponse = await getImageUrl(fileData)
+    
+                const data = {
+                    ...values,
+                    url: getUrl.fileUrl,
+                }
+                console.log(data)
+                const success = await updateProduct(data)
+    
+                setSubmitting(false)
+                if (success) {
+                    popNotification('updated')
+                }
+            }
+            
+        } else {
+            const success = await updateProduct(values)
+
+            setSubmitting(false)
+            if (success) {
+                popNotification('updated')
+            }
         }
     }
 
-    const handleDelete = async (setDialogOpen: OnDeleteCallback)=>{
+    const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
         setDialogOpen(false)
-        const success = await deleteProduct({product_id: productData.product_id})
-        if(success){
+        const success = await deleteProduct({
+            product_id: productData.product_id,
+        })
+        if (success) {
             popNotification('deleted')
         }
-
     }
 
-    const popNotification = (keyword: string) =>{
+    const popNotification = (keyword: string) => {
         toast.push(
             <Notification
                 title={`Successfuly ${keyword}`}
                 type="success"
                 duration={2500}
             >
-                    Product successfuly{keyword}
+                Product successfuly{keyword}
             </Notification>,
             {
-                placement: 'top-center'
+                placement: 'top-center',
             }
         )
         navigate('/app/sales/product-list')
@@ -75,22 +136,23 @@ export const ProductEdit = ()=>{
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
-    return <>
-        <Loading loading = {loading}>
-            {!isEmpty(productData) && (
-                <>
-                    <ProductForm
-                        type="edit"
-                        initialData={productData}
-                        onFormSubmit={handleFormSubmit}
-                        onDiscard={handleDiscard}
-                        onDelete={handleDelete}
-                    />
-                </>
-            )}
-        </Loading>
-        {!loading && isEmpty(productData) &&(
-                    <div className="h-full flex flex-col items-center justify-center">
+    return (
+        <>
+            <Loading loading={loading}>
+                {!isEmpty(productData) && (
+                    <>
+                        <ProductForm
+                            type="edit"
+                            initialData={productData}
+                            onFormSubmit={handleFormSubmit}
+                            onDiscard={handleDiscard}
+                            onDelete={handleDelete}
+                        />
+                    </>
+                )}
+            </Loading>
+            {!loading && isEmpty(productData) && (
+                <div className="h-full flex flex-col items-center justify-center">
                     <DoubleSidedImage
                         src="/img/others/img-2.png"
                         darkModeSrc="/img/others/img-2-dark.png"
@@ -98,7 +160,7 @@ export const ProductEdit = ()=>{
                     />
                     <h3 className="mt-8">No product found!</h3>
                 </div>
-        )}
-    </>
-    
+            )}
+        </>
+    )
 }

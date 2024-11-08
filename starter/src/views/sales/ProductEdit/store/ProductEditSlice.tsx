@@ -1,4 +1,4 @@
-import { apiDeleteSalesProducts, apiGetSalesProduct, apiPutSalesProduct } from "@/services/SalesService";
+import { apiDeleteSalesProducts, apiGetSalesProduct, apiGetSalesProductImageUrl, apiPutSalesProduct } from "@/services/SalesService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 type ProductData = {
@@ -39,6 +39,12 @@ export const getProduct = createAsyncThunk(
         return response.data
     }
 )
+
+export const getImageUrl = async<T, U extends Record<string, unknown>> (data: U)=>{
+    const response = await apiGetSalesProductImageUrl<T, U>(data);
+    console.log(response.data)
+    return response.data
+}
 
 export const updateProduct = async<T, U extends Record<string, unknown>> (data: U)=>{
     const response = await apiPutSalesProduct<T, U>(data);

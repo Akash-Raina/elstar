@@ -203,7 +203,7 @@ const eraseProduct = async (req: Request) => {
 const updateProduct = async (req: Request) => {
   const {
     product_name,
-    img,
+    url,
     code,
     description,
     product_id,
@@ -216,12 +216,14 @@ const updateProduct = async (req: Request) => {
     taxrate,
   } = req.body;
 
+  console.log(req.body)
+
   const updatedProd = await pool.query(
     `UPDATE products
-    SET product_name = ?, code = ?, description = ? 
+    SET product_name = ?, code = ?, description = ?, img = ? 
     WHERE product_id = ?
     `,
-    [product_name, code, description, product_id]
+    [product_name, code, description,url, product_id]
   )
 
   const [changedOrg] = await pool.query<RowDataPacket[]>(
@@ -272,9 +274,6 @@ const s3Client = new S3Client({
 
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME as string;
 
-
-
-
 const hitS3Api = async (req: Request) => {
   return new Promise<{ response: any, fileUrl: string }>((resolve, reject) => {
     const form = formidable({ multiples: true });
@@ -316,10 +315,8 @@ const hitS3Api = async (req: Request) => {
           const region = "ap-south-1"; 
           
           const fileUrl = `https://${BUCKET_NAME}.s3.${region}.amazonaws.com/${uploadParams.Key}`;
+          console.log('newUrl', fileUrl)
 
-          if(fileUrl){
-            
-          }
           resolve({ response, fileUrl });
         }
       } catch (uploadErr) {
