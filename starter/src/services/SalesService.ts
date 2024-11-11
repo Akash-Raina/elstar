@@ -3,6 +3,7 @@ import ApiService from "./ApiService";
 export async function apiGetSalesProducts<T, U extends Record<string, unknown>>(
     data: U
 ) {
+
     return ApiService.fetchData<T>({
         url: '/sales/products',
         method: 'post',

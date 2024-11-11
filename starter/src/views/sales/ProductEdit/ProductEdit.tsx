@@ -53,8 +53,6 @@ export const ProductEdit = () => {
     ) => {
         setSubmitting(true)
 
-        console.log(values)
-
         // data -> update, image-> update, image -> delete
         if (values.imgList) {
             if (values.imgList[0] === undefined) {
@@ -70,14 +68,15 @@ export const ProductEdit = () => {
                     popNotification('updated')
                 }
             }
-            else if (!values.imgList[0].url) {
+            else if ((values.imgList[0].url === null) || (values.imgList[0].url[0] === 'h')) {
+                console.log("inside no image change")
                 const success = await updateProduct(values)
 
                 setSubmitting(false)
                 if (success) {
                     popNotification('updated')
                 }
-            } else if (values.imgList[0].url[0] === 'b') {
+            } else if (values.imgList[0].url[0] === 'b' ) {
                 const fileData = {
                     img: values.imgList[0].img,
                 }

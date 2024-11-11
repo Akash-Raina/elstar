@@ -154,6 +154,7 @@ export const PricingFields = (props: PricingFieldsProps)=>{
                                     <NumericFormatInput
                                         form={form}
                                         field={field}
+                                        value={6}
                                         placeholder="Tax Rate"
                                         customInput={
                                             TaxRateInput as ComponentType
