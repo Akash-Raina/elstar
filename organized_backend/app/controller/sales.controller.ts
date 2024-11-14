@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {getAllProducts, getSingleProduct, newProduct, eraseProduct, updateProduct, hitS3Api} from "../services/product.services"
+import {getAllProducts, getSingleProduct, newProduct, eraseProduct, updateProduct, hitS3Api} from "../services/product.service"
 
 
 const allProducts = async (req:Request, res: Response)=> {
@@ -27,40 +27,54 @@ const allProducts = async (req:Request, res: Response)=> {
 }
 
 const singleProduct = async (req:Request, res: Response)=> {
-    
-    const {
-        product_id,
-        product_name,
-        code,
-        categories,
-        price,
-        brand,
-        vendor,
-        tags,
-        url,
-        description,
-        bulk_dp,
-        sku,
-        imgList,
-        taxrate,
-    } = await getSingleProduct(req);
 
-    res.status(200).json({
-        product_id,
-        product_name,
-        code,
-        categories,
-        price,
-        brand,
-        vendor,
-        tags,
-        url,
-        imgList,
-        description,
-        bulk_dp,
-        sku,
-        taxrate,
-      });
+    try{
+
+        const {
+            product_id,
+            product_name,
+            code,
+            categories,
+            price,
+            brand,
+            vendor,
+            tags,
+            url,
+            description,
+            bulk_dp,
+            sku,
+            imgList,
+            taxrate,
+        } = await getSingleProduct(req);
+
+        res.status(200).json({
+            product_id,
+            product_name,
+            code,
+            categories,
+            price,
+            brand,
+            vendor,
+            tags,
+            url,
+            imgList,
+            description,
+            bulk_dp,
+            sku,
+            taxrate,
+          });
+    
+    }
+    catch(err){
+        res.json(500).json({
+            err
+        })
+
+    }
+    
+
+
+
 }
 
 const createProduct =  async(req:Request, res: Response) => {

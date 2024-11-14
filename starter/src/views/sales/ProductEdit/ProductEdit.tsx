@@ -51,96 +51,33 @@ export const ProductEdit = () => {
         values: FormModel,
         setSubmitting: SetSubmitting
     ) => {
-        setSubmitting(true)
+        
+        setSubmitting(true);
+        let productData = values;
 
-        // data -> update, image-> update, image -> delete
-        if (values.imgList) {
-            if (values.imgList[0] === undefined) {
-                const remImage = {
-                    ...values,
-                    url: '',
-                }
+        if(values.imgList && values.imgList[0] !== undefined){
+            const {url, img} = values.imgList[0];
 
-                const success = await updateProduct(remImage)
-
-                setSubmitting(false)
-                if (success) {
-                    popNotification('updated')
-                }
+            if(url === null  || url.startsWith('h')){
+                console.log('no image changes')
             }
-            else if ((values.imgList[0].url === null) || (values.imgList[0].url[0] === 'h')) {
-                console.log("inside no image change")
-                const success = await updateProduct(values)
+            else if(url.startsWith('b')){
+                const fileData = {img};
 
-                setSubmitting(false)
-                if (success) {
-                    popNotification('updated')
-                }
-            } else if (values.imgList[0].url[0] === 'b' ) {
-                const fileData = {
-                    img: values.imgList[0].img,
-                }
-                console.log(fileData)
-                const getUrl: ImageUrlResponse = await getImageUrl(fileData)
-
-                const data = {
-                    ...values,
-                    url: getUrl.fileUrl,
-                }
-                console.log(data)
-                const success = await updateProduct(data)
-
-                setSubmitting(false)
-                if (success) {
-                    popNotification('updated')
-                }
+                const getUrl:ImageUrlResponse = await getImageUrl(fileData);
+                productData = {...values, url: getUrl.fileUrl}
             }
         }
+        else{
+            productData = {...values, url: ''};
+        }
 
-        // if (values.imgList) {
-        //     console.log("img values - > ", values.imgList[0].img)
-        //     if(values.imgList[0].img === null){
+        const success = await updateProduct(productData);
+        setSubmitting(false);
 
-        //         const remImage = {
-        //             ...values,
-        //             url: ""
-        //         }
-
-        //         const success = await updateProduct(remImage)
-
-        //         setSubmitting(false)
-        //         if (success) {
-        //             popNotification('updated')
-        //         }
-        //     }
-        //     else{
-        //         const fileData = {
-        //             img: values.imgList[0].img,
-        //         }
-        //         console.log(fileData)
-        //         const getUrl: ImageUrlResponse = await getImageUrl(fileData)
-
-        //         const data = {
-        //             ...values,
-        //             url: getUrl.fileUrl,
-        //         }
-        //         console.log(data)
-        //         const success = await updateProduct(data)
-
-        //         setSubmitting(false)
-        //         if (success) {
-        //             popNotification('updated')
-        //         }
-        //     }
-
-        // } else {
-        //     const success = await updateProduct(values)
-
-        //     setSubmitting(false)
-        //     if (success) {
-        //         popNotification('updated')
-        //     }
-        // }
+        if(success){
+            popNotification('updated');
+        }
     }
 
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {

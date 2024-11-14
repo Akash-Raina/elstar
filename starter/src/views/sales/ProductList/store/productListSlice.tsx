@@ -73,7 +73,7 @@ const productListSlice = createSlice({
     name :`${SLICE_NAME}/state`,
     initialState,
     reducers:{
-        updateProductList: (state, action)=>{
+        updateProductList: (state, action)=>{ 
             state.productList = action.payload
         },
         setTableData: (state, action) => {

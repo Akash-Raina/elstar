@@ -13,14 +13,14 @@ export const protectedRoutes = [
     },
     /** Example purpose only, please remove */
     {
-        key: 'collapseMenu.item1',
-        path: '/collapse-menu-product-list',
+        key: 'SalesMenu.item1',
+        path: '/sales-menu-product-list',
         component: lazy(() => import('@/views/sales/ProductList')),
         authority: [],
     },
     {
-        key: 'collapseMenu.item2',
-        path: '/collapse-menu-product-new',
+        key: 'SalesMenu.item2',
+        path: '/sales-menu-product-new',
         component: lazy(()=> import('@/views/sales/ProductNew')),
         authority: [],
         meta:{
@@ -28,12 +28,30 @@ export const protectedRoutes = [
         }
     },
     {
-        key: 'collapseMenu.item3',
-        path: '/collapse-menu-product-edit/:productId',
+        key: 'SalesMenu.item3',
+        path: '/sales-menu-product-edit/:productId',
         component: lazy(()=> import('@/views/sales/ProductEdit')),
         authority: [],
         meta:{
             header: 'Edit Product'
+        }
+    },
+    {
+        key:'shopMenu.item1',
+        path: '/category',
+        component: lazy(()=> import('@/views/shop/CategoryList')),
+        authority: [],
+        meta:{
+            header: 'Category'
+        }
+    },
+    {
+        key:'shopMenu.item2',
+        path: '/subcategory',
+        component: lazy(()=> import('@/views/shop/SubCategory')),
+        authority: [],
+        meta:{
+            header: 'Sub Category'
         }
     }
 

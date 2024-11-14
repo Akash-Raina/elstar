@@ -63,7 +63,7 @@ export async function apiGetSalesProductImageUrl<T, U extends Record<string, unk
     
     for (const key in data) {
         if (data[key] instanceof FileList) {
-            // Append each file individually if it's a FileList
+            
             Array.from(data[key] as FileList).forEach((file) => formData.append(key, file));
         } else {
             formData.append(key, data[key] as string);
@@ -79,3 +79,4 @@ export async function apiGetSalesProductImageUrl<T, U extends Record<string, unk
         },
     })
 }
+

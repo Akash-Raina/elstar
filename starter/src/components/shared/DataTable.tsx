@@ -32,6 +32,7 @@ import type { CheckboxProps } from '@/components/ui/Checkbox'
 export type OnSortParam = { order: 'asc' | 'desc' | ''; key: string | number }
 
 type DataTableProps<T> = {
+    onRowClick?: ()=>void
     columns: ColumnDef<T>[]
     data?: unknown[]
     loading?: boolean
@@ -106,6 +107,7 @@ function _DataTable<T>(
     ref: ForwardedRef<DataTableResetHandle>
 ) {
     const {
+        onRowClick,
         skeletonAvatarColumns,
         columns: columnsProp = [],
         data = [],
@@ -303,7 +305,7 @@ function _DataTable<T>(
                             .rows.slice(0, pageSize)
                             .map((row) => {
                                 return (
-                                    <Tr key={row.id}>
+                                    <Tr key={row.id} onClick={onRowClick}>
                                         {row.getVisibleCells().map((cell) => {
                                             return (
                                                 <Td key={cell.id}>

@@ -121,6 +121,7 @@ const newProduct = async (req: Request) => {
 
 const getSingleProduct = async (req: Request) => {
   const id = req.query.id;
+  
   const [data] = await pool.query<RowDataPacket[]>(
     `SELECT * FROM products WHERE product_id = ?`,
     [id]
