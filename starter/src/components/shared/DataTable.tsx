@@ -307,7 +307,7 @@ function _DataTable<T>(
                             .rows.slice(0, pageSize)
                             .map((row) => {
                                 return (
-                                    <Tr key={row.id} onClick={()=>{navigate(`/subcategory/${row.original.id}`)}}>
+                                    <Tr key={row.id} onClick={()=>{row.original.id ? navigate(`/subcategory/${row.original.id}`): ""}}>
                                         
                                         {row.getVisibleCells().map((cell) => {
                                             return (
