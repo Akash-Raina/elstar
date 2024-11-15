@@ -2,6 +2,7 @@ import { apiGetShopCategory } from "@/services/ShopService"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 type Category = {
+    id: string;
     category_name: string;
     status: string;
 }
@@ -60,8 +61,8 @@ const categoryListSlice = createSlice({
     extraReducers:(builder) =>{
         builder
         .addCase(getCategory.fulfilled, (state, action)=>{
-            console.log('extrareducers',action.payload.data)
             state.categoryList = action.payload.data
+            state.tableData.total = action.payload.total
         })
     }
 })

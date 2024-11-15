@@ -54,7 +54,7 @@ const ActionColumn = ({row}: {row: Product})=>{
     const navigate = useNavigate()
 
     const onEdit = ()=>{
-        navigate(`/collapse-menu-product-edit/${row.product_id}`)
+        navigate(`/sales-menu-product-edit/${row.product_id}`)
     }
 
     const onDelete = ()=>{

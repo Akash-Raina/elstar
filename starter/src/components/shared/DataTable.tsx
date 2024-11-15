@@ -28,11 +28,12 @@ import {
 import type { SkeletonProps } from '@/components/ui/Skeleton'
 import type { ForwardedRef, ChangeEvent } from 'react'
 import type { CheckboxProps } from '@/components/ui/Checkbox'
+import { useNavigate } from 'react-router-dom'
 
 export type OnSortParam = { order: 'asc' | 'desc' | ''; key: string | number }
 
 type DataTableProps<T> = {
-    onRowClick?: ()=>void
+    rowId?: string
     columns: ColumnDef<T>[]
     data?: unknown[]
     loading?: boolean
@@ -107,7 +108,7 @@ function _DataTable<T>(
     ref: ForwardedRef<DataTableResetHandle>
 ) {
     const {
-        onRowClick,
+        rowId,
         skeletonAvatarColumns,
         columns: columnsProp = [],
         data = [],
@@ -236,6 +237,7 @@ function _DataTable<T>(
             sorting: sorting as ColumnSort[],
         },
     })
+    const navigate = useNavigate()
 
     const resetSorting = () => {
         table.resetSorting()
@@ -305,7 +307,8 @@ function _DataTable<T>(
                             .rows.slice(0, pageSize)
                             .map((row) => {
                                 return (
-                                    <Tr key={row.id} onClick={onRowClick}>
+                                    <Tr key={row.id} onClick={()=>{navigate(`/subcategory/${row.original.id}`)}}>
+                                        
                                         {row.getVisibleCells().map((cell) => {
                                             return (
                                                 <Td key={cell.id}>

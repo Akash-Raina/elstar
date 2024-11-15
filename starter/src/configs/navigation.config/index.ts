@@ -78,7 +78,7 @@ const navigationConfig: NavigationTree[] = [
             },
             {
                 key: 'shopMenu.item2',
-                path: '/subcategory',
+                path: '/subcategory/1',
                 title: 'Sub Category',
                 translateKey: '',
                 icon: '',

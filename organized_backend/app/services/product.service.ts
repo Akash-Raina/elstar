@@ -6,13 +6,12 @@ import formidable, { Fields, Files } from "formidable"
 import fs from 'fs'
 import dotenv from "dotenv"
 import { PutObjectCommand, PutObjectCommandInput, S3Client } from "@aws-sdk/client-s3";
+import { pagination } from "../utils/pagination";
 
 dotenv.config();
 
 const getAllProducts = async (req: Request) => {
-  const pageIndex = parseInt(req.body.pageIndex as string) || 1;
-  const limit = parseInt(req.body.pageSize as string) || 10;
-  const offset = (pageIndex - 1) * limit;
+  const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
   const query = req.body.query;
 
   let sqlQuery = `

@@ -47,7 +47,7 @@ export const protectedRoutes = [
     },
     {
         key:'shopMenu.item2',
-        path: '/subcategory',
+        path: '/subcategory/:id',
         component: lazy(()=> import('@/views/shop/SubCategory')),
         authority: [],
         meta:{

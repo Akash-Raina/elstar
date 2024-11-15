@@ -1,8 +1,10 @@
+import { SubCategoryTable } from "./components/SubCategoryTable";
+
 const SubCategory = ()=>{
 
-    return <div>
-        Testing SubCategory
-    </div>
+    return <>
+        <SubCategoryTable/>
+    </>
 }
 
 export default SubCategory;

@@ -1,9 +1,10 @@
 import { DataTable } from "@/components/shared"
 import { useAppDispatch, useAppSelector } from "@/store"
 import { useEffect, useMemo } from "react"
-import { getCategory } from "../store"
+import { getCategory, setTableData } from "../store"
 import { Badge } from "@/components/ui"
-import { useNavigate } from "react-router-dom"
+import cloneDeep from "lodash/cloneDeep"
+
 
 const inventoryStatusColor:any = {
     0: {
@@ -25,7 +26,7 @@ const inventoryStatusColor:any = {
 
 export const CategoryTable = ()=>{
 
-    const navigate = useNavigate();
+
     const dispatch = useAppDispatch();
 
     const { pageSize, pageIndex, total} = useAppSelector(
@@ -37,19 +38,22 @@ export const CategoryTable = ()=>{
     const data = useAppSelector(
         (state:any) => state.shopCategoryList.data.categoryList
     )
-    console.log("thunkData", data)
-    const tableData = {
-        pageSize, pageIndex, total
+    console.log("data", data)
+    const onPaginationChange = (page: number) => {
+        const newTableData = cloneDeep(tableData)
+        newTableData.pageIndex = page
+        dispatch(setTableData(newTableData))
     }
+
 
     useEffect(() => {
         dispatch(getCategory(tableData))
     }, [pageSize, pageIndex, total]);
 
-    // const tableData = useMemo(
-    //     ()=>({pageSize, pageIndex, total}),
-    //     [pageSize, pageIndex, total]
-    // )
+    const tableData = useMemo(
+        ()=>({pageSize, pageIndex, total}),
+        [pageSize, pageIndex, total]
+    )
 
 
     const columns  = useMemo(
@@ -78,15 +82,18 @@ export const CategoryTable = ()=>{
                 }
             }
     ],[])
-    function navOnClick(){
-        navigate('/subcategory')
-    }
+
     return <div className="cursor-pointer">
         <DataTable
-        onRowClick={navOnClick}
         columns={columns}
         data={data}
         loading = {loading}
+        pagingData={{
+            total: tableData.total as number,
+            pageIndex: tableData.pageIndex as number,
+            pageSize: tableData.pageSize as number,
+        }}
+        onPaginationChange={onPaginationChange}
         />
     </div>
 }

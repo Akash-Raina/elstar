@@ -9,7 +9,7 @@ const CategoryList = ()=>{
 
     return <>
             <CategoryTable/>
-    </>
+        </>
 }
 
 export default CategoryList
