@@ -88,7 +88,7 @@ const navigationConfig: NavigationTree[] = [
             },
             {
                 key: 'shopMenu.item3',
-                path: '/productlist',
+                path: '/productlist/1',
                 title: 'Product List',
                 translateKey: '',
                 icon: '',

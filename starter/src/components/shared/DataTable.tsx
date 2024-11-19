@@ -307,7 +307,13 @@ function _DataTable<T>(
                             .rows.slice(0, pageSize)
                             .map((row) => {
                                 return (
-                                    <Tr key={row.id} onClick={()=>{row.original.id ? navigate(`/subcategory/${row.original.id}`): ""}}>
+                                    <Tr key={row.id} onClick={() => {
+                                        if (row.original.category_name) {
+                                          navigate(`/subcategory/${row.original.id}`);
+                                        } else if (row.original.sub_category_name) {
+                                          navigate(`/productlist/${row.original.id}`);
+                                        }
+                                      }}>
                                         
                                         {row.getVisibleCells().map((cell) => {
                                             return (

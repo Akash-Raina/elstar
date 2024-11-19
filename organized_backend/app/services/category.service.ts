@@ -26,7 +26,6 @@ const fetchAllCategory = async (req:Request)=>{
 }   
 
 const fetchSubCategory = async (req: Request)=>{
-    console.log(req.body)
     if(!req.query.id){
         throw new Error("no id found in query")
     }
@@ -54,7 +53,6 @@ const fetchSubCategory = async (req: Request)=>{
 }
 
 const fetchAllProducts = async(req: Request)=>{
-    console.log(req.body)
     if(!req.query.id){
         throw new Error("no id found in query")
     }

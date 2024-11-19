@@ -19,7 +19,7 @@ export const ProductTableTools = () => {
                 </Button>
             </div>
             <div className="block lg:inline-block md:mb-0 mb-4">
-                <Button block variant="solid" size="sm" icon={<HiPlusCircle />} onClick={()=>{navigate('/collapse-menu-product-new')}}>
+                <Button block variant="solid" size="sm" icon={<HiPlusCircle />} onClick={()=>{navigate('/sales-menu-product-new')}}>
                     Add Product
                 </Button>
             </div>

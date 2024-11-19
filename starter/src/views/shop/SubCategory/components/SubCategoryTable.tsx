@@ -50,7 +50,7 @@ export const SubCategoryTable = ()=>{
     }
     
     useEffect(() => {
-        if(id) dispatch(getSubCategory({data: tableData, params: id}))
+        if(id) dispatch(getSubCategory({data:tableData, params: id}))
     }, [pageSize, pageIndex, total]);
 
     const tableData = useMemo(
