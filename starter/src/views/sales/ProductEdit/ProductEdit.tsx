@@ -44,7 +44,7 @@ export const ProductEdit = () => {
     }
 
     const handleDiscard = () => {
-        navigate('/collapse-menu-product-list')
+        navigate('/sales-menu-product-list')
     }
 
     const handleFormSubmit = async (

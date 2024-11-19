@@ -53,6 +53,15 @@ export const protectedRoutes = [
         meta:{
             header: 'Sub Category'
         }
+    },
+    {
+        key:'shopMenu.item3',
+        path: '/productlist',
+        component: lazy(()=> import('@/views/shop/ProductList')),
+        authority: [],
+        meta:{
+            header: 'Product List'
+        }
     }
 
 ]

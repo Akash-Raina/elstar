@@ -25,14 +25,14 @@ export type ShopCategoryListState = {
 
 }
 
-type GetSalesProductsRequest = CategoryType;
+type GetSalesCategoryRequest = CategoryType;
 
 export const SLICE_NAME = 'shopCategoryList'
 
 
 export const getCategory = createAsyncThunk(
     SLICE_NAME + '/getCatgory',
-    async(data: GetSalesProductsRequest)=>{
+    async(data: GetSalesCategoryRequest)=>{
         const response = await apiGetShopCategory(data)
         return response.data
     }
@@ -63,6 +63,7 @@ const categoryListSlice = createSlice({
         .addCase(getCategory.fulfilled, (state, action)=>{
             state.categoryList = action.payload.data
             state.tableData.total = action.payload.total
+            
         })
     }
 })

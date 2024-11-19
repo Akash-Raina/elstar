@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchAllCategory, fetchSubCategory } from "../services/category.service";
+import { fetchAllCategory, fetchAllProducts, fetchSubCategory } from "../services/category.service";
 
 const allCategory = async(req:Request, res:Response)=>{
 
@@ -20,11 +20,12 @@ const allCategory = async(req:Request, res:Response)=>{
 
 const allSubCategory = async(req: Request, res:Response)=>{
     try{
-        const data = await fetchSubCategory(req)
+        const {data, total} = await fetchSubCategory(req)
 
         res.status(200).json({
             msg: "Data fetched Succesfully",
-            data
+            data,
+            total
         })
     }
     catch(err){
@@ -35,7 +36,24 @@ const allSubCategory = async(req: Request, res:Response)=>{
     
 }
 
+const allProductList = async(req: Request, res: Response)=>{
+    try{
+        const {data, total} = await fetchAllProducts(req);
+        res.status(200).json({
+            msg: 'Products fetched successfully',
+            data,
+            total
+        })
+    }
+    catch(err){
+        res.status(400).json({
+            msg: err
+        })
+    }
+}
+
 export{
     allCategory,
-    allSubCategory
+    allSubCategory,
+    allProductList
 } 

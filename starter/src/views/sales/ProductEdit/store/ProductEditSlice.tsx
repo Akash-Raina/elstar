@@ -35,7 +35,6 @@ export const getProduct = createAsyncThunk(
             GetSalesProductResponse,
             {id: string}
         >(data)
-        console.log(response.data)
         return response.data
     }
 )
