@@ -42,7 +42,7 @@ export const SubCategoryTable = ()=>{
     const data = useAppSelector(
         (state:any) => state.shopSubCategoryList.data.subCategoryList
     )
-    console.log("backend data",data)
+
     const onPaginationChange = (page: number) => {
         const newTableData = cloneDeep(tableData)
         newTableData.pageIndex = page
@@ -64,6 +64,10 @@ export const SubCategoryTable = ()=>{
             {
                 header: 'Name',
                 accessorKey: 'sub_category_name',
+            },
+            {
+                header: 'Products',
+                accessorKey: 'products',
             },
             {
                 header: 'Status',

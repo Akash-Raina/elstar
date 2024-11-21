@@ -13,6 +13,10 @@ export interface CategoryType{
     total: string
 }
 
+interface BrandListType{
+    labeL: string
+}
+
 // type Categories  = Category[]
 
 // type GetSalesProductsResponse = {
@@ -22,7 +26,7 @@ export interface CategoryType{
 export type ShopCategoryListState = {
     loading: boolean
     categoryList: Category[]
-
+    brandList: BrandListType
 }
 
 type GetSalesCategoryRequest = CategoryType;
@@ -47,7 +51,8 @@ const initialTableData = {
 const initialState = {
     loading: false,
     categoryList: [],
-    tableData: initialTableData
+    tableData: initialTableData,
+    brandList: {}
 }
 
 const categoryListSlice = createSlice({
@@ -63,6 +68,7 @@ const categoryListSlice = createSlice({
         .addCase(getCategory.fulfilled, (state, action)=>{
             state.categoryList = action.payload.data
             state.tableData.total = action.payload.total
+            state.brandList = action.payload.brand_value
             
         })
     }

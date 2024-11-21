@@ -38,7 +38,11 @@ export const CategoryTable = ()=>{
     const data = useAppSelector(
         (state:any) => state.shopCategoryList.data.categoryList
     )
-    console.log("data", data)
+    const brandList = useAppSelector(
+        (state:any) => state.shopCategoryList.data.brandList
+    )
+
+
     const onPaginationChange = (page: number) => {
         const newTableData = cloneDeep(tableData)
         newTableData.pageIndex = page
@@ -61,6 +65,10 @@ export const CategoryTable = ()=>{
             {
                 header: 'Name',
                 accessorKey: 'category_name',
+            },
+            {
+                header: 'Brands',
+                accessorKey: 'brand'
             },
             {
                 header: 'Status',

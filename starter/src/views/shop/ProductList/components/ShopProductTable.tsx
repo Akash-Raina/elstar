@@ -39,7 +39,6 @@ export const ShopProductTable = () => {
         (state: any) => state.shopProductList.data.productList
     )
 
-    console.log('data', data)
     const onPaginationChange = (page:number)=>{
         const newTableData = cloneDeep(tableData)
         newTableData.pageIndex = page
