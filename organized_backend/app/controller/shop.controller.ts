@@ -7,7 +7,8 @@ const allCategory = async(req:Request, res:Response)=>{
         const {categoryData, total} = await fetchAllCategory(req);
         res.status(200).json({
             data: categoryData,
-            total
+            total,
+            
         })
     }
     catch(err){
