@@ -112,13 +112,33 @@ const fetchSubCategory = async (req: Request)=>{
     }
 }
 
+const fetchCategoryList = async (req: Request)=>{
+    const [allCategory] = await pool.query<RowDataPacket[]>(
+       ` SELECT category_name AS label, id AS value FROM category`
+    )
+
+    return allCategory
+}
+
+const fetchSubCategoryList = async (req: Request)=>{
+    const cat_id = req.body.category_id;
+    console.log("cat_id",cat_id)
+    const [allCategory] = await pool.query<RowDataPacket[]>(
+       ` SELECT sub_category_name AS label, id AS value FROM sub_category
+        WHERE category_id = ?`,[cat_id]
+    )
+
+    return allCategory
+}
+
+
 const fetchAllProducts = async(req: Request)=>{
     if(!req.query.id){
         throw new Error("no id found in query")
     }
     const sub_category_id = req.query.id;
     
-    const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
+    const {limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
     
 
     const [totalRows] = await pool.query<RowDataPacket[]>(
@@ -146,5 +166,7 @@ const fetchAllProducts = async(req: Request)=>{
 export {
     fetchAllCategory,
     fetchSubCategory,
+    fetchCategoryList,
+    fetchSubCategoryList,
     fetchAllProducts
 }

@@ -31,3 +31,21 @@ export async function apiGetShopProductList(data:ProductListType, params:string)
         data
     })
 }
+
+export async function apiGetAllCategory(){
+
+    return ApiService.fetchData({
+        url: `/shop/categorylist`,
+        method: 'get'
+
+    })
+}
+
+export async function apiGetAllSubCategory(data:number){
+
+    return ApiService.fetchData({
+        url:'/shop/subcategorylist',
+        method:'get',
+        data
+    })
+}

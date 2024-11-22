@@ -5,6 +5,8 @@ import { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { Badge } from '@/components/ui'
 import { DataTable } from '@/components/shared'
+import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
+import useThemeClass from '@/utils/hooks/useThemeClass'
 
 const inventoryStatusColor: any = {
     0: {
@@ -22,6 +24,37 @@ const inventoryStatusColor: any = {
         dotClass: 'bg-red-500',
         textClass: 'text-red-500',
     },
+}
+
+const ActionColumn = ()=>{
+    const dispatch = useAppDispatch()
+    const { textTheme } = useThemeClass()
+
+    const onEdit = ()=>{
+        console.log('testing')
+    }
+
+    const onDelete = ()=>{
+        console.log('testing')
+    }
+
+    return (
+        <div className="flex justify-end text-lg">
+            <span
+                className={`cursor-pointer p-2 hover:${textTheme}`}
+                onClick={onEdit}
+            >
+                <HiOutlinePencil />
+            </span>
+            <span
+                className="cursor-pointer p-2 hover:text-red-500"
+                onClick={onDelete}
+            >
+                <HiOutlineTrash />
+            </span>
+        </div>
+    )
+
 }
 
 export const ShopProductTable = () => {
@@ -63,6 +96,12 @@ export const ShopProductTable = () => {
                 accessorKey: 'product_name',
             },
             {
+                header: 'Quantity'
+            },
+            {
+                header: 'Unit'
+            },
+            {
                 header: 'Status',
                 accessorKey:'status',
                 cell:(props:any)=>{
@@ -80,7 +119,15 @@ export const ShopProductTable = () => {
                         </div>
                     )
                 }
-            }
+            },
+            {
+                header: 'Price'
+            },
+                        {
+                header: '',
+                id: 'action',
+                cell: ()=> <ActionColumn/>
+            }   
     ],[])
 
     return <div className="cursor-pointer">

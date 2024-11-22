@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import authRoute from './authRoute'
 import type { Routes } from '@/@types/routes'
+import { components } from 'react-select'
 
 export const publicRoutes: Routes = [...authRoute]
 
@@ -59,9 +60,11 @@ export const protectedRoutes = [
         path: '/productlist/:id',
         component: lazy(()=> import('@/views/shop/ProductList')),
         authority: [],
-        meta:{
-            header: 'Product List'
-        }
+    },
+    {
+        key:'shopMenu.item4',
+        path: '/productlist/newproduct',
+        component: lazy(()=> import('@/views/shop/NewProduct'))
     }
 
 ]

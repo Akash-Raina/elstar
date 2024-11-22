@@ -95,6 +95,16 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'shopMeny.item4',
+                path: '/productlist/newproduct',
+                title: 'New Product',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: []
             }
 
         ],
