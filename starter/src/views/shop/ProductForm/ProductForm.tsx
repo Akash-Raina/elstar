@@ -1,21 +1,21 @@
 import { ConfirmDialog, StickyFooter } from "@/components/shared"
 import {hooks, Button, FormContainer} from "@/components/ui"
-import { FormModel } from "@/views/sales/ProductForm"
 import { Form, Formik, FormikProps } from "formik"
 import  cloneDeep from "lodash/cloneDeep"
 import { forwardRef, useState } from "react"
 import { AiOutlineSave } from "react-icons/ai"
 import { HiOutlineTrash } from "react-icons/hi"
 import * as Yup from "yup"
-import { BasicInformationFields } from "./BasicInformationFields"
+import  BasicInformationFields  from "./BasicInformationFields"
 import { SubCategoryFields } from "./SubCategoryFields"
+import PricingFields from "./PricingFields"
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
 
 type InitialData = {
     product_id?: string
     product_name?: string
-    sub_category?: string
+    sub_category?: {label:string, value:number}
     price?: number
     sku?: number
     status?: number
@@ -23,6 +23,8 @@ type InitialData = {
     bulk_dp?: number
     taxrate?: number
 }
+
+export type FormModel = InitialData
 
 export type SetSubmitting = (isSubmitting: boolean) => void
 
@@ -44,8 +46,7 @@ const validationSchema = Yup.object().shape({
     product_name: Yup.string().required('Product Name Required'),  
     sku: Yup.number().min(1, "quantity should be more than 0"),
     price: Yup.number().min(1, "price should be more than 0"),
-    bulk_dp: Yup.number().min(1, "discount should be more than 0"),
-    sub_category: Yup.string().required('Category Required'), 
+    bulk_dp: Yup.number().min(1, "discount should be more than 0"), 
 })
 
 const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
@@ -105,7 +106,7 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
             sub_category: '',
             price: 0,
             sku: 0,
-            status: 0,
+            status: 1,
             costPerItem: 0,
             bulk_dp: 0,
             taxRate: 6,
@@ -126,7 +127,6 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                 validationSchema={validationSchema}
                 onSubmit={(values: FormModel, {setSubmitting}) => {
                     const formData = cloneDeep(values)
-
                     if(type === 'new'){
                         formData.product_id = newId
                     }
@@ -139,6 +139,7 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields touched={touched} errors={errors} />
+                                    <PricingFields touched={touched} errors={errors}/>
                                     <SubCategoryFields touched={touched} errors={errors} values={values}/>
                                 </div>
                             </div>

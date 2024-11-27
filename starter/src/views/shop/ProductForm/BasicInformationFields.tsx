@@ -10,7 +10,7 @@ type BasicInformationFields = {
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
 }
-export const BasicInformationFields = (props: BasicInformationFields)=>{
+const BasicInformationFields = (props: BasicInformationFields)=>{
 
     const {touched, errors} = props
 

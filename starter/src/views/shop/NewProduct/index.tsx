@@ -1,11 +1,38 @@
 import { useNavigate } from "react-router-dom"
-import ProductForm from "../ProductForm"
+import ProductForm, { FormModel, SetSubmitting } from "../ProductForm"
+import { apiCreateSalesProduct } from "@/services/SalesService"
+import { apiCreateShopProduct } from "@/services/ShopService"
+import { Notification, toast } from "@/components/ui"
 
 
  const NewProduct = ()=>{
 
-    const handleFormSubmit = ()=>{
-        console.log("testing submit")
+    const ifSuccess = (success: any) => {
+        if (success) {
+            toast.push(
+                <Notification
+                    title={'Successfuly added'}
+                    type="success"
+                    duration={2500}
+                >
+                    Product successfuly added
+                </Notification>,
+                {
+                    placement: 'top-center',
+                }
+            )
+            navigate('/app/productlist/newproduct')
+        }
+    }
+
+    const handleFormSubmit = async(
+        values: FormModel,
+        setSubmitting: SetSubmitting
+    )=>{
+        const success = await apiCreateShopProduct(values);
+        setSubmitting(false)
+
+        ifSuccess(success)
     }
 
     const navigate = useNavigate()

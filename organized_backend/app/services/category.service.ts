@@ -2,6 +2,7 @@ import { Request } from "express";
 import pool from "../utils/mysql";
 import { RowDataPacket } from "mysql2";
 import { pagination } from "../utils/pagination";
+import formidable, { Fields, Files } from "formidable";
 
 const fetchAllCategory = async (req:Request)=>{
 
@@ -121,11 +122,15 @@ const fetchCategoryList = async (req: Request)=>{
 }
 
 const fetchSubCategoryList = async (req: Request)=>{
+
     const cat_id = req.body.category_id;
-    console.log("cat_id",cat_id)
+    if(!cat_id){
+        throw new Error("no id found")
+    }
+
     const [allCategory] = await pool.query<RowDataPacket[]>(
-       ` SELECT sub_category_name AS label, id AS value FROM sub_category
-        WHERE category_id = ?`,[cat_id]
+        ` SELECT sub_category_name AS label, id AS value FROM sub_category
+            WHERE category_id = ?`,[cat_id]
     )
 
     return allCategory
@@ -163,10 +168,51 @@ const fetchAllProducts = async(req: Request)=>{
     }
 }
 
+const storeNewProduct = async(req: Request)=>{
+
+    if(!req.body) throw new Error
+
+    const {
+        product_name,
+        sub_category,
+        status,
+        price, 
+        sku,
+        bulk_dp,
+        taxRate
+    } = req.body;
+    console.log("product name", product_name)
+    const sub_category_id = sub_category.value
+
+    const [newProduct] = await pool.query<RowDataPacket[]>(
+        `INSERT INTO product (product_name, sub_category_id, created_date, updated_date, status) 
+        VALUES 
+        (?, ?, now(), now(), ?)`,[product_name, sub_category_id, status]
+    ) 
+    const productId = (newProduct as any).insertId  
+
+    const [newSku] = await pool.query<RowDataPacket[]>(
+        `INSERT INTO sku_table (product_id, unit, price, tax, discount)
+        VALUES
+        (?, ?, ?, ? , ?)
+        `, [productId, sku, price, taxRate, bulk_dp]
+    )
+
+    const skuId = (newSku as any).insertId
+
+    await pool.query<RowDataPacket[]>(
+        `UPDATE product SET sku_id = ? WHERE id = ?`,
+        [skuId, productId]
+    )
+    
+    return
+}
+
 export {
     fetchAllCategory,
     fetchSubCategory,
     fetchCategoryList,
     fetchSubCategoryList,
-    fetchAllProducts
+    fetchAllProducts,
+    storeNewProduct
 }

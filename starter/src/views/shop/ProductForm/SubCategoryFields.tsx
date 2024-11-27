@@ -1,10 +1,9 @@
-import { AdaptableCard } from "@/components/shared"
-import { FormItem, Select } from "@/components/ui"
-import { apiGetAllCategory, apiGetAllSubCategory } from "@/services/ShopService"
-import axios from "axios"
-import { Field, FieldProps, FormikErrors, FormikTouched } from "formik"
-import { useEffect, useState } from "react"
-import AsyncSelect from "react-select/async"
+import { AdaptableCard } from '@/components/shared'
+import { FormItem, Select } from '@/components/ui'
+import { injectReducer, useAppDispatch, useAppSelector } from '@/store'
+import { Field, FieldProps, FormikErrors, FormikTouched } from 'formik'
+import { useEffect } from 'react'
+import reducer, { getCategoryOptions, getSubCategoryOptions } from './store'
 
 type FormFieldName = {
     category: string
@@ -14,91 +13,87 @@ type FormFieldName = {
 type SubCategoryFieldsProps = {
     touched: FormikTouched<FormFieldName>
     errors: FormikErrors<FormFieldName>
-    values:{
+    values: {
         category: string
         sub_category: string
     }
 }
 
-// type Category = {
-//     label: string;
-//     value: number;
-// };
+injectReducer('productFormSlice', reducer)
+export const SubCategoryFields = (props: SubCategoryFieldsProps) => {
+    const {
+        values = { sub_category: '', category: '' },
+        touched,
+        errors,
+    } = props
+    const dispatch = useAppDispatch()
+    const { categoryOptions, subCategoryOptions } = useAppSelector(
+        (state: any) => state.productFormSlice.data
+    )
 
+    useEffect(() => {
+        dispatch(getCategoryOptions())
+    }, [dispatch])
 
-export const SubCategoryFields = (props: SubCategoryFieldsProps)=>{
-
-    const categoryOption = async () => {
-        const response = await apiGetAllCategory();
-        return response.data.data;
-    };
-
-    // const subCategoryOption = async ()=>{
-    //     const data = {
-    //         "category_id": values.category.value
-    //     }
-    //     console.log(data)
-    //     const response = await apiGetAllSubCategory(data)
-    //     console.log("subcat -> ", response.data.data)
-    //     return response.data.data;
-    // } 
-    
-    const {values = {sub_category:'', category:''}, touched, errors} = props
-    return <AdaptableCard>
-        <h5>Organization</h5>
-        <p className="mb-6">Section to config the product attribute</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="col-span-1">
-                <FormItem
-                    label="Category"
-                    invalid = {
-                        (errors.category && touched.category) as boolean
-                    }
-                    errorMessage={errors.category}
-                >
-                    <Field name = "category">
-                        {({field, form}: FieldProps)=>(
-                            <Select
-                                field={field}
-                                form={form}
-                                defaultOptions
-                                value={values.category}
-                                onChange={(option)=>{
-                                    form.setFieldValue(field.name, option)
-                                    form.setFieldValue("sub_category","")
-                                }}
-                                loadOptions={categoryOption}
-                                componentAs={AsyncSelect}
-                            />
-
-                        )}
-                    </Field>
-                </FormItem>
+    return (
+        <AdaptableCard>
+            <h5>Organization</h5>
+            <p className="mb-6">Section to config the product attribute</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="col-span-1">
+                    <FormItem
+                        label="Category"
+                        invalid={
+                            (errors.category && touched.category) as boolean
+                        }
+                        errorMessage={errors.category}
+                    >
+                        <Field name="category">
+                            {({ field, form }: FieldProps) => (
+                                <Select
+                                    field={field}
+                                    form={form}
+                                    options={categoryOptions}
+                                    value={values.category}
+                                    onChange={(option) => {
+                                        form.setFieldValue(field.name, option)
+                                        form.setFieldValue('sub_category', '')
+                                        const req = {
+                                            category_id: option?.value,
+                                        }
+                                        dispatch(getSubCategoryOptions(req))
+                                    }}
+                                />
+                            )}
+                        </Field>
+                    </FormItem>
+                </div>
+                <div className="col-span-1">
+                    <FormItem
+                        label="Sub Category"
+                        invalid={
+                            (errors.sub_category &&
+                                touched.sub_category) as boolean
+                        }
+                        errorMessage={errors.sub_category}
+                    >
+                        <Field name="sub_category">
+                            {({ field, form }: FieldProps) => (
+                                <Select
+                                    field={field}
+                                    form={form}
+                                    options={subCategoryOptions}
+                                    value={values.sub_category}
+                                    isDisabled={!values.category}
+                                    onChange={(option) =>
+                                        form.setFieldValue(field.name, option)
+                                    }
+                                />
+                            )}
+                        </Field>
+                    </FormItem>
+                </div>
             </div>
-            <div className="col-span-1">
-                <FormItem
-                    label="Sub Category"
-                    invalid = {
-                        (errors.sub_category && touched.sub_category) as boolean
-                    }
-                    errorMessage={errors.sub_category}
-                >
-                    <Field name = "sub_category">
-                        {({field, form}: FieldProps)=>(
-                            <Select
-                                field={field}
-                                form={form}
-                                defaultOptions
-                                value={values.sub_category}
-
-                                
-                                componentAs={AsyncSelect}
-                            />
-
-                        )}
-                    </Field>
-                </FormItem>
-            </div>
-        </div>
-    </AdaptableCard>
+        </AdaptableCard>
+    )
 }

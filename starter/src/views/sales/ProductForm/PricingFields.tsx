@@ -156,7 +156,7 @@ export const PricingFields = (props: PricingFieldsProps)=>{
                                         field={field}
                                         value={6}
                                         placeholder="Tax Rate"
-                                        customInput={
+                                        customInput = {
                                             TaxRateInput as ComponentType
                                         }
                                         isAllowed={({ floatValue }) =>

@@ -41,11 +41,18 @@ export async function apiGetAllCategory(){
     })
 }
 
-export async function apiGetAllSubCategory(data:number){
-
+export async function apiGetAllSubCategory(data:any){
     return ApiService.fetchData({
         url:'/shop/subcategorylist',
-        method:'get',
+        method:'post',
+        data
+    })
+}
+
+export async function apiCreateShopProduct(data:any){
+    return ApiService.fetchData({
+        url:'/shop/newproduct',
+        method:'post',
         data
     })
 }
