@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchAllCategory, fetchAllProducts, fetchCategoryList, fetchSubCategory, fetchSubCategoryList, storeNewProduct } from "../services/category.service";
+import { fetchAllCategory, fetchAllProducts, fetchCategoryList, fetchSubCategory, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory } from "../services/category.service";
 
 const allCategory = async(req:Request, res:Response)=>{
 
@@ -99,11 +99,39 @@ const shopNewProduct = async(req: Request, res: Response)=>{
     
 }
 
+const shopNewCategory = async(req: Request, res: Response)=>{
+    try{
+        await storeNewCategory(req);
+        res.status(201).json({
+            msg: 'Category Created Successfully'
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            msg: err
+        })
+    }
+}
+
+const shopNewSubCategory = async(req: Request, res: Response)=>{
+    try{
+        await storeNewSubCategory(req);
+        res.status(201).json({
+            msg: 'Sub Category created Successfully'
+        })
+    }
+    catch(err){
+        msg: err
+    }
+}
+
 export{
     allCategory,
     allSubCategory,
     categoryList,
     subCategoryList,
     allProductList,
-    shopNewProduct
+    shopNewProduct,
+    shopNewCategory,
+    shopNewSubCategory
 } 

@@ -3,14 +3,15 @@ import { FormItem, Input } from "@/components/ui"
 import { Field, FormikErrors, FormikTouched } from "formik"
 
 type FormFieldsName = {
-    product_name: string
+    sub_category_name: string
 }
 
 type BasicInformationFields = {
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
 }
-const  BasicInformationFields = (props: BasicInformationFields)=>{
+
+const BasicInformationFields = (props: BasicInformationFields)=>{
 
     const {touched, errors} = props
 
@@ -20,13 +21,13 @@ const  BasicInformationFields = (props: BasicInformationFields)=>{
             <p className="mb-6">Section to config basic product information</p>
 
             <FormItem
-            label = "Product Name"
-            invalid = {(errors.product_name && touched.product_name)}
-            errorMessage={errors.product_name}
+            label="Sub Category Name"
+            invalid = {(errors.sub_category_name && touched.sub_category_name)}
+            errorMessage={errors.sub_category_name}
             >
                 <Field
                     type = "text"
-                    name = "product_name"
+                    name = "sub_category_name"
                     placeholder = "Name"
                     component = {Input}
                 />

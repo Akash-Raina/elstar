@@ -6,13 +6,26 @@ import formidable, { Fields, Files } from "formidable";
 
 const fetchAllCategory = async (req:Request)=>{
 
-    const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
 
+    const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
+    const query = req.body.query
+
+    let sqlQuery = `SELECT category_name, status, id FROM category `
+
+    const sqlParams: (string | number)[] = [];
+    if(query){
+        sqlQuery += `WHERE category.category_name REGEXP ?`
+        sqlParams.push(`^${query}`);
+    }
+
+    sqlQuery += 'LIMIT ? OFFSET ?';
+    sqlParams.push(limit, offset)
     const [totalRows] = await pool.query<RowDataPacket[]>(
         `SELECT COUNT(*) AS total FROM category`
     )
     
     const total = totalRows[0].total;
+
     let brand_value:Record<string, any> = {}
 
     for(let id = 1; id <= total; id++){
@@ -28,16 +41,15 @@ const fetchAllCategory = async (req:Request)=>{
 
         const store_brand = brandName[0].brand
         const store_value = totalBrand[0].value
-
         brand_value[store_brand] =  store_value
     }
 
 
-    const sqlQuery = `SELECT category_name, status, id FROM category LIMIT ?, ? `
-    
-    const [categoryData] = await pool.query<RowDataPacket[]>(sqlQuery, [offset, limit]);
 
-    for(let i = 0; i < total; i++){
+    
+    const [categoryData] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
+
+    for(let i = 0; i < categoryData.length; i++){
         const store = categoryData[i].category_name
 
         if(store in brand_value){
@@ -58,7 +70,23 @@ const fetchSubCategory = async (req: Request)=>{
         throw new Error("no id found in query")
     }
     const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
+    const query = req.body.query
     const category_id = req.query.id;
+
+    let sqlQuery = `
+    SELECT sub_category_name, status, id 
+    FROM sub_category
+    WHERE category_id = ? `
+    const sqlParams:(string| number)[] = [];
+    sqlParams.push(`${category_id}`)
+    if(query){
+        sqlQuery += `AND sub_category.sub_category_name REGEXP ? `
+
+        sqlParams.push(`^${query}`)
+    }
+
+    sqlQuery += 'LIMIT ? OFFSET ?';
+    sqlParams.push(limit, offset)
 
     const [totalRows] = await pool.query<RowDataPacket[]>(
         `SELECT COUNT(*) AS total FROM sub_category
@@ -89,16 +117,11 @@ const fetchSubCategory = async (req: Request)=>{
 
     console.log("Product + value",product_value)
 
-    const sqlQuery = `
-        SELECT sub_category_name, status, id 
-        FROM sub_category
-        WHERE category_id = ? LIMIT ?, ?
-    `
     const [subCategory] = await pool.query<RowDataPacket[]>(
-        sqlQuery, [category_id, offset, limit]
+        sqlQuery, sqlParams
     )
 
-    for(let i = 0; i < total; i++){
+    for(let i = 0; i < subCategory.length; i++){
         const store = subCategory[i].sub_category_name
 
         if(store in product_value){
@@ -142,9 +165,24 @@ const fetchAllProducts = async(req: Request)=>{
         throw new Error("no id found in query")
     }
     const sub_category_id = req.query.id;
-    
+
+    let sqlQuery = `
+    SELECT product_name, status, id, sku_id     
+    FROM product
+    WHERE sub_category_id = ? `
+    const sqlParams:(string  | any)[] = [] 
+
     const {limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
-    
+    const query = req.body.query
+    sqlParams.push(sub_category_id)
+
+    if(query){
+        sqlQuery += `AND product.product_name REGEXP ? `;
+        sqlParams.push(`^${query}`)
+    }
+
+    sqlQuery += `LIMIT ? OFFSET ?`;
+    sqlParams.push(limit, offset)
 
     const [totalRows] = await pool.query<RowDataPacket[]>(
         `SELECT COUNT(*) AS total FROM product 
@@ -153,14 +191,8 @@ const fetchAllProducts = async(req: Request)=>{
     
     const total = totalRows[0].total;
 
-    const sqlQuery = `
-        SELECT product_name, status, id, sku_id     
-        FROM product
-        WHERE sub_category_id = ? LIMIT ?, ?
-    `
-    const [products] = await pool.query<RowDataPacket[]>(
-        sqlQuery, [sub_category_id, offset, limit]
-    )
+
+    const [products] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams)
     console.log("products -> ", products)
     return {
         data: products,
@@ -208,11 +240,47 @@ const storeNewProduct = async(req: Request)=>{
     return
 }
 
+const storeNewCategory = async(req: Request)=>{
+
+    const {
+        category_name,
+    } = req.body;
+
+    const status = 2;
+
+    await pool.query<RowDataPacket[]>(
+        `INSERT INTO category (category_name, created_date, updated_date, status)
+        VALUES
+        (?, now(), now(), ?)`, 
+        [category_name, status]
+    )
+
+    return
+}
+
+const storeNewSubCategory = async(req: Request)=>{
+
+    const {
+        sub_category_name,
+        category_id,
+    } = req.body
+
+    const status = 0
+
+    await pool.query<RowDataPacket[]>(
+        `INSERT INTO sub_category (category_id, sub_category_name, created_date, updated_date, status)
+        VALUES
+        (?, ?, now(), now(), ?)`,
+        [category_id, sub_category_name, status]
+    )
+}
 export {
     fetchAllCategory,
     fetchSubCategory,
     fetchCategoryList,
     fetchSubCategoryList,
     fetchAllProducts,
-    storeNewProduct
+    storeNewProduct,
+    storeNewCategory,
+    storeNewSubCategory
 }

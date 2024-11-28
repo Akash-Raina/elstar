@@ -1,5 +1,7 @@
+import { TableQueries } from "@/@types/common";
 import { apiGetShopSubCategory } from "@/services/ShopService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { GetTableRequest } from "aws-sdk/clients/glue";
 
 type SubCategory = {
     id: string;
@@ -15,7 +17,7 @@ export interface SubCategoryType{
 }
 
 interface payloadType {
-    data: SubCategoryType;
+    data: TableQueries;
     params: string 
 }
 
@@ -31,6 +33,7 @@ export const getSubCategory = createAsyncThunk(
     SLICE_NAME + '/getSubCategory',
     async(payload:payloadType)=>{
         const {data, params} = payload
+        console.log("params", params)
         const response:any = await apiGetShopSubCategory(data, params)
         console.log("response",response.data)
         return response.data

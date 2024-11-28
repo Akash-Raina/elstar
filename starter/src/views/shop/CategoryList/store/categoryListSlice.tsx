@@ -1,3 +1,4 @@
+import { TableQueries } from "@/@types/common";
 import { apiGetShopCategory } from "@/services/ShopService"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
@@ -8,7 +9,7 @@ type Category = {
 }
 
 export interface CategoryType{
-    pageIndex: string;
+    pageIndex: number;
     pageSize: string;
     total: string
 }
@@ -27,9 +28,10 @@ export type ShopCategoryListState = {
     loading: boolean
     categoryList: Category[]
     brandList: BrandListType
+    tableData: TableQueries
 }
 
-type GetSalesCategoryRequest = CategoryType;
+type GetSalesCategoryRequest = TableQueries;
 
 export const SLICE_NAME = 'shopCategoryList'
 

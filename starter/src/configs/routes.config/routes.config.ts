@@ -42,18 +42,12 @@ export const protectedRoutes = [
         path: '/category',
         component: lazy(()=> import('@/views/shop/CategoryList')),
         authority: [],
-        meta:{
-            header: 'Category'
-        }
     },
     {
         key:'shopMenu.item2',
         path: '/subcategory/:id',
         component: lazy(()=> import('@/views/shop/SubCategory')),
         authority: [],
-        meta:{
-            header: 'Company'
-        }
     },
     {
         key:'shopMenu.item3',
@@ -65,6 +59,16 @@ export const protectedRoutes = [
         key:'shopMenu.item4',
         path: '/productlist/newproduct',
         component: lazy(()=> import('@/views/shop/NewProduct'))
+    },
+    {
+        key:'shopMenu.item5',
+        path:'/category/newcategory',
+        component: lazy(()=> import ('@/views/shop/NewCategory'))
+    },
+    {
+        key: 'shopMenu.item6',
+        path: '/subcategory/newsubcategory',
+        component: lazy(()=> import('@/views/shop/NewSubCategory'))
     }
 
 ]

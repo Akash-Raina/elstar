@@ -142,12 +142,12 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                                     <PricingFields touched={touched} errors={errors}/>
                                     <SubCategoryFields touched={touched} errors={errors} values={values}/>
                                 </div>
-                            </div>
+                        </div>
                             <StickyFooter
                                 className="-mx-8 px-8 flex items-center justify-between py-4"
                                 stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                             >
-                                                                <div>
+                                <div>
                                     {type === 'edit' && (
                                         <DeleteProductButton
                                             onDelete={onDelete as OnDelete}

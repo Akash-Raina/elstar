@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom"
 import ProductForm, { FormModel, SetSubmitting } from "../ProductForm"
-import { apiCreateSalesProduct } from "@/services/SalesService"
 import { apiCreateShopProduct } from "@/services/ShopService"
 import { Notification, toast } from "@/components/ui"
 

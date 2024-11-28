@@ -105,6 +105,26 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: []
+            },
+            {
+                key: 'shopMeny.item5',
+                path: '/category/newcategory',
+                title: 'New Category',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: []
+            },
+            {
+                key: 'shopMeny.item6',
+                path: '/subcategory/newsubcategory',
+                title: 'New SubCategory',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: []
             }
 
         ],
