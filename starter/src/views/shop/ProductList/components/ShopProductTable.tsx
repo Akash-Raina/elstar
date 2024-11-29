@@ -1,12 +1,19 @@
 import { useAppDispatch, useAppSelector } from '@/store'
 import  cloneDeep  from 'lodash/cloneDeep'
-import { getList, setTableData } from '../store'
+import { getList, setSelectedProduct, setTableData, toggleDeleteConfirmation } from '../store'
 import { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { Badge } from '@/components/ui'
 import { DataTable } from '@/components/shared'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import useThemeClass from '@/utils/hooks/useThemeClass'
+import { ProductDeleteConfirmation } from './ProductDeleteConfirmation'
+
+type Product = {
+    id: string
+    product_name: string
+    status: string
+}
 
 const inventoryStatusColor: any = {
     0: {
@@ -26,7 +33,7 @@ const inventoryStatusColor: any = {
     },
 }
 
-const ActionColumn = ()=>{
+const ActionColumn = ({row}: {row: Product})=>{
     const dispatch = useAppDispatch()
     const { textTheme } = useThemeClass()
 
@@ -35,7 +42,8 @@ const ActionColumn = ()=>{
     }
 
     const onDelete = ()=>{
-        console.log('testing')
+        dispatch(toggleDeleteConfirmation(true))
+        dispatch(setSelectedProduct(row.id))
     }
 
     return (
@@ -126,11 +134,11 @@ export const ShopProductTable = () => {
                         {
                 header: '',
                 id: 'action',
-                cell: ()=> <ActionColumn/>
+                cell: (props:any)=> <ActionColumn row={props.row.original}/>
             }   
     ],[])
 
-    return <div className="cursor-pointer">
+    return <>
         <DataTable
         columns={columns}
         data={data}
@@ -142,5 +150,6 @@ export const ShopProductTable = () => {
         }}
         onPaginationChange={onPaginationChange}
         />
-    </div>
+        <ProductDeleteConfirmation/>
+    </>
 }

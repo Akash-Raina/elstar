@@ -9,7 +9,7 @@ import { ProductDeleteConfirmation } from "./ProductDeleteConfirmation"
 import useThemeClass from "@/utils/hooks/useThemeClass"
 import { useNavigate } from "react-router-dom"
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
-import { useDispatch } from "react-redux"
+
 
 
 type Product = {

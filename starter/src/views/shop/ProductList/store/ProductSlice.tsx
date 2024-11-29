@@ -1,4 +1,5 @@
-import { apiGetShopProductList } from "@/services/ShopService";
+import { TableQueries } from "@/@types/common";
+import { apiDeleteShopProduct, apiGetShopProductList } from "@/services/ShopService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 type Product = {
@@ -12,13 +13,16 @@ export interface ProductListType{
     total: number;
 }
 interface payloadType{
-    data: ProductListType;
+    data: TableQueries;
     params: string
 }
 
 export type ShopProductListState = {
     loading: boolean
     productList: Product[]
+    deleteConfirmation: boolean
+    tableData: TableQueries
+    selectedProduct: string
 }
 
 export const SLICE_NAME = 'shopProductList'
@@ -33,22 +37,26 @@ export const getList = createAsyncThunk(
     }
 )
 
-const initialTableData = {
+export const deleteProduct = async(data: {product_id: string}) => {
+    const response = await apiDeleteShopProduct(data);
+    return response.data
+}
+
+const initialTableData: TableQueries = {
     pageSize: 10,
     pageIndex: 1,
-    total: 0
+    total: 0,
+    query: ''
 }
 
-type initialStateType = {
-    loading : boolean;
-    productList: [],
-    tableData: ProductListType
-}
 
-const initialState:initialStateType = {
+
+const initialState:ShopProductListState = {
     loading: false,
     productList: [],
-    tableData: initialTableData
+    tableData: initialTableData,
+    selectedProduct: '',
+    deleteConfirmation: false
 }
 
 const productSlice = createSlice({
@@ -57,6 +65,12 @@ const productSlice = createSlice({
     reducers:{
         setTableData: (state, action) => {
             state.tableData = action.payload
+        },
+        toggleDeleteConfirmation: (state, action)=>{
+            state.deleteConfirmation = action.payload
+        },
+        setSelectedProduct: (state, action)=>{
+            state.selectedProduct = action.payload
         }
     },
     extraReducers:(builder)=>{
@@ -73,7 +87,9 @@ const productSlice = createSlice({
 })
 
 export const{
-    setTableData
+    setTableData,
+    toggleDeleteConfirmation,
+    setSelectedProduct
 } = productSlice.actions
 
 export default productSlice.reducer

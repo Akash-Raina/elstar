@@ -2,7 +2,6 @@ import { Request } from "express";
 import pool from "../utils/mysql";
 import { RowDataPacket } from "mysql2";
 import { pagination } from "../utils/pagination";
-import formidable, { Fields, Files } from "formidable";
 
 const fetchAllCategory = async (req:Request)=>{
 
@@ -44,9 +43,6 @@ const fetchAllCategory = async (req:Request)=>{
         brand_value[store_brand] =  store_value
     }
 
-
-
-    
     const [categoryData] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
 
     for(let i = 0; i < categoryData.length; i++){
@@ -177,8 +173,8 @@ const fetchAllProducts = async(req: Request)=>{
     sqlParams.push(sub_category_id)
 
     if(query){
-        sqlQuery += `AND product.product_name REGEXP ? `;
-        sqlParams.push(`^${query}`)
+        sqlQuery += `AND product.product_name LIKE ? `;
+        sqlParams.push(`%${query}%`)
     }
 
     sqlQuery += `LIMIT ? OFFSET ?`;
@@ -193,7 +189,7 @@ const fetchAllProducts = async(req: Request)=>{
 
 
     const [products] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams)
-    console.log("products -> ", products)
+
     return {
         data: products,
         total,
@@ -213,7 +209,7 @@ const storeNewProduct = async(req: Request)=>{
         bulk_dp,
         taxRate
     } = req.body;
-    console.log("product name", product_name)
+
     const sub_category_id = sub_category.value
 
     const [newProduct] = await pool.query<RowDataPacket[]>(
@@ -274,6 +270,15 @@ const storeNewSubCategory = async(req: Request)=>{
         [category_id, sub_category_name, status]
     )
 }
+
+const deleteShopProduct = async(req: Request)=>{
+    const {
+        product_id
+    } = req.body
+    await pool.query<RowDataPacket[]>(
+        `UPDATE product SET status = 2 WHERE id = ?`,[product_id]
+    )
+}
 export {
     fetchAllCategory,
     fetchSubCategory,
@@ -282,5 +287,6 @@ export {
     fetchAllProducts,
     storeNewProduct,
     storeNewCategory,
-    storeNewSubCategory
+    storeNewSubCategory,
+    deleteShopProduct
 }

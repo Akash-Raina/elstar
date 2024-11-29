@@ -72,6 +72,7 @@ const NewCategory = ()=>{
                                             size="sm"
                                             className="ltr:mr-3 rtl:ml-3"
                                             type="button"
+                                            onClick={()=>navigate('/category')}
                                         >
                                             Discard
                                         </Button>

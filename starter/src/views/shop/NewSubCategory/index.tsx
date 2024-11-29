@@ -95,7 +95,7 @@ const NewSubCategory = () => {
                                     size="sm"
                                     className="ltr:mr-3 rtl:ml-3"
                                     type="button"
-                                    onClick={() => navigate("/app/productlist")} // Navigate to a different page on discard
+                                    onClick={() => navigate("/subcategory/1")} // Navigate to a different page on discard
                                 >
                                     Discard
                                 </Button>

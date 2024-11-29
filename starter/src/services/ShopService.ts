@@ -1,7 +1,4 @@
-import { CategoryType } from "@/views/shop/CategoryList/store";
 import ApiService from "./ApiService";
-import { SubCategoryType } from "@/views/shop/SubCategory/store/subCategorySlice";
-import { ProductListType } from "@/views/shop/ProductList/store/ProductSlice";
 import { TableQueries } from "@/@types/common";
 
 
@@ -24,7 +21,7 @@ export async function apiGetShopSubCategory(data:TableQueries, params:string){
     })
 }
 
-export async function apiGetShopProductList(data:ProductListType, params:string){
+export async function apiGetShopProductList(data:TableQueries, params:string){
 
     return ApiService.fetchData({
         url: `/shop/productlist?id=${params}`,
@@ -70,6 +67,14 @@ export async function apiCreateShopSubCategory(data:any){
     return ApiService.fetchData({
         url: '/shop/newsubcategory',
         method: 'post',
+        data
+    })
+}
+
+export async function apiDeleteShopProduct(data:{product_id: string}){
+    return ApiService.fetchData({
+        url: '/shop/deleteproduct',
+        method: 'delete',
         data
     })
 }
