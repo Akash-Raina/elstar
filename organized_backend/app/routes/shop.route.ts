@@ -1,5 +1,5 @@
 import express  from "express";
-import { allCategory, allProductList, allSubCategory, categoryList, removeProduct, shopNewCategory, shopNewProduct, shopNewSubCategory, subCategoryList } from "../controller/shop.controller";
+import { allCategory, allProductList, allSubCategory, categoryList, getProduct, removeProduct, shopNewCategory, shopNewProduct, shopNewSubCategory, subCategoryList, updateSingleProduct } from "../controller/shop.controller";
 
 const router = express.Router()
 
@@ -12,5 +12,7 @@ router.post('/newproduct', shopNewProduct)
 router.post('/newcategory', shopNewCategory)
 router.post('/newsubcategory', shopNewSubCategory)
 router.delete('/deleteproduct', removeProduct)
+router.post('/getproduct', getProduct)
+router.put('/updateproduct', updateSingleProduct)
 
 export default router

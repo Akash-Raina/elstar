@@ -2,6 +2,7 @@ import { Request } from "express";
 import pool from "../utils/mysql";
 import { RowDataPacket } from "mysql2";
 import { pagination } from "../utils/pagination";
+import { RowData } from "aws-sdk/clients/iottwinmaker";
 
 const fetchAllCategory = async (req:Request)=>{
 
@@ -156,45 +157,64 @@ const fetchSubCategoryList = async (req: Request)=>{
 }
 
 
-const fetchAllProducts = async(req: Request)=>{
-    if(!req.query.id){
-        throw new Error("no id found in query")
+const fetchAllProducts = async (req: Request) => {
+    if (!req.query.id) {
+        throw new Error("no id found in query");
     }
     const sub_category_id = req.query.id;
 
     let sqlQuery = `
-    SELECT product_name, status, id, sku_id     
-    FROM product
-    WHERE sub_category_id = ? `
-    const sqlParams:(string  | any)[] = [] 
+        SELECT 
+            product.product_name, 
+            product.status, 
+            product.id, 
+            product.sku_id,
+            sku_table.price, 
+            sku_table.tax, 
+            sku_table.discount, 
+            sku_table.sku, 
+            sku_table.unit
+        FROM 
+            product
+        LEFT JOIN 
+            sku_table
+        ON 
+            product.sku_id = sku_table.id
+        WHERE 
+            product.sub_category_id = ? 
+    `;
 
-    const {limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
-    const query = req.body.query
-    sqlParams.push(sub_category_id)
+    const sqlParams: (string | any)[] = [];
 
-    if(query){
+    const { limit, offset } = pagination(req.body.pageIndex, req.body.pageSize);
+    const query = req.body.query;
+    sqlParams.push(sub_category_id);
+
+    if (query) {
         sqlQuery += `AND product.product_name LIKE ? `;
-        sqlParams.push(`%${query}%`)
+        sqlParams.push(`%${query}%`);
     }
 
     sqlQuery += `LIMIT ? OFFSET ?`;
-    sqlParams.push(limit, offset)
+    sqlParams.push(limit, offset);
 
+    // Total row count query
     const [totalRows] = await pool.query<RowDataPacket[]>(
         `SELECT COUNT(*) AS total FROM product 
-            WHERE sub_category_id = ?`, [sub_category_id]
-    )
-    
+         WHERE sub_category_id = ?`,
+        [sub_category_id]
+    );
     const total = totalRows[0].total;
 
-
-    const [products] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams)
+    // Main product query
+    const [products] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
 
     return {
         data: products,
         total,
-    }
-}
+    };
+};
+
 
 const storeNewProduct = async(req: Request)=>{
 
@@ -279,6 +299,106 @@ const deleteShopProduct = async(req: Request)=>{
         `UPDATE product SET status = 2 WHERE id = ?`,[product_id]
     )
 }
+
+const fetchOneProduct = async(req: Request)=>{
+
+    const product_id = req.body.id;
+
+const [result] = await pool.query<RowDataPacket[]>(
+    `
+    SELECT 
+        p.product_name, 
+        p.sub_category_id, 
+        p.status, 
+        p.sku_id, 
+        sc.sub_category_name, 
+        sc.category_id, 
+        c.category_name
+    FROM 
+        product p
+    JOIN 
+        sub_category sc ON p.sub_category_id = sc.id
+    JOIN 
+        category c ON sc.category_id = c.id
+    WHERE 
+        p.id = ?
+    `,
+    [product_id]
+);
+
+    const skuIds = result[0].sku_id.split(',');
+    if(skuIds){
+        const category = { value: result[0].category_id, 
+            label: result[0].category_name
+        }
+
+        const sub_category = {
+            value: result[0].sub_category_id,
+            label: result[0].sub_category_name
+        }
+        const [skuDetails] = await pool.query<RowDataPacket[]>(
+            `SELECT price, tax, discount, sku, unit 
+             FROM sku_table 
+             WHERE id IN (?)`, 
+            [skuIds]
+        );
+        const all = {
+            ...result[0],
+            ...skuDetails[0],
+            category,
+            sub_category
+        }
+        return all
+    }
+
+
+    return [result][0]
+}
+
+const updateProductById = async(req: Request)=>{
+
+    const {
+        id,
+        product_name, 
+        price,
+        discount,
+        sku,
+        sku_id,
+        category,
+        sub_category
+    } = req.body;
+
+    console.log("body", req.body)
+    const [updateProduct] = await pool.query<RowDataPacket[]>(
+        `
+        UPDATE product  
+        SET product_name = ?, sub_category_id = ?
+        WHERE id = ?
+    `,
+    [product_name, sub_category.value, id]
+    )
+
+    const [updateSub] = await pool.query<RowDataPacket[]>(
+        `
+    UPDATE sub_category
+    SET category_id = ? 
+    WHERE id = ?`,
+    [category.value, sub_category.value]);
+
+
+    const [updateSku] = await pool.query<RowDataPacket[]>(
+        `
+        UPDATE sku_table
+        SET price = ?, discount = ?, sku = ?
+        WHERE id = ?
+        `,
+        [price, discount, sku, sku_id[0]]
+    )
+
+    return
+
+}
+
 export {
     fetchAllCategory,
     fetchSubCategory,
@@ -288,5 +408,7 @@ export {
     storeNewProduct,
     storeNewCategory,
     storeNewSubCategory,
-    deleteShopProduct
+    deleteShopProduct,
+    fetchOneProduct,
+    updateProductById
 }

@@ -5,10 +5,10 @@ import { ComponentType } from "react"
 import { NumericFormat, NumericFormatProps } from "react-number-format"
 
 type FormFieldsName = {
-    sku: number
+    sku: string
     price: number
-    bulk_dp: number
-    taxrate: number
+    discount: number
+    tax: number
 }
 
 type PricingFieldsProps = {
@@ -17,7 +17,7 @@ type PricingFieldsProps = {
 }
 
 const PriceInput = (props: InputProps) => {
-    return <Input {...props} value={props.field.value} prefix="$" />
+    return <Input {...props} value={props.field.value} prefix="Rs." />
 }
 
 const NumberInput = (props: InputProps) => {
@@ -115,12 +115,12 @@ const PricingFields = (props: PricingFieldsProps)=>{
                     <FormItem
                         label="Bulk Discount Price"
                         invalid={
-                            (errors.bulk_dp &&
-                                touched.bulk_dp) as boolean
+                            (errors.discount &&
+                                touched.discount) as boolean
                         }
-                        errorMessage={errors.bulk_dp}
+                        errorMessage={errors.discount}
                     >
-                        <Field name="bulk_dp">
+                        <Field name="discount">
                             {({ field, form }: FieldProps) => {
                                 return (
                                     <NumericFormatInput
@@ -146,7 +146,7 @@ const PricingFields = (props: PricingFieldsProps)=>{
                     <FormItem
                         label="Tax Rate(%)"
                     >
-                        <Field name="taxrate">
+                        <Field name="tax">
                             {({ field, form }: FieldProps) => {
                                 return (
                                     <NumericFormatInput

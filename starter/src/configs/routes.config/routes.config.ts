@@ -69,6 +69,11 @@ export const protectedRoutes = [
         key: 'shopMenu.item6',
         path: '/subcategory/newsubcategory',
         component: lazy(()=> import('@/views/shop/NewSubCategory'))
+    },
+    {
+        key: 'shopMenu.item7',
+        path: '/product/editproduct/:id',
+        component: lazy(()=>import('@/views/shop/ProductEdit'))
     }
 
 ]

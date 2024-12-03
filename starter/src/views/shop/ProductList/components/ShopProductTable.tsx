@@ -2,12 +2,14 @@ import { useAppDispatch, useAppSelector } from '@/store'
 import  cloneDeep  from 'lodash/cloneDeep'
 import { getList, setSelectedProduct, setTableData, toggleDeleteConfirmation } from '../store'
 import { useEffect, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Badge } from '@/components/ui'
 import { DataTable } from '@/components/shared'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import useThemeClass from '@/utils/hooks/useThemeClass'
 import { ProductDeleteConfirmation } from './ProductDeleteConfirmation'
+import { space } from 'postcss/lib/list'
+import { spawn } from 'child_process'
 
 type Product = {
     id: string
@@ -34,11 +36,12 @@ const inventoryStatusColor: any = {
 }
 
 const ActionColumn = ({row}: {row: Product})=>{
+    const navigate = useNavigate();
     const dispatch = useAppDispatch()
     const { textTheme } = useThemeClass()
 
     const onEdit = ()=>{
-        console.log('testing')
+        navigate(`/product/editproduct/${row.id}`)
     }
 
     const onDelete = ()=>{
@@ -104,10 +107,12 @@ export const ShopProductTable = () => {
                 accessorKey: 'product_name',
             },
             {
-                header: 'Quantity'
+                header: 'Quantity',
+                accessorKey:'sku',
             },
             {
-                header: 'Unit'
+                header: 'Unit',
+                accessorKey: 'unit'
             },
             {
                 header: 'Status',
@@ -129,7 +134,12 @@ export const ShopProductTable = () => {
                 }
             },
             {
-                header: 'Price'
+                header: 'Price',
+                accessorKey: 'price',
+                cell: (props: any) => {
+                    const {price} = props.row.original;
+                    return <span>Rs.{price}</span>
+                }
             },
                         {
                 header: '',

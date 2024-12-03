@@ -78,3 +78,20 @@ export async function apiDeleteShopProduct(data:{product_id: string}){
         data
     })
 }
+
+export async function apiGetShopProduct<T, U extends Record<string, unknown>>(data:U){
+    return ApiService.fetchData<T>({
+        url: '/shop/getproduct',
+        method:'post',
+        data
+    })
+}
+
+export async function apiUpdateShopProduct<T, U extends Record<string, unknown>>(data:U){
+
+    return ApiService.fetchData<T>({
+        url: '/shop/updateproduct',
+        method:'put',
+        data
+    })
+}

@@ -17,11 +17,11 @@ type InitialData = {
     product_name?: string
     sub_category?: {label:string, value:number}
     price?: number
-    sku?: number
+    sku?: string
     status?: number
     costPerItem?: number
-    bulk_dp?: number
-    taxrate?: number
+    discount?: number
+    tax?: number
 }
 
 export type FormModel = InitialData
@@ -44,9 +44,9 @@ const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
     product_name: Yup.string().required('Product Name Required'),  
-    sku: Yup.number().min(1, "quantity should be more than 0"),
+    sku: Yup.string().min(1, "quantity should be more than 0"),
     price: Yup.number().min(1, "price should be more than 0"),
-    bulk_dp: Yup.number().min(1, "discount should be more than 0"), 
+    discount: Yup.number().min(1, "discount should be more than 0"), 
 })
 
 const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
@@ -105,11 +105,11 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
             product_name: '',
             sub_category: '',
             price: 0,
-            sku: 0,
+            sku: '',
             status: 1,
             costPerItem: 0,
-            bulk_dp: 0,
-            taxRate: 6,
+            discount: 0,
+            tax: 6,
         },
         onFormSubmit,
         onDiscard,
@@ -126,6 +126,7 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values: FormModel, {setSubmitting}) => {
+                    console.log("values",values)
                     const formData = cloneDeep(values)
                     if(type === 'new'){
                         formData.product_id = newId

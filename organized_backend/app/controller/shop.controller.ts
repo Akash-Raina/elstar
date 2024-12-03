@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deleteShopProduct, fetchAllCategory, fetchAllProducts, fetchCategoryList, fetchSubCategory, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory } from "../services/category.service";
+import { deleteShopProduct, fetchAllCategory, fetchAllProducts, fetchCategoryList, fetchOneProduct, fetchSubCategory, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateProductById } from "../services/category.service";
 
 const allCategory = async(req:Request, res:Response)=>{
 
@@ -139,6 +139,38 @@ const removeProduct = async(req: Request, res: Response)=>{
     }
 }
 
+const getProduct = async(req: Request, res: Response)=>{
+
+    try{
+        const data = await fetchOneProduct(req);
+
+        res.status(200).json({
+            msg: "Data fetched Successfully",
+            data
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            msg: err
+        })
+    }
+}
+
+const updateSingleProduct = async(req: Request, res: Response)=>{
+
+    try{
+        await updateProductById(req);
+        res.status(200).json({
+            msg:"Data reached successfully"
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            msg: err
+        })
+    }
+}
+
 export{
     allCategory,
     allSubCategory,
@@ -148,5 +180,7 @@ export{
     shopNewProduct,
     shopNewCategory,
     shopNewSubCategory,
-    removeProduct
+    removeProduct,
+    getProduct,
+    updateSingleProduct
 } 

@@ -88,7 +88,7 @@ const navigationConfig: NavigationTree[] = [
             },
             {
                 key: 'shopMenu.item3',
-                path: '/productlist/1',
+                path: '/productlist/2',
                 title: 'Product List',
                 translateKey: '',
                 icon: '',
@@ -120,6 +120,16 @@ const navigationConfig: NavigationTree[] = [
                 key: 'shopMeny.item6',
                 path: '/subcategory/newsubcategory',
                 title: 'New SubCategory',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: []
+            },
+            {
+                key: 'shopMeny.item7',
+                path: '/product/editproduct/3',
+                title: 'Edit Product',
                 translateKey: '',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
