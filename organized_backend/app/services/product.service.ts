@@ -217,8 +217,6 @@ const updateProduct = async (req: Request) => {
     taxrate,
   } = req.body;
 
-  console.log(req.body)
-
   const updatedProd = await pool.query(
     `UPDATE products
     SET product_name = ?, code = ?, description = ?, img = ? 

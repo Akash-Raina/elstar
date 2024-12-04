@@ -28,7 +28,10 @@ const fetchAllCategory = async (req:Request)=>{
 
     let brand_value:Record<string, any> = {}
 
-    for(let id = 1; id <= total; id++){
+    const [categoryData] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
+
+    for(let i = 0; i  < categoryData.length; i++){
+        let id = categoryData[i].id
         const [brandName] = await pool.query<RowDataPacket[]>(
             `SELECT category_name AS brand FROM category
                 where id = ?`,[id]
@@ -43,8 +46,6 @@ const fetchAllCategory = async (req:Request)=>{
         const store_value = totalBrand[0].value
         brand_value[store_brand] =  store_value
     }
-
-    const [categoryData] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
 
     for(let i = 0; i < categoryData.length; i++){
         const store = categoryData[i].category_name
@@ -110,9 +111,6 @@ const fetchSubCategory = async (req: Request)=>{
         const store_value = totalProduct[0].value
         product_value[store_brand] =  store_value
     }
-
-
-    console.log("Product + value",product_value)
 
     const [subCategory] = await pool.query<RowDataPacket[]>(
         sqlQuery, sqlParams
@@ -226,8 +224,8 @@ const storeNewProduct = async(req: Request)=>{
         status,
         price, 
         sku,
-        bulk_dp,
-        taxRate
+        discount,
+        tax
     } = req.body;
 
     const sub_category_id = sub_category.value
@@ -238,12 +236,12 @@ const storeNewProduct = async(req: Request)=>{
         (?, ?, now(), now(), ?)`,[product_name, sub_category_id, status]
     ) 
     const productId = (newProduct as any).insertId  
-
+    console.log("id, sku", productId, sku)
     const [newSku] = await pool.query<RowDataPacket[]>(
-        `INSERT INTO sku_table (product_id, unit, price, tax, discount)
+        `INSERT INTO sku_table (product_id, sku, unit, price, tax, discount)
         VALUES
-        (?, ?, ?, ? , ?)
-        `, [productId, sku, price, taxRate, bulk_dp]
+        (?, ?, ?, ?, ?,?)
+        `, [productId, sku, 10, price, tax, discount]
     )
 
     const skuId = (newSku as any).insertId
@@ -307,6 +305,7 @@ const fetchOneProduct = async(req: Request)=>{
 const [result] = await pool.query<RowDataPacket[]>(
     `
     SELECT 
+        p.id,
         p.product_name, 
         p.sub_category_id, 
         p.status, 
@@ -367,8 +366,7 @@ const updateProductById = async(req: Request)=>{
         category,
         sub_category
     } = req.body;
-
-    console.log("body", req.body)
+    
     const [updateProduct] = await pool.query<RowDataPacket[]>(
         `
         UPDATE product  
@@ -382,7 +380,7 @@ const updateProductById = async(req: Request)=>{
         `
     UPDATE sub_category
     SET category_id = ? 
-    WHERE id = ?`,
+    WHERE id = ?`,  
     [category.value, sub_category.value]);
 
 
