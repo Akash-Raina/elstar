@@ -1,52 +1,41 @@
-import { ConfirmDialog, StickyFooter } from "@/components/shared"
-import {hooks, Button, FormContainer} from "@/components/ui"
-import { Form, Formik, FormikProps } from "formik"
-import  cloneDeep from "lodash/cloneDeep"
-import { forwardRef, useState } from "react"
-import { AiOutlineSave } from "react-icons/ai"
-import { HiOutlineTrash } from "react-icons/hi"
+import { ConfirmDialog, StickyFooter } from "@/components/shared";
+import { Button } from "@/components/ui";
+import { FormContainer } from "@/components/ui/Form";
+import { Formik, FormikProps, Form } from "formik";
+import { forwardRef, useState } from "react";
 import * as Yup from "yup"
-import  BasicInformationFields  from "./BasicInformationFields"
-import { SubCategoryFields } from "./SubCategoryFields"
-import PricingFields from "./PricingFields"
+import { AiOutlineSave } from "react-icons/ai";
+import  cloneDeep from "lodash/cloneDeep";
+import { HiOutlineTrash } from "react-icons/hi";
+import BasicInformationFields from "./components/BasicInformationFields";
+
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    product_id?: string
-    product_name?: string
-    sub_category?: {label:string, value:number}
-    price?: number
-    sku?: string
-    status?: number
-    costPerItem?: number
-    discount?: number
-    tax?: number
+    id?: string
+    category_name?: string
 }
 
-export type FormModel = InitialData
+export type CategoryFormModel = InitialData
 
-export type SetSubmitting = (isSubmitting: boolean) => void
+export type CategorySetSubmitting = (isSubmitting: boolean) => void
 
 export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 type OnDelete = (Callback: OnDeleteCallback) => void
 
-type ProductForm = {
+type CategoryForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard?: () => void
     onDelete?: OnDelete
-    onFormSubmit: (formData: InitialData, setSubmitting: SetSubmitting) => void
+    onFormSubmit: (formData: InitialData, setSubmitting: CategorySetSubmitting) => void
 }
 
-const { useUniqueId } = hooks
-
 const validationSchema = Yup.object().shape({
-    product_name: Yup.string().required('Product Name Required'),  
-    sku: Yup.string().min(1, "quantity should be more than 0"),
-    price: Yup.number().min(1, "price should be more than 0"),
-    discount: Yup.number().min(1, "discount should be more than 0"), 
+    category_name: Yup.string().required('Product Name Required'),  
+
 })
 
 const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
@@ -87,8 +76,8 @@ const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
                 onConfirm={handleConfirm}
             >
                 <p>
-                    Are you sure you want to delete this product? All record
-                    related to this product will be deleted as well. This action
+                    Are you sure you want to delete this category? All record
+                    related to this category will be deleted as well. This action
                     cannot be undone.
                 </p>
             </ConfirmDialog>
@@ -96,53 +85,34 @@ const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
     )
 }
 
-
-export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
-
+export const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref)=>{
     const {
-        type,
+        type, 
         initialData = {
-            product_id: '',
-            product_name: '',
-            sub_category: '',
-            price: 0,
-            sku: '',
-            status: 1,
-            costPerItem: 0,
-            discount: 0,
-            tax: 6, 
+            id: '',
+            category_name: ''
         },
         onFormSubmit,
-        onDiscard,
+        onDiscard, 
         onDelete
-    } = props  
+    } = props
 
-    const newId = useUniqueId('product-')
-    return(
-        <>
-            <Formik
-                innerRef={ref}
-                initialValues={{
-                    ...initialData
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values: FormModel, {setSubmitting}) => {
-                    console.log("values",values)
-                    const formData = cloneDeep(values)
-                    if(type === 'new'){
-                        formData.product_id = newId
-                    }
-                    onFormSubmit?.(formData, setSubmitting)
-                }}
-            >
-                {({values, touched, errors, isSubmitting}) => (
+    return <>
+        <Formik
+            innerRef={ref}
+            initialValues={initialData}
+            validationSchema={validationSchema}
+            onSubmit={(values:CategoryFormModel, {setSubmitting})=>{
+                const formData = cloneDeep(values)
+                onFormSubmit?.(formData, setSubmitting)
+            }}
+        >
+            {({touched, errors, isSubmitting}) => (
                     <Form>
                         <FormContainer>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields touched={touched} errors={errors} />
-                                    <PricingFields touched={touched} errors={errors}/>
-                                    <SubCategoryFields touched={touched} errors={errors} values={values}/>
                                 </div>
                         </div>
                             <StickyFooter
@@ -179,9 +149,8 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                         </FormContainer>
                     </Form>
                 )}
-            </Formik>
-        </>
-    )
+        </Formik>
+    </>
 })
 
-ProductForm.displayName = 'ProductForm'
+CategoryForm.displayName = 'CategoryForm'

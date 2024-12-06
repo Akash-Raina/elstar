@@ -1,4 +1,4 @@
-import { apiGetShopProduct, apiUpdateShopProduct } from "@/services/ShopService";
+import { apiDeleteShopProduct, apiGetShopProduct, apiUpdateShopProduct } from "@/services/ShopService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
@@ -43,6 +43,11 @@ export const updateProduct = async<T, U extends Record<string, unknown>> (data: 
     return response.data
 }
 
+export const deleteProduct = async (data:{product_id: string})=>{
+    const response = await apiDeleteShopProduct(data);
+    return response
+}
+
 const initialState:ShopProductEditState  = {
     loading: true,
     productData: {}
@@ -55,6 +60,7 @@ const productEditSlice = createSlice({
     extraReducers:(builder) =>{
         builder
             .addCase(getProduct.fulfilled, (state, action)=>{
+                console.log("product payload", action.payload)
                 state.productData = action.payload
                 state.loading = false
             })

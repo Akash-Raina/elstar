@@ -95,3 +95,20 @@ export async function apiUpdateShopProduct<T, U extends Record<string, unknown>>
         data
     })
 }
+
+export async function apiGetShopSingleCategory<T, U extends Record<string, unknown>>(data:U){
+    return ApiService.fetchData<T>({
+        url: '/shop/getcategory',
+        method:'post',
+        data
+    })
+}
+
+export async function apiUpdateShopCategory<T, U extends Record<string, unknown>>(data:U){
+
+    return ApiService.fetchData<T>({
+        url: '/shop/updatecategory',
+        method:'put',
+        data
+    })
+}

@@ -8,8 +8,7 @@ import { DataTable } from '@/components/shared'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import useThemeClass from '@/utils/hooks/useThemeClass'
 import { ProductDeleteConfirmation } from './ProductDeleteConfirmation'
-import { space } from 'postcss/lib/list'
-import { spawn } from 'child_process'
+
 
 type Product = {
     id: string
@@ -19,17 +18,12 @@ type Product = {
 
 const inventoryStatusColor: any = {
     0: {
-        label: 'In Stock',
+        label: 'Active',
         dotClass: 'bg-emerald-500',
         textClass: 'text-emerald-500',
     },
     1: {
-        label: 'Limited',
-        dotClass: 'bg-amber-500',
-        textClass: 'text-amber-500',
-    },
-    2: {
-        label: 'Out of Stock',
+        label: 'Inactive',
         dotClass: 'bg-red-500',
         textClass: 'text-red-500',
     },
@@ -83,11 +77,6 @@ export const ShopProductTable = () => {
         (state: any) => state.shopProductList.data.productList
     )
 
-    const onPaginationChange = (page:number)=>{
-        const newTableData = cloneDeep(tableData)
-        newTableData.pageIndex = page
-        dispatch(setTableData(newTableData))
-    }
     const tableData = useMemo(
         ()=>({pageSize, pageIndex, total}),
         [pageSize, pageIndex, total]
@@ -95,7 +84,7 @@ export const ShopProductTable = () => {
 
     useEffect(()=>{
         if (id) {
-            dispatch(getList({ data: tableData, params: id })); // Correct call
+            dispatch(getList({ data: tableData, params: id }));
         }
     }, [dispatch, id, tableData])
 
@@ -141,12 +130,27 @@ export const ShopProductTable = () => {
                     return <span>Rs.{price}</span>
                 }
             },
-                        {
+            {
                 header: '',
                 id: 'action',
                 cell: (props:any)=> <ActionColumn row={props.row.original}/>
             }   
     ],[])
+
+
+    
+    const onPaginationChange = (page:number)=>{
+        const newTableData = cloneDeep(tableData)
+        newTableData.pageIndex = page
+        dispatch(setTableData(newTableData))
+    }
+
+    const onSelectChange = (value: number) => {
+        const newTableData = cloneDeep(tableData)
+        newTableData.pageSize = Number(value)
+        newTableData.pageIndex = 1
+        dispatch(setTableData(newTableData))
+    }
 
     return <>
         <DataTable
@@ -159,6 +163,7 @@ export const ShopProductTable = () => {
             pageSize: tableData.pageSize as number,
         }}
         onPaginationChange={onPaginationChange}
+        onSelectChange={onSelectChange}
         />
         <ProductDeleteConfirmation/>
     </>

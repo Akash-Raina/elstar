@@ -51,6 +51,7 @@ type DataTableProps<T> = {
         pageIndex: number
         pageSize: number
     }
+    onTableRowChange?: (row: T) => void
 }
 
 type CheckBoxChangeEvent = ChangeEvent<HTMLInputElement>
@@ -108,7 +109,6 @@ function _DataTable<T>(
     ref: ForwardedRef<DataTableResetHandle>
 ) {
     const {
-        rowId,
         skeletonAvatarColumns,
         columns: columnsProp = [],
         data = [],
@@ -126,6 +126,7 @@ function _DataTable<T>(
             pageIndex: 1,
             pageSize: 10,
         },
+        onTableRowChange,
     } = props
 
     const { pageSize, pageIndex, total } = pagingData
@@ -165,6 +166,12 @@ function _DataTable<T>(
     const handleSelectChange = (value?: number) => {
         if (!loading) {
             onSelectChange?.(Number(value))
+        }
+    }
+
+    const handleTableRowChange = (row?: T) => {
+        if (!loading) {
+            onTableRowChange?.(row)
         }
     }
 
@@ -307,17 +314,11 @@ function _DataTable<T>(
                             .rows.slice(0, pageSize)
                             .map((row) => {
                                 return (
-                                    <Tr key={row.id} onClick={() => {
-                                        if (row.original.category_name) {
-                                          navigate(`/subcategory/${row.original.id}`);
-                                        } else if (row.original.sub_category_name) {
-                                          navigate(`/productlist/${row.original.id}`);
-                                        }
-                                      }}>
+                                    <Tr key={row.id} onClick={()=>handleTableRowChange(row.original)}>
                                         
                                         {row.getVisibleCells().map((cell) => {
                                             return (
-                                                <Td key={cell.id}>
+                                                <Td key={cell.id} >
                                                     {flexRender(
                                                         cell.column.columnDef
                                                             .cell,

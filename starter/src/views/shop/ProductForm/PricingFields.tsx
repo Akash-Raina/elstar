@@ -20,9 +20,9 @@ const PriceInput = (props: InputProps) => {
     return <Input {...props} value={props.field.value} prefix="Rs." />
 }
 
-const NumberInput = (props: InputProps) => {
-    return <Input {...props} value={props.field.value} />
-}
+// const NumberInput = (props: InputProps) => {
+//     return <Input {...props} value={props.field.value} />
+// }
 
 const TaxRateInput = (props: InputProps) => {
     return <Input {...props} value={props.field.value} />
@@ -59,8 +59,8 @@ const PricingFields = (props: PricingFieldsProps)=>{
                         invalid={(errors.sku && touched.sku) as boolean}
                         errorMessage={errors.sku}
                     >
-                        <Field name = "sku">
-                            {({field, form}: FieldProps)=>{
+                        <Field type="text" placeholder = "stock" name = "sku" component = {Input}>
+                            {/* {({field, form}: FieldProps)=>{
                                 return(
                                     <FormNumericInput
                                     form={form}
@@ -78,7 +78,7 @@ const PricingFields = (props: PricingFieldsProps)=>{
                                     />
                                     
                                 )
-                            }}
+                            }} */}
                         </Field>
                     </FormItem>
                 </div>
@@ -171,6 +171,21 @@ const PricingFields = (props: PricingFieldsProps)=>{
                             }}
                         </Field>
                     </FormItem>
+                </div>
+                <div className="col-span-1">
+                    {/* <FormItem
+                        label="Status"
+                    >
+                        <Field>
+                            
+                        {({field, form}: FieldProps)=>(
+                            <Select
+                                options={[{label: 'Active', value: '0'}, {label: "Inactive", value: "1"}]}
+                            />
+                            
+                        )}
+                        </Field>
+                    </FormItem> */}
                 </div>
             </div>
         </AdaptableCard>

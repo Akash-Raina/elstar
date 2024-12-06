@@ -5,8 +5,9 @@ import { Form, Formik } from "formik";
 import { AiOutlineSave } from "react-icons/ai";
 import BasicInformationFields from "./components/BasicInformationFields";
 import Organization from "./components/Organization";
-import { apiCreateShopCategory, apiCreateShopSubCategory } from "@/services/ShopService";
+import {apiCreateShopSubCategory } from "@/services/ShopService";
 import { useNavigate } from "react-router-dom";
+import { AxiosResponse } from "axios";
 
 type InitialData = {
     sub_category_name: string; 
@@ -20,7 +21,7 @@ type SetSubmitting = (isSubmitting: boolean) => void;
 const NewSubCategory = () => {
     const navigate = useNavigate();
 
-    const ifSuccess = (success: any) => {
+    const ifSuccess = (success:any) => {
         if (success) {
             toast.push(
                 <Notification
@@ -46,6 +47,7 @@ const NewSubCategory = () => {
             };
 
             const success = await apiCreateShopSubCategory(payload);
+            console.log("success", success)
             setSubmitting(false);
 
             ifSuccess(success); // Handle success

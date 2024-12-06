@@ -13,7 +13,7 @@ export const SLICE_NAME = 'productFormSlice'
 export const getCategoryOptions = createAsyncThunk(
     SLICE_NAME + '/getCategoryOptions',
     async()=>{
-        const response = await apiGetAllCategory()
+        const response:any = await apiGetAllCategory()
         return response.data.data
     }
 )
@@ -48,5 +48,5 @@ const productFormSlice = createSlice({
     }
 })
 
-export const {} = productFormSlice.actions
+export const productFormReducer =  productFormSlice.actions
 export default productFormSlice.reducer

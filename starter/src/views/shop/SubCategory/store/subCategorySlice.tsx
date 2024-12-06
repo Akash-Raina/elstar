@@ -71,7 +71,6 @@ const subCategoryListSlice = createSlice({
         .addCase(getSubCategory.fulfilled, (state, action)=>{
             state.subCategoryList = action.payload.data
             state.tableData.total = action.payload.total
-            console.log('action', action.payload)
         })
         .addCase(getSubCategory.rejected, (state, action) => {
             console.error("Error in thunk:", action.error);

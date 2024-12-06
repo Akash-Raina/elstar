@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom"
 export const ProductDeleteConfirmation = ()=>{
 
     const {id} = useParams();
-    console.log("product id", id)
+
     const dispatch = useAppDispatch()
     const dialogOpen = useAppSelector(
         (state) => state.shopProductList.data.deleteConfirmation
@@ -14,6 +14,7 @@ export const ProductDeleteConfirmation = ()=>{
     const selectedProduct = useAppSelector(
         (state) => state.shopProductList.data.selectedProduct
     )
+    console.log("selected product", selectedProduct)
     const tableData = useAppSelector(
         (state) => state.shopProductList.data.tableData
     )

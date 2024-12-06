@@ -1,5 +1,5 @@
 import { injectReducer, useAppDispatch, useAppSelector } from "@/store"
-import reducer, { getProduct, updateProduct } from "./store"
+import reducer, { deleteProduct, getProduct, updateProduct } from "./store"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useEffect } from "react"
 import DoubleSidedImage from "@/components/shared/DoubleSidedImage"
@@ -53,11 +53,13 @@ const ProductEdit = ()=>{
     }
 
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
-        // setDialogOpen(false)
-        // const success = await deleteProduct({
-        //     product_id: productData.product_id,
-        // })
+        setDialogOpen(false)
+        const success = await deleteProduct({
+            product_id: productData.id,
+        })
+        if (success) {
             popNotification('deleted')
+        }
 
     }
     const popNotification = (keyword: string) => {
@@ -93,6 +95,7 @@ const ProductEdit = ()=>{
                     initialData={productData}
                     onFormSubmit={handleFormSubmit}
                     onDiscard={handleDiscard}
+                    onDelete={handleDelete}
                 />
             </>
         )}

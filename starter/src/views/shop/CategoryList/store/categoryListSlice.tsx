@@ -1,6 +1,7 @@
 import { TableQueries } from "@/@types/common";
 import { apiGetShopCategory } from "@/services/ShopService"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { bool } from "aws-sdk/clients/signer";
 
 type Category = {
     id: string;
@@ -50,12 +51,14 @@ const initialTableData = {
     total: 0
 }
 
+
 const initialState = {
     loading: false,
     categoryList: [],
     tableData: initialTableData,
     brandList: {}
 }
+
 
 const categoryListSlice = createSlice({
     name: `${SLICE_NAME}/state`,
@@ -67,7 +70,7 @@ const categoryListSlice = createSlice({
     },
     extraReducers:(builder) =>{
         builder
-        .addCase(getCategory.fulfilled, (state, action)=>{
+        .addCase(getCategory.fulfilled, (state, action:any)=>{
             state.categoryList = action.payload.data
             state.tableData.total = action.payload.total
             state.brandList = action.payload.brand_value
