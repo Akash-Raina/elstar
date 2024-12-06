@@ -397,6 +397,42 @@ const updateProductById = async(req: Request)=>{
 
 }
 
+const updateCategoryById = async(req: Request)=>{
+
+    if(!req.body) return
+
+    // id - > 1, category_name: testing
+
+    const {id, category_name} = req.body;
+
+    await pool.query<RowDataPacket[]>(
+        `
+        UPDATE category SET category_name = ?
+        WHERE id = ?
+        `,
+        [category_name, id]
+    )
+
+    return 
+}
+
+const fetchCategoryById = async(req: Request)=>{
+
+    if(!req.body) return 
+
+    const {id} = req.body
+
+    const [name] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT id, category_name from category
+        WHERE id = ?
+        `,
+        [id]
+    )
+
+    return name[0]
+}
+
 export {
     fetchAllCategory,
     fetchSubCategory,
@@ -408,5 +444,7 @@ export {
     storeNewSubCategory,
     deleteShopProduct,
     fetchOneProduct,
-    updateProductById
+    updateProductById,
+    updateCategoryById,
+    fetchCategoryById
 }

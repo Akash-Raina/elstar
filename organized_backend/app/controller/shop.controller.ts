@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deleteShopProduct, fetchAllCategory, fetchAllProducts, fetchCategoryList, fetchOneProduct, fetchSubCategory, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateProductById } from "../services/category.service";
+import { deleteShopProduct, fetchAllCategory, fetchAllProducts, fetchCategoryById, fetchCategoryList, fetchOneProduct, fetchSubCategory, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateCategoryById, updateProductById } from "../services/category.service";
 
 const allCategory = async(req:Request, res:Response)=>{
 
@@ -171,6 +171,36 @@ const updateSingleProduct = async(req: Request, res: Response)=>{
     }
 }
 
+const updateSingleCategory = async(req: Request, res: Response)=>{
+
+    try{
+        await updateCategoryById(req);
+        res.status(201).json({
+            msg: "Category Updated successfully"
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            msg: err
+        })
+    }
+}
+
+const getCategoryById = async(req: Request, res: Response)=>{
+
+    try{
+        const name = await fetchCategoryById(req);
+        res.status(200).json({
+            name
+        })
+    } 
+    catch(err){
+        res.status(500).json({
+            msg: err
+        })
+    }
+}
+
 export{
     allCategory,
     allSubCategory,
@@ -182,5 +212,7 @@ export{
     shopNewSubCategory,
     removeProduct,
     getProduct,
-    updateSingleProduct
+    updateSingleProduct,
+    updateSingleCategory,
+    getCategoryById
 } 
