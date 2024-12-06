@@ -30,6 +30,7 @@ const ActionColumn = ({row}: {row: any})=>{
     const { textTheme } = useThemeClass()
 
     const onEdit = ()=>{
+        console.log('testing')
         navigate(`/subcategory/editsubcategory/${row.id}`)
     }
 
@@ -44,7 +45,7 @@ const ActionColumn = ({row}: {row: any})=>{
                 className={`cursor-pointer p-2 hover:${textTheme}`}
                 onClickCapture={(e)=>{
                     (e).stopPropagation()
-                    onEdit
+                    onEdit()
                 }}
             >
                 <HiOutlinePencil />

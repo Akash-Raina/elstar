@@ -26,11 +26,12 @@ export const SubCategoryFields = (props: SubCategoryFieldsProps) => {
         touched,
         errors,
     } = props
+
     const dispatch = useAppDispatch()
     const { categoryOptions, subCategoryOptions } = useAppSelector(
         (state: any) => state.productFormSlice.data
     )
-    console.log("Cat options", categoryOptions)
+
     useEffect(() => {
         dispatch(getCategoryOptions())
     }, [dispatch])

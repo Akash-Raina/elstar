@@ -2,7 +2,7 @@ import { Request } from "express";
 import pool from "../utils/mysql";
 import { RowDataPacket } from "mysql2";
 import { pagination } from "../utils/pagination";
-import { RowData } from "aws-sdk/clients/iottwinmaker";
+
 
 const fetchAllCategory = async (req:Request)=>{
 
@@ -433,6 +433,63 @@ const fetchCategoryById = async(req: Request)=>{
     return name[0]
 }
 
+const fetchSubCategoryById = async(req: Request)=>{
+
+    if(!req.body.id) return 
+
+    const id = req.body.id
+
+    const [name] = await pool.query<RowDataPacket[]>(`
+       SELECT 
+        sc.id,
+        sc.sub_category_name,   
+        sc.category_id, 
+        c.category_name
+    FROM 
+        sub_category sc
+    JOIN 
+        category c ON sc.category_id = c.id
+    WHERE 
+        sc.id = ?
+    `,
+    [id])
+
+    const category = { value: name[0].category_id, 
+        label: name[0].category_name
+    }
+
+    const all = {
+        ...name[0],
+        category
+    }
+
+    return all
+}
+
+const updateSubCatgoryById = async(req: Request)=>{
+
+    if(!req.body) return
+
+    const {
+        id, 
+        sub_category_name,
+        category
+    } = req.body
+
+    const category_id = category.value 
+
+    console.log("body", req.body)
+
+    await pool.query<RowDataPacket[]>(
+        `
+        UPDATE sub_category SET category_id = ?, sub_category_name = ? 
+            WHERE id = ?
+        `,
+        [category_id, sub_category_name, id])
+
+    return
+}
+
 export {
     fetchAllCategory,
     fetchSubCategory,
@@ -446,5 +503,7 @@ export {
     fetchOneProduct,
     updateProductById,
     updateCategoryById,
-    fetchCategoryById
+    fetchCategoryById,
+    fetchSubCategoryById,
+    updateSubCatgoryById
 }
