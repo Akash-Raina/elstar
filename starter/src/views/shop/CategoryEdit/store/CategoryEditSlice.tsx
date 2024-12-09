@@ -35,23 +35,17 @@ export const deleteCategory = async <T, U extends Record<string, unknown>>(data:
 export type ShopCategoryEditState = {
     loading : boolean
     categoryData: CategoryData,
-    statusValue: number
 }
 
 const initialState:ShopCategoryEditState = {
     loading: true,
     categoryData: {},
-    statusValue: 0
 }
 
 const categoryEditSlice = createSlice({
     name: `${SLICE_NAME}/state`,
     initialState,
     reducers: {
-        setStatusValue:(state, action)=>{
-            console.log("payload", action.payload)
-            state.statusValue = action.payload
-        }
     },
     extraReducers:(builder)=>{
         builder
@@ -64,9 +58,5 @@ const categoryEditSlice = createSlice({
             })
     }
 })
-
-export const {
-    setStatusValue
-} =  categoryEditSlice.actions
 
 export default categoryEditSlice.reducer

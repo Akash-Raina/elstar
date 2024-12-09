@@ -55,8 +55,8 @@ export const CategoryDeleteConfirmation = ()=>{
             onConfirm={onDelete}
         >
             <p>
-                Are you sure you want to delete this product? All record related
-                to this product will be deleted as well. This action cannot be
+                Are you sure you want to delete this Category? All record related
+                to this Cateogry will be deleted as well. This action cannot be
                 undone.
             </p>
         </ConfirmDialog>

@@ -4,11 +4,12 @@ import { useEffect, useMemo } from "react"
 
 import { Badge, Button } from "@/components/ui"
 import cloneDeep from "lodash/cloneDeep"
-import { setTableData, getSubCategory } from "../store/subCategorySlice"
+import { setTableData, getSubCategory, toggleDeleteConfirmation, setSelectedSubCategory } from "../store/subCategorySlice"
 import { useNavigate, useParams } from "react-router-dom"
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import useThemeClass from "@/utils/hooks/useThemeClass"
 import { TbHandClick } from "react-icons/tb"
+import { SubCategoryDeleteConfirmation } from "./SubCategoryDeleteConfirmation"
 
 
 const inventoryStatusColor:any = {
@@ -35,8 +36,8 @@ const ActionColumn = ({row}: {row: any})=>{
     }
 
     const onDelete = ()=>{
-        // dispatch(toggleDeleteConfirmation(true))
-        // dispatch(setSelectedProduct(row.id))
+        dispatch(toggleDeleteConfirmation(true))
+        dispatch(setSelectedSubCategory(row.id))
     }
 
     return (
@@ -52,7 +53,10 @@ const ActionColumn = ({row}: {row: any})=>{
             </span>
             <span
                 className="cursor-pointer p-2 hover:text-red-500"
-                onClick={onDelete}
+                onClick={(e)=> {
+                    (e).stopPropagation()
+                    onDelete()
+                }}
             >
                 <HiOutlineTrash />
             </span>
@@ -155,5 +159,6 @@ export const SubCategoryTable = ()=>{
         onSelectChange={onSelectChange}
         onTableRowChange={changeTableRow}
         />
+        <SubCategoryDeleteConfirmation/>
     </div>
 }

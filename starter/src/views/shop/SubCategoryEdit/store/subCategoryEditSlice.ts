@@ -1,4 +1,4 @@
-import { apiGetShopSingleSubCategory, apiUpdateShopSubCategory } from "@/services/ShopService"
+import { apiDeleteShopSubCategory, apiGetShopSingleSubCategory, apiUpdateShopSubCategory } from "@/services/ShopService"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 
@@ -32,6 +32,11 @@ export const getSubCategory =createAsyncThunk(
 export const updateSubCategory = async<T, U extends Record<string, unknown>> (data: U)=>{
     const response = await apiUpdateShopSubCategory<T, U>(data);
     console.log(response.data)
+    return response.data
+}
+
+export const deleteSubCategory = async <T, U extends Record<string, unknown>>(data: U)  => {
+    const response = await apiDeleteShopSubCategory<T, U>(data);
     return response.data
 }
 

@@ -52,7 +52,7 @@ const ActionColumn = ({row}: {row: any})=>{
             </span>
             <span
                 className="cursor-pointer p-2 hover:text-red-500"
-                onClick={(e)=>{
+                onClickCapture={(e)=>{
                     e.stopPropagation();
                     onDelete()
                 }}

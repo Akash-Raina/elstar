@@ -1,5 +1,5 @@
 import { injectReducer, useAppDispatch } from "@/store"
-import reducer, { getSubCategory, updateSubCategory, useAppSelector } from "./store"
+import reducer, { deleteSubCategory, getSubCategory, updateSubCategory, useAppSelector } from "./store"
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { DoubleSidedImage, Loading } from "@/components/shared";
@@ -34,14 +34,13 @@ const SubCategoryEdit = ()=>{
     }
 
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
-        console.log("deleted")
-        // setDialogOpen(false)
-        // const success = await deleteProduct({
-        //     product_id: productData.id,
-        // })
-        // if (success) {
-        //     popNotification('deleted')
-        // }
+        setDialogOpen(false)
+        const success = await deleteSubCategory({
+            id: id,
+        })
+        if (success) {
+            popNotification('deleted')
+        }
 
     }
 

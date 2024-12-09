@@ -138,3 +138,11 @@ export async function apiDeleteShopCategory<T,U extends Record<string, unknown>>
     })
 }
 
+export async function apiDeleteShopSubCategory<T,U extends Record<string, unknown>>(data: U) {
+    return ApiService.fetchData<T>({
+        url: '/shop/deletesubcategorybyid',
+        method: 'delete',
+        data,
+    })
+}
+

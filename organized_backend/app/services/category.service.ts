@@ -517,6 +517,17 @@ const deletCategoryById = async(req: Request)=>{
 
     return
 }
+
+const deletSubCategoryById = async(req: Request)=>{
+
+    if(!req.body) throw new Error
+    const {id} = req.body
+    await pool.query<RowDataPacket[]>(
+        `UPDATE sub_category SET status = 1 WHERE id = ?`,[id]
+    )
+
+    return
+}
 export {
     fetchAllCategory,
     fetchSubCategory,
@@ -534,5 +545,6 @@ export {
     fetchSubCategoryById,
     updateSubCatgoryById,
     fetchCategoryStatus,
-    deletCategoryById
+    deletCategoryById,
+    deletSubCategoryById
 }

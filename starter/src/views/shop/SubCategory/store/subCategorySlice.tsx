@@ -49,13 +49,17 @@ const initialTableData = {
 type initialStateType = {
     loading: boolean;
     subCategoryList: [],
-    tableData: SubCategoryType
+    tableData: SubCategoryType,
+    deleteConfirmation: boolean,
+    selectedSubCategory: string
 }
 
 const initialState:initialStateType = {
     loading: false,
     subCategoryList: [],
-    tableData: initialTableData
+    tableData: initialTableData,
+    deleteConfirmation: false,
+    selectedSubCategory: ''
 }
 
 const subCategoryListSlice = createSlice({
@@ -64,6 +68,13 @@ const subCategoryListSlice = createSlice({
     reducers:{
         setTableData: (state, action) => {
             state.tableData = action.payload
+        },
+        toggleDeleteConfirmation: (state, action)=>{
+            console.log("testing delete confirm", action.payload)
+            state.deleteConfirmation = action.payload
+        },
+        setSelectedSubCategory: (state, action)=>{
+            state.selectedSubCategory = action.payload
         }
     },
     extraReducers:(builder) =>{
@@ -80,6 +91,8 @@ const subCategoryListSlice = createSlice({
 })
 
 export const {
-    setTableData
+    setTableData,
+    setSelectedSubCategory,
+    toggleDeleteConfirmation
 } = subCategoryListSlice.actions
 export default subCategoryListSlice.reducer

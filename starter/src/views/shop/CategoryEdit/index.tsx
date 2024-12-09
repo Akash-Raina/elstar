@@ -1,5 +1,5 @@
 import { injectReducer, useAppSelector,useAppDispatch, } from "@/store"
-import reducer, { deleteCategory, getCategory, setStatusValue, updateCategory } from "./store"
+import reducer, { deleteCategory, getCategory, updateCategory } from "./store"
 import Loading from "@/components/shared/Loading";
 import isEmpty from "lodash/isEmpty";
 import { FormModel, OnDeleteCallback, SetSubmitting } from "../ProductForm";
@@ -67,7 +67,7 @@ const CategoryEdit = ()=>{
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
         setDialogOpen(false)
         const success = await deleteCategory({
-            categoryId: id
+            id: id
         })
         if (success) {
             popNotification('deleted')

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deletCategoryById, deleteShopProduct, fetchAllCategory, fetchAllProducts, fetchCategoryById, fetchCategoryList, fetchCategoryStatus, fetchOneProduct, fetchSubCategory, fetchSubCategoryById, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateCategoryById, updateProductById, updateSubCatgoryById } from "../services/category.service";
+import { deletCategoryById, deleteShopProduct, deletSubCategoryById, fetchAllCategory, fetchAllProducts, fetchCategoryById, fetchCategoryList, fetchCategoryStatus, fetchOneProduct, fetchSubCategory, fetchSubCategoryById, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateCategoryById, updateProductById, updateSubCatgoryById } from "../services/category.service";
 
 const allCategory = async(req:Request, res:Response)=>{
 
@@ -264,6 +264,21 @@ const deleteCategory = async (req: Request, res: Response)=>{
         })
     }
 }
+
+const deleteSubCategory = async (req: Request, res: Response)=>{
+    try{
+        await deletSubCategoryById(req)
+
+        res.status(200).json({
+            msg: "SubCategory Deleted successfully"
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            msg: err
+        })
+    }
+}
 export{
     allCategory,
     allSubCategory,
@@ -281,5 +296,6 @@ export{
     getSubCategoryByid,
     updateSingleSubCategory,
     getCategoryStatus,
-    deleteCategory
+    deleteCategory,
+    deleteSubCategory
 } 
