@@ -171,7 +171,6 @@ const fetchCategoryStatus = async(req: Request)=>{
     return status[0]
 }
 
-
 const fetchAllProducts = async (req: Request) => {
     if (!req.query.id) {
         throw new Error("no id found in query");
@@ -229,7 +228,6 @@ const fetchAllProducts = async (req: Request) => {
         total,
     };
 };
-
 
 const storeNewProduct = async(req: Request)=>{
 
@@ -379,6 +377,7 @@ const updateProductById = async(req: Request)=>{
         price,
         discount,
         sku,
+        status,
         sku_id,
         category,
         sub_category
@@ -387,10 +386,10 @@ const updateProductById = async(req: Request)=>{
     const [updateProduct] = await pool.query<RowDataPacket[]>(
         `
         UPDATE product  
-        SET product_name = ?, sub_category_id = ?
+        SET product_name = ?, sub_category_id = ?, status = ?
         WHERE id = ?
     `,
-    [product_name, sub_category.value, id]
+    [product_name, sub_category.value, status, id]
     )
 
     const [updateSub] = await pool.query<RowDataPacket[]>(
@@ -528,6 +527,7 @@ const deletSubCategoryById = async(req: Request)=>{
 
     return
 }
+
 export {
     fetchAllCategory,
     fetchSubCategory,

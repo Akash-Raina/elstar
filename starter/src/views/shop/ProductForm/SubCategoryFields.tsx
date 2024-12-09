@@ -5,7 +5,10 @@ import { Field, FieldProps, FormikErrors, FormikTouched } from 'formik'
 import { useEffect } from 'react'
 import reducer, { getCategoryOptions, getSubCategoryOptions } from './store'
 
+injectReducer('productFormSlice', reducer)
+
 type FormFieldName = {
+    status: number
     category: string
     sub_category: string
 }
@@ -14,18 +17,25 @@ type SubCategoryFieldsProps = {
     touched: FormikTouched<FormFieldName>
     errors: FormikErrors<FormFieldName>
     values: {
+        status: string
         category: string
         sub_category: string
     }
 }
 
-injectReducer('productFormSlice', reducer)
+const status = [
+    {label: "Active", value: 0},
+    {label: "Inactive", value: 1}
+]
+
 export const SubCategoryFields = (props: SubCategoryFieldsProps) => {
     const {
-        values = { sub_category: '', category: '' },
+        values = { sub_category: '', category: '', status: '' },
         touched,
         errors,
     } = props
+
+    console.log("looking props", props)
 
     const dispatch = useAppDispatch()
     const { categoryOptions, subCategoryOptions } = useAppSelector(
@@ -89,6 +99,32 @@ export const SubCategoryFields = (props: SubCategoryFieldsProps) => {
                                     onChange={(option) =>
                                         form.setFieldValue(field.name, option)
                                     }
+                                />
+                            )}
+                        </Field>
+                    </FormItem>
+                </div>
+                <div className="col-span-1">
+                    <FormItem
+                        label="Status"
+                        invalid={
+                            (errors.status && touched.status) as boolean
+                        }
+                        errorMessage={errors.status}
+                    >
+                        <Field name="status">
+                            {({ field, form }: FieldProps) => (
+                                <Select
+                                    field={field}
+                                    form={form}
+                                    options={status}
+                                    value={status.filter(
+                                        (single)=>single.value === values.status
+                                    )}
+                                    onChange={(option) => {
+                                        form.setFieldValue(field.name, option?.value)
+
+                                    }}
                                 />
                             )}
                         </Field>
