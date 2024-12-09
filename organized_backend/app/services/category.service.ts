@@ -33,7 +33,7 @@ const fetchAllCategory = async (req:Request)=>{
     for(let i = 0; i  < categoryData.length; i++){
         let id = categoryData[i].id
         const [brandName] = await pool.query<RowDataPacket[]>(
-            `SELECT category_name AS brand FROM category
+            `SELECT category_name AS brand, status FROM category
                 where id = ?`,[id]
         )
     
@@ -41,7 +41,6 @@ const fetchAllCategory = async (req:Request)=>{
             `SELECT COUNT(*) AS value FROM sub_category
                 WHERE category_id = ?`,[id]
         )
-
         const store_brand = brandName[0].brand
         const store_value = totalBrand[0].value
         brand_value[store_brand] =  store_value
@@ -152,6 +151,24 @@ const fetchSubCategoryList = async (req: Request)=>{
     )
 
     return allCategory
+}
+
+const fetchCategoryStatus = async(req: Request)=>{
+    const id = req.body.id
+
+    if(!id){
+        throw new Error("no id found in query")
+    }
+
+    const [status] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT status FROM category
+        WHERE id = ?
+        `,
+        [id]
+    )
+
+    return status[0]
 }
 
 
@@ -294,7 +311,7 @@ const deleteShopProduct = async(req: Request)=>{
         product_id
     } = req.body
     await pool.query<RowDataPacket[]>(
-        `UPDATE product SET status = 2 WHERE id = ?`,[product_id]
+        `UPDATE product SET status = 1 WHERE id = ?`,[product_id]
     )
 }
 
@@ -399,18 +416,18 @@ const updateProductById = async(req: Request)=>{
 
 const updateCategoryById = async(req: Request)=>{
 
-    if(!req.body) return
+    if(!req.body) throw new Error
 
     // id - > 1, category_name: testing
 
-    const {id, category_name} = req.body;
+    const {id, category_name, status} = req.body;
 
     await pool.query<RowDataPacket[]>(
         `
-        UPDATE category SET category_name = ?
+        UPDATE category SET category_name = ?, status = ?
         WHERE id = ?
         `,
-        [category_name, id]
+        [category_name, status, id]
     )
 
     return 
@@ -418,13 +435,13 @@ const updateCategoryById = async(req: Request)=>{
 
 const fetchCategoryById = async(req: Request)=>{
 
-    if(!req.body) return 
+    if(!req.body) throw new Error 
 
     const {id} = req.body
 
     const [name] = await pool.query<RowDataPacket[]>(
         `
-        SELECT id, category_name from category
+        SELECT id, category_name, status from category
         WHERE id = ?
         `,
         [id]
@@ -435,13 +452,14 @@ const fetchCategoryById = async(req: Request)=>{
 
 const fetchSubCategoryById = async(req: Request)=>{
 
-    if(!req.body.id) return 
+    if(!req.body.id) throw new Error 
 
     const id = req.body.id
 
     const [name] = await pool.query<RowDataPacket[]>(`
        SELECT 
         sc.id,
+        sc.status,
         sc.sub_category_name,   
         sc.category_id, 
         c.category_name
@@ -468,28 +486,37 @@ const fetchSubCategoryById = async(req: Request)=>{
 
 const updateSubCatgoryById = async(req: Request)=>{
 
-    if(!req.body) return
+    if(!req.body) throw new Error
 
     const {
         id, 
         sub_category_name,
-        category
+        category,
+        status
     } = req.body
 
     const category_id = category.value 
 
-    console.log("body", req.body)
-
     await pool.query<RowDataPacket[]>(
         `
-        UPDATE sub_category SET category_id = ?, sub_category_name = ? 
+        UPDATE sub_category SET category_id = ?, sub_category_name = ?, status = ? 
             WHERE id = ?
         `,
-        [category_id, sub_category_name, id])
+        [category_id, sub_category_name, status, id])
 
     return
 }
 
+const deletCategoryById = async(req: Request)=>{
+
+    if(!req.body) throw new Error
+    const {id} = req.body
+    await pool.query<RowDataPacket[]>(
+        `UPDATE category SET status = 1 WHERE id = ?`,[id]
+    )
+
+    return
+}
 export {
     fetchAllCategory,
     fetchSubCategory,
@@ -505,5 +532,7 @@ export {
     updateCategoryById,
     fetchCategoryById,
     fetchSubCategoryById,
-    updateSubCatgoryById
+    updateSubCatgoryById,
+    fetchCategoryStatus,
+    deletCategoryById
 }
