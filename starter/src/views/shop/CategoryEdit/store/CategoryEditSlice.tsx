@@ -1,4 +1,4 @@
-import { apiGetShopSingleCategory, apiUpdateShopCategory } from "@/services/ShopService";
+import { apiDeleteShopCategory, apiGetShopSingleCategory, apiUpdateShopCategory } from "@/services/ShopService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
@@ -27,20 +27,32 @@ export const updateCategory = async(data:{id?:string, category_name?:string})=>{
     return response.data
 }
 
+export const deleteCategory = async <T, U extends Record<string, unknown>>(data: U)  => {
+    const response = await apiDeleteShopCategory<T, U>(data);
+    return response.data
+}
+
 export type ShopCategoryEditState = {
     loading : boolean
-    categoryData: CategoryData
+    categoryData: CategoryData,
+    statusValue: number
 }
 
 const initialState:ShopCategoryEditState = {
     loading: true,
-    categoryData: {}
+    categoryData: {},
+    statusValue: 0
 }
 
 const categoryEditSlice = createSlice({
     name: `${SLICE_NAME}/state`,
     initialState,
-    reducers: {},
+    reducers: {
+        setStatusValue:(state, action)=>{
+            console.log("payload", action.payload)
+            state.statusValue = action.payload
+        }
+    },
     extraReducers:(builder)=>{
         builder
             .addCase(getCategory.fulfilled, (state, action)=>{
@@ -52,5 +64,9 @@ const categoryEditSlice = createSlice({
             })
     }
 })
+
+export const {
+    setStatusValue
+} =  categoryEditSlice.actions
 
 export default categoryEditSlice.reducer

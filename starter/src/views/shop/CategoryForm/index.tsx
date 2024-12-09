@@ -8,6 +8,7 @@ import { AiOutlineSave } from "react-icons/ai";
 import  cloneDeep from "lodash/cloneDeep";
 import { HiOutlineTrash } from "react-icons/hi";
 import BasicInformationFields from "./components/BasicInformationFields";
+import { OrganizationFields } from "./components/OrganizationFields";
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
@@ -90,7 +91,8 @@ export const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref)=>{
         type, 
         initialData = {
             id: '',
-            category_name: ''
+            category_name: '',
+            status: ''
         },
         onFormSubmit,
         onDiscard, 
@@ -107,12 +109,13 @@ export const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref)=>{
                 onFormSubmit?.(formData, setSubmitting)
             }}
         >
-            {({touched, errors, isSubmitting}) => (
+            {({values, touched, errors, isSubmitting}) => (
                     <Form>
                         <FormContainer>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields touched={touched} errors={errors} />
+                                    <OrganizationFields touched={touched} errors={errors} values={values}/>
                                 </div>
                         </div>
                             <StickyFooter

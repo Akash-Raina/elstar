@@ -1,10 +1,10 @@
 import { injectReducer, useAppSelector,useAppDispatch, } from "@/store"
-import reducer, { getCategory, updateCategory } from "./store"
+import reducer, { deleteCategory, getCategory, setStatusValue, updateCategory } from "./store"
 import Loading from "@/components/shared/Loading";
 import isEmpty from "lodash/isEmpty";
 import { FormModel, OnDeleteCallback, SetSubmitting } from "../ProductForm";
 import DoubleSidedImage from "@/components/shared/DoubleSidedImage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { CategoryForm, CategoryFormModel, CategorySetSubmitting } from "../CategoryForm";
 import { toast,Notification } from "@/components/ui";
@@ -14,6 +14,7 @@ injectReducer('shopCategoryEdit', reducer)
 
 const CategoryEdit = ()=>{
 
+    const {id} = useParams();
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
 
@@ -63,16 +64,14 @@ const CategoryEdit = ()=>{
         )
         navigate('/category')
     }
-
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
-        console.log("deleted")
-        // setDialogOpen(false)
-        // const success = await deleteProduct({
-        //     product_id: productData.id,
-        // })
-        // if (success) {
-        //     popNotification('deleted')
-        // }
+        setDialogOpen(false)
+        const success = await deleteCategory({
+            categoryId: id
+        })
+        if (success) {
+            popNotification('deleted')
+        }
 
     }
 

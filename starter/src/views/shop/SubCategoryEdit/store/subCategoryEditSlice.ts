@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 type SubCategoryData = {
     id?: string
+    status?: number
     sub_category_name?: string,
     category_id?: string,
     category_name?: string,

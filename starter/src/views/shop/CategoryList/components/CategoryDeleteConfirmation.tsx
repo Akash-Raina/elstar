@@ -1,39 +1,33 @@
-import { ConfirmDialog } from "@/components/shared"
-import { deleteProduct, getList, toggleDeleteConfirmation, useAppDispatch, useAppSelector } from "../store"
-import { Notification, toast } from "@/components/ui"
-import { useParams } from "react-router-dom"
 
-export const ProductDeleteConfirmation = ()=>{
+import { getCategory, toggleDeleteConfirmation, useAppDispatch, useAppSelector } from "../store"
+import { toast, Notification } from "@/components/ui"
+import { deleteCategory } from "../../CategoryEdit/store"
+import ConfirmDialog from "@/components/shared/ConfirmDialog"
 
-    const {id} = useParams();
 
+export const CategoryDeleteConfirmation = ()=>{
     const dispatch = useAppDispatch()
     const dialogOpen = useAppSelector(
-        (state) => state.shopProductList.data.deleteConfirmation
-    )
-    console.log("testing dialogOpen", dialogOpen)
-    const selectedProduct = useAppSelector(
-        (state) => state.shopProductList.data.selectedProduct
+        (state) => state.shopCategoryList.data.deleteConfirmation
     )
     const tableData = useAppSelector(
-        (state) => state.shopProductList.data.tableData
+        (state) => state.shopCategoryList.data.tableData
+    )
+    const selectedCategory = useAppSelector(
+        (state) => state.shopCategoryList.data.selectedCategory
     )
 
     const onDialogClose = () => {
         dispatch(toggleDeleteConfirmation(false))
     }
-    
+
     const onDelete = async () => {
         dispatch(toggleDeleteConfirmation(false))
-        const data = {product_id: selectedProduct}
-        const success = await deleteProduct(data)
+        const data = {id: selectedCategory}
+        const success = await deleteCategory(data)
 
-        if (success && id) {
-            const payload = {
-                data: tableData,
-                params: id
-            }
-            dispatch(getList(payload))
+        if (success) {
+            dispatch(getCategory(tableData))
             toast.push(
                 <Notification
                     title={'Successfuly Deleted'}

@@ -1,13 +1,12 @@
 import { DataTable } from "@/components/shared"
-import { useAppDispatch, useAppSelector } from "@/store"
 import { useEffect, useMemo } from "react"
-import { getCategory, setTableData } from "../store"
-import { Badge, Button } from "@/components/ui"
+import { getCategory, useAppDispatch, useAppSelector, setSelectedCategory, setTableData, toggleDeleteConfirmation } from "../store"
+import { Badge } from "@/components/ui"
 import cloneDeep from "lodash/cloneDeep"
-import { TbHandClick } from "react-icons/tb";
-import { HiOutlineInboxIn, HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
+import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import { useNavigate } from "react-router-dom"
 import useThemeClass from "@/utils/hooks/useThemeClass"
+import { CategoryDeleteConfirmation } from "./CategoryDeleteConfirmation"
 
 
 const inventoryStatusColor:any = {
@@ -34,8 +33,9 @@ const ActionColumn = ({row}: {row: any})=>{
     }
 
     const onDelete = ()=>{
-        // dispatch(toggleDeleteConfirmation(true))
-        // dispatch(setSelectedProduct(row.id))
+            console.log("testing delete")
+            dispatch(toggleDeleteConfirmation(true))
+            dispatch(setSelectedCategory(row.id))
     }
 
     return (
@@ -52,7 +52,10 @@ const ActionColumn = ({row}: {row: any})=>{
             </span>
             <span
                 className="cursor-pointer p-2 hover:text-red-500"
-                onClick={onDelete}
+                onClick={(e)=>{
+                    e.stopPropagation();
+                    onDelete()
+                }}
             >
                 <HiOutlineTrash />
             </span>
@@ -87,9 +90,7 @@ export const CategoryTable = ()=>{
         if (row.category_name) {
             navigate(`/subcategory/${row.id}`)
         };
-        //   } else if (row.original.sub_category_name) {
-        //     navigate(`/productlist/${row.original.id}`);
-        //   }
+
 
     }
     
@@ -165,5 +166,6 @@ export const CategoryTable = ()=>{
         onSelectChange={onSelectChange}
         onTableRowChange = {changeTableRow}
         />
+        <CategoryDeleteConfirmation/>
     </div>
 }

@@ -30,6 +30,8 @@ export type ShopCategoryListState = {
     categoryList: Category[]
     brandList: BrandListType
     tableData: TableQueries
+    deleteConfirmation: boolean
+    selectedCategory: string
 }
 
 type GetSalesCategoryRequest = TableQueries;
@@ -56,7 +58,9 @@ const initialState = {
     loading: false,
     categoryList: [],
     tableData: initialTableData,
-    brandList: {}
+    brandList: {},
+    selectedCategory: '',
+    deleteConfirmation: false
 }
 
 
@@ -66,6 +70,13 @@ const categoryListSlice = createSlice({
     reducers:{
         setTableData: (state, action) => {
             state.tableData = action.payload
+        },
+        toggleDeleteConfirmation: (state, action)=>{
+            console.log("testing delete confirm", action.payload)
+            state.deleteConfirmation = action.payload
+        },
+        setSelectedCategory: (state, action)=>{
+            state.selectedCategory = action.payload
         }
     },
     extraReducers:(builder) =>{
@@ -80,6 +91,8 @@ const categoryListSlice = createSlice({
 })
 
 export const {
-    setTableData
+    setTableData,
+    setSelectedCategory,
+    toggleDeleteConfirmation
 } = categoryListSlice.actions
 export default categoryListSlice.reducer

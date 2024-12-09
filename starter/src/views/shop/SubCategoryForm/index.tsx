@@ -91,7 +91,8 @@ export const SubCategoryForm = forwardRef<FormikRef, SubCategoryForm>((props, re
         type, 
         initialData = {
             id: '',
-            sub_category_name: ''
+            sub_category_name: '',
+            status: 0
         },
         onFormSubmit,
         onDiscard, 
