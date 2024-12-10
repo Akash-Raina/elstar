@@ -3,7 +3,6 @@ import pool from "../utils/mysql";
 import { RowDataPacket } from "mysql2";
 import { pagination } from "../utils/pagination";
 
-
 const fetchAllCategory = async (req:Request)=>{
 
 
@@ -410,7 +409,7 @@ const updateProductById = async(req: Request)=>{
     )
 
     return
-
+    
 }
 
 const updateCategoryById = async(req: Request)=>{
