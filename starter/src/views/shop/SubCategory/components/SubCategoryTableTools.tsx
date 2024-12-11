@@ -13,8 +13,12 @@ const SubCategoryTableTools = ()=>{
         (state:any) => state.shopSubCategoryList.data.subCategoryList
     )
     
-    const handleDownload = ()=>{
-        downloadCSV(subCategories, 'subcategories.csv')
+    const handleDownload = async()=>{
+        const data = {
+            data: subCategories,
+            type: 'subcategory'
+        }
+        await downloadCSV(data)
     }
     return (
         <div className="flex flex-col lg:flex-row lg:items-center">

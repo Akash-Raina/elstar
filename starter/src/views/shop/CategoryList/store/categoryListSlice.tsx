@@ -1,5 +1,5 @@
 import { TableQueries } from "@/@types/common";
-import { apiGetShopCategory } from "@/services/ShopService"
+import { apiDownloadCSV, apiGetShopCategory } from "@/services/ShopService"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { bool } from "aws-sdk/clients/signer";
 
@@ -46,6 +46,11 @@ export const getCategory = createAsyncThunk(
         return response.data
     }
 )
+
+export const sendList = async <T, U extends Record<string, unknown>>(data: U)=>{
+    const response = await apiDownloadCSV<T, U>(data);
+    return response.data
+}
 
 const initialTableData = {
     pageSize: 10,

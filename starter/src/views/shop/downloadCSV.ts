@@ -1,11 +1,24 @@
-import Papa from "papaparse"
-import {saveAs} from 'file-saver'
+import { saveAs } from "file-saver";
+import { sendList } from "./CategoryList/store";
 
-export const downloadCSV = (data: [], filename = 'data.csv') => {
+type DataType = {
+  data: string[];
+  type: string
+}
 
-  const csv = Papa.unparse(data);
-  
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+export const downloadCSV = async(data: DataType) => {
 
-  saveAs(blob, filename);
+  try {
+    const type = data.type
+    const filename = `${type}list.csv`
+    const response:any = await sendList(data);
+    const csvText = await response; // Read response as text
+
+    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, filename)
+
+} catch (error) {
+    console.error('Error downloading CSV:', error);
+}
+
 };

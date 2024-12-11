@@ -12,8 +12,12 @@ export const ProductTableTools = () => {
     )
     console.log("products", products)
 
-    const handleDownload = ()=>{
-        downloadCSV(products, 'product.csv')
+    const handleDownload = async()=>{
+        const data = {
+            data: products,
+            type: 'product'
+        }
+        await downloadCSV(data)
     }
     return (
         <div className="flex flex-col lg:flex-row lg:items-center">

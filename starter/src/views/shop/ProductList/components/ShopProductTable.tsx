@@ -3,16 +3,18 @@ import  cloneDeep  from 'lodash/cloneDeep'
 import { getList, setSelectedProduct, setTableData, toggleDeleteConfirmation } from '../store'
 import { useEffect, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Badge } from '@/components/ui'
+import { Avatar, Badge } from '@/components/ui'
 import { DataTable } from '@/components/shared'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import useThemeClass from '@/utils/hooks/useThemeClass'
 import { ProductDeleteConfirmation } from './ProductDeleteConfirmation'
+import { FiPackage } from 'react-icons/fi'
 
 
 type Product = {
     id: string
     product_name: string
+    img: string
     status: string
 }
 
@@ -62,6 +64,21 @@ const ActionColumn = ({row}: {row: Product})=>{
 
 }
 
+const ProductColumn = ({ row }: { row: Product }) => {
+    const avatar = row.img ? (
+        <Avatar src={row.img} />
+    ) : (
+        <Avatar icon={<FiPackage />} />
+    )
+
+    return (
+        <div className="flex items-center">
+            {avatar}
+            <span className={`ml-2 rtl:mr-2 font-semibold`}>{row.product_name}</span>
+        </div>
+    )
+}
+
 export const ShopProductTable = () => {
     const dispatch = useAppDispatch()
 
@@ -94,6 +111,10 @@ export const ShopProductTable = () => {
             {
                 header: 'Name',
                 accessorKey: 'product_name',
+                cell:(props:any)=>{
+                    const row = props.row.original
+                    return <ProductColumn row={row}/>
+                },
             },
             {
                 header: 'Quantity',

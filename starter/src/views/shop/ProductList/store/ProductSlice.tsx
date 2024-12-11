@@ -5,7 +5,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 type Product = {
     id: string;
     product_name: string;
-    status: string
+    status: string;
+    img: string
 }
 export interface ProductListType{
     pageIndex: number;

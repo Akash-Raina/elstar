@@ -35,7 +35,6 @@ export const getSubCategory = createAsyncThunk(
         const {data, params} = payload
         console.log("params", params)
         const response:any = await apiGetShopSubCategory(data, params)
-        console.log("response",response.data)
         return response.data
         }
 )

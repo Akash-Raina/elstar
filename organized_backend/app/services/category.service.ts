@@ -2,6 +2,7 @@ import { Request } from "express";
 import pool from "../utils/mysql";
 import { RowDataPacket } from "mysql2";
 import { pagination } from "../utils/pagination";
+import json2csv, { Parser } from 'json2csv'
 
 const fetchAllCategory = async (req:Request)=>{
 
@@ -180,7 +181,8 @@ const fetchAllProducts = async (req: Request) => {
         SELECT 
             product.product_name, 
             product.status, 
-            product.id, 
+            product.id,
+            product.img, 
             product.sku_id,
             sku_table.price, 
             sku_table.tax, 
@@ -231,7 +233,7 @@ const fetchAllProducts = async (req: Request) => {
 const storeNewProduct = async(req: Request)=>{
 
     if(!req.body) throw new Error
-
+    console.log("body", req.body.url)
     const {
         product_name,
         sub_category,
@@ -239,15 +241,16 @@ const storeNewProduct = async(req: Request)=>{
         price, 
         sku,
         discount,
-        tax
+        tax,
+        url
     } = req.body;
 
     const sub_category_id = sub_category.value
 
     const [newProduct] = await pool.query<RowDataPacket[]>(
-        `INSERT INTO product (product_name, sub_category_id, created_date, updated_date, status) 
+        `INSERT INTO product (product_name, sub_category_id, created_date, updated_date, status, img) 
         VALUES 
-        (?, ?, now(), now(), ?)`,[product_name, sub_category_id, status]
+        (?, ?, now(), now(), ?, ?)`,[product_name, sub_category_id, status, url]
     ) 
     const productId = (newProduct as any).insertId  
     console.log("id, sku", productId, sku)
@@ -316,13 +319,14 @@ const fetchOneProduct = async(req: Request)=>{
 
     const product_id = req.body.id;
 
-const [result] = await pool.query<RowDataPacket[]>(
+    const [result] = await pool.query<RowDataPacket[]>(
     `
     SELECT 
         p.id,
         p.product_name, 
         p.sub_category_id, 
         p.status, 
+        p.img,
         p.sku_id, 
         sc.sub_category_name, 
         sc.category_id, 
@@ -337,35 +341,54 @@ const [result] = await pool.query<RowDataPacket[]>(
         p.id = ?
     `,
     [product_id]
-);
+    );
+
+    const category = { value: result[0].category_id, 
+        label: result[0].category_name
+    }
+
+    const sub_category = {
+        value: result[0].sub_category_id,
+        label: result[0].sub_category_name
+    }
+
+    const img = result[0].img 
+
+    const imgList = [{
+        id: 'img-001',
+        name: 'img-01',
+        url: img,
+        img: {}
+    }]
 
     const skuIds = result[0].sku_id.split(',');
     if(skuIds){
-        const category = { value: result[0].category_id, 
-            label: result[0].category_name
-        }
 
-        const sub_category = {
-            value: result[0].sub_category_id,
-            label: result[0].sub_category_name
-        }
         const [skuDetails] = await pool.query<RowDataPacket[]>(
             `SELECT price, tax, discount, sku, unit 
              FROM sku_table 
              WHERE id IN (?)`, 
             [skuIds]
         );
+
         const all = {
             ...result[0],
+            imgList,
             ...skuDetails[0],
             category,
             sub_category
         }
+        
         return all
     }
 
 
-    return [result][0]
+    return {
+        ...[result][0],
+        imgList,
+        category,
+        sub_category
+    }
 }
 
 const updateProductById = async(req: Request)=>{
@@ -527,6 +550,34 @@ const deletSubCategoryById = async(req: Request)=>{
     return
 }
 
+type ExportType = 'category' | 'subcategory' | 'product';
+type FieldMap = Record<ExportType, string[]>;
+
+const FIELD_MAP: FieldMap = {
+    category: ['category_name', 'status', 'id', 'brand'],
+    subcategory: ['sub_category_name', 'status', 'id', 'brand'],
+    product: ['product_name', 'price', 'id', 'status', 'sku_id', 'tax', 'discount', 'sku', 'unit'],
+};
+
+const exportList = async(req: Request)=>{
+
+    const type:ExportType = req.body.type;
+    const data = req.body.data;
+
+    if (!type || !FIELD_MAP[type]) {
+        throw new Error(`Invalid type provided: ${type}`);
+    }
+    const fields = FIELD_MAP[type];
+    const json2csvParser = new Parser({ fields });
+    try {
+        const csv = json2csvParser.parse(data);
+        return csv;
+    } catch (error) {
+        console.error('Error generating CSV:', error);
+        throw new Error('Failed to generate CSV');
+    }
+}
+
 export {
     fetchAllCategory,
     fetchSubCategory,
@@ -545,5 +596,6 @@ export {
     updateSubCatgoryById,
     fetchCategoryStatus,
     deletCategoryById,
-    deletSubCategoryById
+    deletSubCategoryById,
+    exportList
 }

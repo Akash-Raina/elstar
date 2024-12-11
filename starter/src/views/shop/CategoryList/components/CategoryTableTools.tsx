@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import CategoryTableSearch from "./CategoryTableSearch";
 import { useAppSelector } from "@/store";
 import { downloadCSV } from "../../downloadCSV";
+import { sendList } from "../store";
 
 
 const CategoryTableTools = ()=>{
@@ -12,8 +13,15 @@ const CategoryTableTools = ()=>{
     const categories = useAppSelector(
         (state:any) => state.shopCategoryList.data.categoryList
     )
-    const handleDownload = ()=>{
-        downloadCSV(categories, 'categories.csv')
+    const handleDownload =  async()=>{
+
+        const data = {
+            data: categories,
+            type: "category"
+          }
+        
+        await downloadCSV(data)
+
     }
 
     return (

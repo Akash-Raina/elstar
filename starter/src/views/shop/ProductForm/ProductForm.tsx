@@ -9,12 +9,21 @@ import * as Yup from "yup"
 import  BasicInformationFields  from "./BasicInformationFields"
 import { SubCategoryFields } from "./SubCategoryFields"
 import PricingFields from "./PricingFields"
+import { ProductImage } from "./ProductImage"
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
 
 type InitialData = {
     product_id?: string
     product_name?: string
+    img?: File
+    url?: string
+    imgList?:{
+        id: string
+        name: string
+        img: File
+        url: string
+    }[]
     sub_category?: {label:string, value:number}
     price?: number
     sku?: string
@@ -105,6 +114,9 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
             product_id: '',
             product_name: '',
             sub_category: '',
+            img: {},
+            url: '',
+            imgList: [], 
             price: 0,
             sku: '',
             status: 1,
@@ -127,10 +139,14 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values: FormModel, {setSubmitting}) => {
-                    console.log("values",values)
                     const formData = cloneDeep(values)
                     if(type === 'new'){
                         formData.product_id = newId
+                        if(formData.imgList && formData.imgList.length > 0){
+                            console.log(formData.imgList[0].img)
+                            formData.img = formData.imgList[0].img
+                            formData.url = formData.imgList[0].url
+                        }
                     }
                     onFormSubmit?.(formData, setSubmitting)
                 }}
@@ -143,6 +159,9 @@ export const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                                     <BasicInformationFields touched={touched} errors={errors} />
                                     <PricingFields touched={touched} errors={errors}/>
                                     <SubCategoryFields touched={touched} errors={errors} values={values}/>
+                                </div>
+                                <div className="lg:col-span-1">
+                                    <ProductImage values={values}/>
                                 </div>
                         </div>
                             <StickyFooter

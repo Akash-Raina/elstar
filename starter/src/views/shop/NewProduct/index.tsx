@@ -1,10 +1,39 @@
 import { useNavigate } from "react-router-dom"
 import ProductForm, { FormModel, SetSubmitting } from "../ProductForm"
-import { apiCreateShopProduct } from "@/services/ShopService"
+import { apiCreateShopProduct, apiGetShopProductImageUrl } from "@/services/ShopService"
 import { Notification, toast } from "@/components/ui"
 
+type ImageUrlResponse = {
+    response: any
+    fileUrl: string
+}
 
- const NewProduct = ()=>{
+const NewProduct = ()=>{
+    const navigate = useNavigate()
+
+    const getImageUrl = async <T, U extends Record<string, unknown>>(
+        data: U
+    ) => {
+        const formData = new FormData();
+    
+        for (const key in data) {
+            if (data[key] instanceof FileList) {
+                
+                Array.from(data[key] as FileList).forEach((file) => formData.append(key, file));
+            } else {
+                formData.append(key, data[key] as string);
+            }
+        }
+        console.log("metadata", data)
+        const response = await apiGetShopProductImageUrl<T, U>(data)
+        console.log(response.data)
+        return response.data
+    }
+
+    const addProduct = async (data: FormModel) => {
+        const response = await apiCreateShopProduct<boolean, FormModel>(data)
+        return response.data
+    }
 
     const ifSuccess = (success: any) => {
         if (success) {
@@ -28,13 +57,30 @@ import { Notification, toast } from "@/components/ui"
         values: FormModel,
         setSubmitting: SetSubmitting
     )=>{
-        const success = await apiCreateShopProduct(values);
-        setSubmitting(false)
 
-        ifSuccess(success)
+        if(values.imgList?.length === 0){
+            const success = await addProduct(values);
+            setSubmitting(false)
+            ifSuccess(success)
+        }else{
+            const fileData ={
+                img: values.img,
+            }
+            const imageUrl: ImageUrlResponse = await getImageUrl(fileData)
+
+            const data = {
+                ...values,
+                url: imageUrl.fileUrl,
+            }
+            console.log(data)
+            const success = await addProduct(data)
+            setSubmitting(false)
+
+            ifSuccess(success)
+        }
+              
     }
 
-    const navigate = useNavigate()
     const handleDiscard = () => {
         navigate('/productlist/1')
     }

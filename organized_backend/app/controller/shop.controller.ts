@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deletCategoryById, deleteShopProduct, deletSubCategoryById, fetchAllCategory, fetchAllProducts, fetchCategoryById, fetchCategoryList, fetchCategoryStatus, fetchOneProduct, fetchSubCategory, fetchSubCategoryById, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateCategoryById, updateProductById, updateSubCatgoryById } from "../services/category.service";
+import { deletCategoryById, deleteShopProduct, deletSubCategoryById, exportList, fetchAllCategory, fetchAllProducts, fetchCategoryById, fetchCategoryList, fetchCategoryStatus, fetchOneProduct, fetchSubCategory, fetchSubCategoryById, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateCategoryById, updateProductById, updateSubCatgoryById } from "../services/category.service";
 
 const allCategory = async(req:Request, res:Response)=>{
 
@@ -279,6 +279,20 @@ const deleteSubCategory = async (req: Request, res: Response)=>{
         })
     }
 }
+
+const callOnExport = async(req: Request, res: Response)=>{
+
+    try{
+        const csvFormat = await exportList(req);
+        res.header('Content-Type', 'text/csv');
+        res.attachment('category-list.csv');
+        res.status(200).send(csvFormat);
+    }
+    catch(err){
+        res.status(500).send('Error generating CSV');
+    }
+}
+
 export{
     allCategory,
     allSubCategory,
@@ -297,5 +311,6 @@ export{
     updateSingleSubCategory,
     getCategoryStatus,
     deleteCategory,
-    deleteSubCategory
+    deleteSubCategory,
+    callOnExport
 } 

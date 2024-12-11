@@ -1,7 +1,7 @@
 import { AdaptableCard, ConfirmDialog, DoubleSidedImage } from "@/components/shared"
 import { Dialog, FormItem, Upload } from "@/components/ui"
-import { Field, FieldInputProps, FieldProps, FormikProps, } from "formik"
-import  cloneDeep  from "lodash"
+import { Field, FieldInputProps, FieldProps, FormikProps } from "formik"
+import cloneDeep  from "lodash/cloneDeep"
 import { useState } from "react"
 import { HiEye, HiTrash } from "react-icons/hi"
 
@@ -27,8 +27,7 @@ type ProductImagesProps = {
 }
 
 const ImageList = (props: ImageListProps)=>{
-
-    const { imgList, onImageDelete } = props
+    const {imgList, onImageDelete} = props;
 
     const [selectedImg, setSelectedImg] = useState<Image>({} as Image)
     const [viewOpen, setViewOpen] = useState(false)
@@ -120,13 +119,12 @@ const ImageList = (props: ImageListProps)=>{
         )
     }
     return <></>
-
-    
 }
 
-export const ProductImages = (props: ProductImagesProps)=>{
+export const ProductImage = (props: ProductImagesProps)=>{
 
     const { values } = props
+
     const beforeUpload = (file:FileList | null)=>{
         let valid: boolean | string  = true
 
@@ -182,8 +180,8 @@ export const ProductImages = (props: ProductImagesProps)=>{
             <h5>Product Image</h5>
             <p className="mb-6">Add or change image for the product</p>
             <FormItem>
-                <Field name ="imgList">
-                    {({field, form }: FieldProps) => {
+                <Field name = "imgList">
+                    {({field, form}: FieldProps) =>{
                         if(values.imgList.length > 0){
                             return(
                                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -215,11 +213,10 @@ export const ProductImages = (props: ProductImagesProps)=>{
                                 </div>
                             )
                         }
-
                         return (
                             <Upload 
                             draggable
-                            beforeUpload={beforeUpload}
+                            beforeUpload={beforeUpload} 
                             showList = {false}
                             onChange={(files)=>
                                 onUpload(form, field, files)
@@ -243,11 +240,9 @@ export const ProductImages = (props: ProductImagesProps)=>{
                                         Support: jpeg, png
                                     </p>
                                 </div>
-                            </Upload>   
+                            </Upload>                            
                         )
-
-                    }
-                    }
+                    }}
                 </Field>
             </FormItem>
         </AdaptableCard>

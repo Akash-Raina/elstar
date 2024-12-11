@@ -47,8 +47,8 @@ export async function apiGetAllSubCategory(data:any){
     })
 }
 
-export async function apiCreateShopProduct(data:any){
-    return ApiService.fetchData({
+export async function apiCreateShopProduct<T,U extends Record<string, unknown>>(data: U){
+    return ApiService.fetchData<T>({
         url:'/shop/newproduct',
         method:'post',
         data
@@ -143,6 +143,25 @@ export async function apiDeleteShopSubCategory<T,U extends Record<string, unknow
         url: '/shop/deletesubcategorybyid',
         method: 'delete',
         data,
+    })
+}
+
+export async function apiDownloadCSV<T, U extends Record<string, unknown>>(data:U){
+    return ApiService.fetchData<T>({
+        url: '/shop/downloadlist',
+        method:'post',
+        data
+    })
+}
+
+export async function apiGetShopProductImageUrl<T, U extends Record<string, unknown>>(data: U) {
+    return ApiService.fetchData<T>({
+        url: '/sales/product/getimageurl',
+        method: 'post',
+        data,
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
     })
 }
 

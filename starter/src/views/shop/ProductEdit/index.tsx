@@ -1,5 +1,5 @@
 import { injectReducer, useAppDispatch, useAppSelector } from "@/store"
-import reducer, { deleteProduct, getProduct, updateProduct } from "./store"
+import reducer, { deleteProduct, getImageUrl, getProduct, updateProduct } from "./store"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useEffect } from "react"
 import DoubleSidedImage from "@/components/shared/DoubleSidedImage"
@@ -10,6 +10,11 @@ import toast from "@/components/ui/toast"
 import Notification from '@/components/ui/Notification'
 
 injectReducer('shopProductEdit', reducer)
+
+type ImageUrlResponse = {
+    response: any
+    fileUrl: string
+}
 
 const ProductEdit = ()=>{
     const {id}  = useParams();
@@ -38,11 +43,29 @@ const ProductEdit = ()=>{
         setSubmitting: SetSubmitting
     ) =>{
         setSubmitting(true);
-        const productData = {
+
+        let productData = {
             ...values,
             id: id
         };
 
+        if(values.imgList && values.imgList[0] !== undefined){
+            const {url, img} = values.imgList[0];
+
+            if(url === null || url.startsWith('h')){
+                console.log('no image changes')
+            }
+            else if(url.startsWith('b')){
+                const fileData = {img};
+
+                const getUrl:ImageUrlResponse = await getImageUrl(fileData);
+                productData = {...values, id: id, url: getUrl.fileUrl}
+            }
+        }
+        else{
+            productData = {...values, id: id, url: ''}
+        }
+        
         const success = await updateProduct(productData);
         setSubmitting(false);
 
