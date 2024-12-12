@@ -7,6 +7,7 @@ type SubCategory = {
     id: string;
     sub_category_type: string;
     status: string;
+    img: string
 }
 
 

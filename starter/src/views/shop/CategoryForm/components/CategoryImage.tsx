@@ -1,9 +1,10 @@
 import { AdaptableCard, ConfirmDialog, DoubleSidedImage } from "@/components/shared"
 import { Dialog, FormItem, Upload } from "@/components/ui"
 import { Field, FieldInputProps, FieldProps, FormikProps } from "formik"
-import cloneDeep  from "lodash/cloneDeep"
+import cloneDeep from "lodash/cloneDeep"
 import { useState } from "react"
 import { HiEye, HiTrash } from "react-icons/hi"
+
 
 type Image = {
     id: string
@@ -22,7 +23,7 @@ type ImageListProps = {
     onImageDelete: (img: Image) => void
 }
 
-type ProductImagesProps = {
+type CategoryImagesProps = {
     values: FormModel
 }
 
@@ -121,8 +122,7 @@ const ImageList = (props: ImageListProps)=>{
     return <></>
 }
 
-export const ProductImage = (props: ProductImagesProps)=>{
-
+export const CategoryImage = (props: CategoryImagesProps)=>{
     const { values } = props
 
     const beforeUpload = (file:FileList | null)=>{
@@ -168,17 +168,16 @@ export const ProductImage = (props: ProductImagesProps)=>{
         form: FormikProps<FormModel>,
         field: FieldInputProps<FormModel>,
         deletedImg: Image
-    )=>{
-        console.log("testing delete",values.imgList)
+    ) =>{
         let imgList = cloneDeep(values.imgList)
-        imgList = imgList.filter((img)=> img.url !== deletedImg.id)
+        imgList = imgList.filter((img)=> img.url = "")
         form.setFieldValue(field.name, imgList)
     }
 
     return (
         <AdaptableCard className="mb-4">
-            <h5>Product Image</h5>
-            <p className="mb-6">Add or change image for the product</p>
+            <h5>Category Image</h5>
+            <p className="mb-6">Add or change image for the category</p>
             <FormItem>
                 <Field name = "imgList">
                     {({field, form}: FieldProps) =>{

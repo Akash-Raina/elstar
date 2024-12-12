@@ -1,25 +1,23 @@
-import { StickyFooter } from "@/components/shared";
-import { FormContainer, toast, Notification } from "@/components/ui";
-import Button from "@/components/ui/Button";
-import { Form, Formik } from "formik";
-import { AiOutlineSave } from "react-icons/ai";
-import BasicInformationFields from "./components/BasicInformationFields";
-import Organization from "./components/Organization";
-import {apiCreateShopSubCategory } from "@/services/ShopService";
+import { toast, Notification } from "@/components/ui";
+import {apiCreateShopSubCategory, apiGetImageUrl } from "@/services/ShopService";
 import { useNavigate } from "react-router-dom";
-import { AxiosResponse } from "axios";
+import { SubCategoryForm, SubCategoryFormModel, SubCategorySetSubmitting } from "../SubCategoryForm";
 
-type InitialData = {
-    sub_category_name: string; 
-    category?: { label: string; value: number } | null;
-};
-
-type FormModel = InitialData;
-
-type SetSubmitting = (isSubmitting: boolean) => void;
+type ImageUrlResponse = {
+    response: any
+    fileUrl: string
+}
 
 const NewSubCategory = () => {
     const navigate = useNavigate();
+
+    const getImageUrl = async <T, U extends Record<string, unknown>>(
+        data: U
+    ) => {
+        const response = await apiGetImageUrl<T, U>(data)
+        console.log(response.data)
+        return response.data
+    }
 
     const ifSuccess = (success:any) => {
         if (success) {
@@ -35,87 +33,58 @@ const NewSubCategory = () => {
                     placement: "top-center",
                 }
             );
-            navigate("/app/subcategory"); // Navigate to another page after submission
+            navigate("/app/subcategory");
         }
     };
 
-    const onSubmit = async (values: FormModel, { setSubmitting }: { setSubmitting: SetSubmitting }) => {
-        try {
+    const onSubmit = async (
+        values: SubCategoryFormModel, 
+        setSubmitting: SubCategorySetSubmitting 
+    ) => {
+
+        if(values.imgList?.length === 0){
+
             const payload = {
                 sub_category_name: values.sub_category_name,
                 category_id: values.category?.value,
+                status: values.status
             };
 
             const success = await apiCreateShopSubCategory(payload);
-            console.log("success", success)
             setSubmitting(false);
+    
+            ifSuccess(success)
+        }
+        else{
+            const fileData = {
+                img: values.img,
+            }
+            console.log("fileData", fileData)
+            const imageUrl: ImageUrlResponse = await getImageUrl(fileData)
 
-            ifSuccess(success); // Handle success
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            toast.push(
-                <Notification
-                    title="Submission failed"
-                    type="danger"
-                    duration={2500}
-                >
-                    Unable to add sub-category
-                </Notification>,
-                {
-                    placement: "top-center",
-                }
-            );
-            setSubmitting(false);
+            const data = {
+                sub_category_name: values.sub_category_name,
+                category_id: values.category?.value,
+                status:values.status,
+                url: imageUrl.fileUrl
+            }
+            const success = await apiCreateShopSubCategory(data)
+            setSubmitting(false)
+
+            ifSuccess(success)
         }
     };
 
+    const handleDiscard = () => {
+        navigate('/category')
+    }
+
     return (
-        <Formik
-            initialValues={{
-                sub_category_name: "",
-                category: null,
-            }}
-            onSubmit={onSubmit} // Attach the submit handler
-        >
-            {({ values, touched, errors, isSubmitting }) => (
-                <Form>
-                    <FormContainer>
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                            <div className="lg:col-span-2">
-                                {/* Fields for entering data */}
-                                <BasicInformationFields touched={touched} errors={errors} />
-                                <Organization touched={touched} errors={errors} values={values} />
-                            </div>
-                        </div>
-                        {/* Footer with buttons */}
-                        <StickyFooter
-                            className="-mx-8 px-8 flex items-center justify-between py-4"
-                            stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-                        >
-                            <div className="md:flex items-center">
-                                <Button
-                                    size="sm"
-                                    className="ltr:mr-3 rtl:ml-3"
-                                    type="button"
-                                    onClick={() => navigate("/subcategory/1")} // Navigate to a different page on discard
-                                >
-                                    Discard
-                                </Button>
-                                <Button
-                                    size="sm"
-                                    icon={<AiOutlineSave />}
-                                    variant="solid"
-                                    type="submit"
-                                    disabled={isSubmitting} // Disable button during submission
-                                >
-                                    {isSubmitting ? "Saving..." : "Save"}
-                                </Button>
-                            </div>
-                        </StickyFooter>
-                    </FormContainer>
-                </Form>
-            )}
-        </Formik>
+        <SubCategoryForm 
+            type = "new"
+            onFormSubmit={onSubmit}
+            onDiscard={handleDiscard}
+        />
     );
 };
 

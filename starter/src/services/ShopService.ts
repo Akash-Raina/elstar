@@ -154,7 +154,7 @@ export async function apiDownloadCSV<T, U extends Record<string, unknown>>(data:
     })
 }
 
-export async function apiGetShopProductImageUrl<T, U extends Record<string, unknown>>(data: U) {
+export async function apiGetImageUrl<T, U extends Record<string, unknown>>(data: U) {
     return ApiService.fetchData<T>({
         url: '/sales/product/getimageurl',
         method: 'post',
@@ -164,4 +164,5 @@ export async function apiGetShopProductImageUrl<T, U extends Record<string, unkn
         },
     })
 }
+
 

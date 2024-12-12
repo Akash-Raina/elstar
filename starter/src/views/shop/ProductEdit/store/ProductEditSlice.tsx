@@ -1,4 +1,4 @@
-import { apiDeleteShopProduct, apiGetShopProduct, apiGetShopProductImageUrl, apiUpdateShopProduct } from "@/services/ShopService";
+import { apiDeleteShopProduct, apiGetShopProduct, apiGetImageUrl, apiUpdateShopProduct } from "@/services/ShopService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
@@ -38,7 +38,7 @@ export const getProduct = createAsyncThunk(
 )
 
 export const getImageUrl = async<T, U extends Record<string, unknown>> (data: U)=>{
-    const response = await apiGetShopProductImageUrl<T, U>(data);
+    const response = await apiGetImageUrl<T, U>(data);
     console.log(response.data)
     return response.data
 }

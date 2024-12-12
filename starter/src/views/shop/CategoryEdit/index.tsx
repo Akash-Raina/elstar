@@ -1,5 +1,5 @@
 import { injectReducer, useAppSelector,useAppDispatch, } from "@/store"
-import reducer, { deleteCategory, getCategory, updateCategory } from "./store"
+import reducer, { deleteCategory, getCategory, getImageUrl, updateCategory } from "./store"
 import Loading from "@/components/shared/Loading";
 import isEmpty from "lodash/isEmpty";
 import { FormModel, OnDeleteCallback, SetSubmitting } from "../ProductForm";
@@ -11,6 +11,11 @@ import { toast,Notification } from "@/components/ui";
 
 
 injectReducer('shopCategoryEdit', reducer)
+
+type ImageUrlResponse = {
+    response: any
+    fileUrl: string
+}
 
 const CategoryEdit = ()=>{
 
@@ -26,7 +31,6 @@ const CategoryEdit = ()=>{
         (state:any) => state.shopCategoryEdit.data.loading
     )
 
-
     const handleDiscard = () => {
         navigate('/category')
     }
@@ -36,9 +40,26 @@ const CategoryEdit = ()=>{
         setSubmitting: CategorySetSubmitting
     ) =>{
         setSubmitting(true);
-        const categoryData = {
+        let categoryData = {
             ...values
         };
+
+        if(values.imgList && values.imgList[0] !== undefined){
+            const {url, img} = values.imgList[0];
+
+            if(url === null  || url.startsWith('h')){
+                console.log('no image changes')
+            }
+            else if(url.startsWith('b')){
+                const fileData = {img};
+
+                const getUrl:ImageUrlResponse = await getImageUrl(fileData);
+                categoryData = {...values, url: getUrl.fileUrl}
+            }
+        }
+        else{
+            categoryData = {...values, url: ''};
+        }
 
         const success = await updateCategory(categoryData);
         setSubmitting(false);
@@ -93,7 +114,6 @@ const CategoryEdit = ()=>{
             <Loading loading={loading}>
         {!isEmpty(data) && (
             <>
-                <div>Testing form</div>
                 <CategoryForm
                     type="edit"
                     initialData={data}

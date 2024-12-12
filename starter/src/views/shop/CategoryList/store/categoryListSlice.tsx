@@ -7,6 +7,7 @@ type Category = {
     id: string;
     category_name: string;
     status: string;
+    img: string
 }
 
 export interface CategoryType{
@@ -18,12 +19,6 @@ export interface CategoryType{
 interface BrandListType{
     labeL: string
 }
-
-// type Categories  = Category[]
-
-// type GetSalesProductsResponse = {
-//     data: Category[]
-// }
 
 export type ShopCategoryListState = {
     loading: boolean

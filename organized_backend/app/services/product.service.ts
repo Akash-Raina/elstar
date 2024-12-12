@@ -283,7 +283,7 @@ const hitS3Api = async (req: Request) => {
         reject({ error: "Error parsing form data" });
         return;
       }
-
+      console.log("file", files)
       const uploadedFile = files.img;
 
       if (!uploadedFile) {
@@ -314,7 +314,6 @@ const hitS3Api = async (req: Request) => {
           const region = "ap-south-1"; 
           
           const fileUrl = `https://${BUCKET_NAME}.s3.${region}.amazonaws.com/${uploadParams.Key}`;
-          console.log('newUrl', fileUrl)
 
           resolve({ response, fileUrl });
         }

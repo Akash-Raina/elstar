@@ -10,7 +10,7 @@ const fetchAllCategory = async (req:Request)=>{
     const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
     const query = req.body.query
 
-    let sqlQuery = `SELECT category_name, status, id FROM category `
+    let sqlQuery = `SELECT category_name, status, id, img FROM category `
 
     const sqlParams: (string | number)[] = [];
     if(query){
@@ -71,7 +71,7 @@ const fetchSubCategory = async (req: Request)=>{
     const category_id = req.query.id;
 
     let sqlQuery = `
-    SELECT sub_category_name, status, id 
+    SELECT sub_category_name, status, id, img
     FROM sub_category
     WHERE category_id = ? `
     const sqlParams:(string| number)[] = [];
@@ -275,15 +275,17 @@ const storeNewCategory = async(req: Request)=>{
 
     const {
         category_name,
+        url,
     } = req.body;
 
-    const status = 2;
+    let status = req.body.status
+    if (status === null) status = 2;
 
     await pool.query<RowDataPacket[]>(
-        `INSERT INTO category (category_name, created_date, updated_date, status)
+        `INSERT INTO category (category_name, created_date, updated_date, status, img)
         VALUES
-        (?, now(), now(), ?)`, 
-        [category_name, status]
+        (?, now(), now(), ?, ?)`, 
+        [category_name, status, url]
     )
 
     return
@@ -294,15 +296,17 @@ const storeNewSubCategory = async(req: Request)=>{
     const {
         sub_category_name,
         category_id,
+        status,
+        url,
     } = req.body
 
-    const status = 0
+
 
     await pool.query<RowDataPacket[]>(
-        `INSERT INTO sub_category (category_id, sub_category_name, created_date, updated_date, status)
+        `INSERT INTO sub_category (category_id, sub_category_name, created_date, updated_date, status, img)
         VALUES
-        (?, ?, now(), now(), ?)`,
-        [category_id, sub_category_name, status]
+        (?, ?, now(), now(), ?, ?)`,
+        [category_id, sub_category_name, status, url]
     )
 }
 
@@ -439,16 +443,14 @@ const updateCategoryById = async(req: Request)=>{
 
     if(!req.body) throw new Error
 
-    // id - > 1, category_name: testing
-
-    const {id, category_name, status} = req.body;
+    const {id, category_name, status, url} = req.body;
 
     await pool.query<RowDataPacket[]>(
         `
-        UPDATE category SET category_name = ?, status = ?
+        UPDATE category SET category_name = ?, status = ?, img = ?
         WHERE id = ?
         `,
-        [category_name, status, id]
+        [category_name, status, url, id]
     )
 
     return 
@@ -462,13 +464,25 @@ const fetchCategoryById = async(req: Request)=>{
 
     const [name] = await pool.query<RowDataPacket[]>(
         `
-        SELECT id, category_name, status from category
+        SELECT id, category_name, status, img from category
         WHERE id = ?
         `,
         [id]
     )
 
-    return name[0]
+    const img = name[0].img
+
+    const imgList = [{
+        id: 'img-001',
+        name: 'img-01',
+        url: img,
+        img: {}
+    }]
+
+    return {
+        ...name[0],
+        imgList,
+    }
 }
 
 const fetchSubCategoryById = async(req: Request)=>{
@@ -481,6 +495,7 @@ const fetchSubCategoryById = async(req: Request)=>{
        SELECT 
         sc.id,
         sc.status,
+        sc.img,
         sc.sub_category_name,   
         sc.category_id, 
         c.category_name
@@ -497,9 +512,20 @@ const fetchSubCategoryById = async(req: Request)=>{
         label: name[0].category_name
     }
 
+    const img = name[0].img
+
+    const imgList = [{
+        id: 'img-001',
+        name: 'img-01',
+        url: img,
+        img: {}
+    }]
+
+
     const all = {
         ...name[0],
-        category
+        category,
+        imgList
     }
 
     return all
@@ -510,7 +536,8 @@ const updateSubCatgoryById = async(req: Request)=>{
     if(!req.body) throw new Error
 
     const {
-        id, 
+        id,
+        url,
         sub_category_name,
         category,
         status
@@ -520,10 +547,10 @@ const updateSubCatgoryById = async(req: Request)=>{
 
     await pool.query<RowDataPacket[]>(
         `
-        UPDATE sub_category SET category_id = ?, sub_category_name = ?, status = ? 
+        UPDATE sub_category SET category_id = ?, sub_category_name = ?, status = ?, img = ?
             WHERE id = ?
         `,
-        [category_id, sub_category_name, status, id])
+        [category_id, sub_category_name, status, url, id])
 
     return
 }

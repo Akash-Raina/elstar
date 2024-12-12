@@ -1,10 +1,12 @@
-import { apiDeleteShopCategory, apiGetShopSingleCategory, apiUpdateShopCategory } from "@/services/ShopService";
+import { apiDeleteShopCategory, apiGetImageUrl, apiGetShopSingleCategory, apiUpdateShopCategory } from "@/services/ShopService";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 type CategoryData = {
     id?: string
     category_name?: string
+    img?: File
+    url?: string
 }
 
 type GetShopCategoryResponse = CategoryData
@@ -21,6 +23,12 @@ export const getCategory =createAsyncThunk(
         return response.data.name
     }
 )
+
+export const getImageUrl = async<T, U extends Record<string, unknown>> (data: U)=>{
+    const response = await apiGetImageUrl<T, U>(data);
+    console.log(response.data)
+    return response.data
+}
 
 export const updateCategory = async(data:{id?:string, category_name?:string})=>{
     const response = await apiUpdateShopCategory(data); 

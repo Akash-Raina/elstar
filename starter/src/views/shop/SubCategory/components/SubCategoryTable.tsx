@@ -1,16 +1,22 @@
 import { DataTable } from "@/components/shared"
 import { useAppDispatch, useAppSelector } from "@/store"
 import { useEffect, useMemo } from "react"
-
-import { Badge, Button } from "@/components/ui"
+import { Avatar, Badge } from "@/components/ui"
 import cloneDeep from "lodash/cloneDeep"
 import { setTableData, getSubCategory, toggleDeleteConfirmation, setSelectedSubCategory } from "../store/subCategorySlice"
 import { useNavigate, useParams } from "react-router-dom"
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import useThemeClass from "@/utils/hooks/useThemeClass"
-import { TbHandClick } from "react-icons/tb"
 import { SubCategoryDeleteConfirmation } from "./SubCategoryDeleteConfirmation"
+import { FiPackage } from "react-icons/fi"
 
+
+type SubCategory = {
+    id: string
+    sub_category_name: string
+    img: string
+    status: string
+}
 
 const inventoryStatusColor:any = {
     0: {
@@ -25,7 +31,7 @@ const inventoryStatusColor:any = {
     }
 }
 
-const ActionColumn = ({row}: {row: any})=>{
+const ActionColumn = ({row}: {row: SubCategory})=>{
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
     const { textTheme } = useThemeClass()
@@ -65,6 +71,21 @@ const ActionColumn = ({row}: {row: any})=>{
 
 }
 
+const SubCategoryColumn = ({ row }: { row: SubCategory }) => {
+    const avatar = row.img ? (
+        <Avatar src={row.img} />
+    ) : (
+        <Avatar icon={<FiPackage />} />
+    )
+
+    return (
+        <div className="flex items-center">
+            {avatar}
+            <span className={`ml-2 rtl:mr-2 font-semibold`}>{row.sub_category_name}</span>
+        </div>
+    )
+}
+
 export const SubCategoryTable = ()=>{
 
     const navigate = useNavigate();
@@ -98,6 +119,10 @@ export const SubCategoryTable = ()=>{
             {
                 header: 'SubCategory Name',
                 accessorKey: 'sub_category_name',
+                cell:(props: any) =>{
+                    const row = props.row.original
+                    return <SubCategoryColumn row={row}/>
+                }
             },
             {
                 header: 'Status',

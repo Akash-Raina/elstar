@@ -9,6 +9,7 @@ import  cloneDeep from "lodash/cloneDeep";
 import { HiOutlineTrash } from "react-icons/hi";
 import BasicInformationFields from "./components/BasicInformationFields";
 import { OrganizationFields } from "./components/OrganizationFields";
+import { CategoryImage } from "./components/CategoryImage";
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
@@ -16,6 +17,15 @@ type FormikRef = FormikProps<any>
 type InitialData = {
     id?: string
     category_name?: string
+    status?: number
+    img?: File
+    url?: string
+    imgList?:{
+        id: string
+        name: string
+        img: File
+        url: string
+    }[]
 }
 
 export type CategoryFormModel = InitialData
@@ -92,7 +102,10 @@ export const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref)=>{
         initialData = {
             id: '',
             category_name: '',
-            status: ''
+            img: {},
+            url: '',
+            imgList: [], 
+            status: 2
         },
         onFormSubmit,
         onDiscard, 
@@ -106,6 +119,11 @@ export const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref)=>{
             validationSchema={validationSchema}
             onSubmit={(values:CategoryFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
+                if(formData.imgList && formData.imgList.length > 0){
+                    console.log(formData.imgList[0].img)
+                    formData.img = formData.imgList[0].img
+                    formData.url = formData.imgList[0].url
+                }
                 onFormSubmit?.(formData, setSubmitting)
             }}
         >
@@ -116,6 +134,9 @@ export const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref)=>{
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields touched={touched} errors={errors} />
                                     <OrganizationFields touched={touched} errors={errors} values={values}/>
+                                </div>
+                                <div className="lg:col-span-1">
+                                    <CategoryImage values={values}/>
                                 </div>
                         </div>
                             <StickyFooter

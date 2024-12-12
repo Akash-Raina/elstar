@@ -10,12 +10,23 @@ import { HiOutlineTrash } from "react-icons/hi"
 import * as Yup from "yup"
 import BasicInformationFields from "./components/BasicInformationField";
 import { OrganizationFields } from "./components/OrganizationFields";
+import { SubCategoryImage } from "./components/SubCategoryImage";
 
 type FormikRef = FormikProps<any>
 
 type InitialData = {
     id?: string
     sub_category_name?: string
+    status?: number
+    category?: { label: string; value: number } | null;
+    img?: File
+    url?: string
+    imgList?:{
+        id: string
+        name: string
+        img: File
+        url: string
+    }[]
 }
 
 export type SubCategoryFormModel = InitialData
@@ -92,13 +103,16 @@ export const SubCategoryForm = forwardRef<FormikRef, SubCategoryForm>((props, re
         initialData = {
             id: '',
             sub_category_name: '',
-            status: 0
+            status: 2,
+            img: {},
+            url: '',
+            imgList: [], 
         },
         onFormSubmit,
         onDiscard, 
         onDelete
     } = props
-
+    console.log("initial data", initialData)
     return <>
         <Formik
             innerRef={ref}
@@ -106,6 +120,13 @@ export const SubCategoryForm = forwardRef<FormikRef, SubCategoryForm>((props, re
             validationSchema={validationSchema}
             onSubmit={(values:SubCategoryFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
+                if(type === 'new'){
+                    if(formData.imgList && formData.imgList.length > 0){
+                        console.log(formData.imgList[0].img)
+                        formData.img = formData.imgList[0].img
+                        formData.url = formData.imgList[0].url
+                    }
+                }
                 onFormSubmit?.(formData, setSubmitting)
             }}
         >
@@ -116,6 +137,9 @@ export const SubCategoryForm = forwardRef<FormikRef, SubCategoryForm>((props, re
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields touched={touched} errors={errors} />
                                     <OrganizationFields touched={touched} errors={errors} values={values}/>
+                                </div>
+                                <div>
+                                    <SubCategoryImage values={values}/>
                                 </div>
                         </div>
                             <StickyFooter

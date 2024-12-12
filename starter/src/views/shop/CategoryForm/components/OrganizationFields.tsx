@@ -26,8 +26,7 @@ export const OrganizationFields = (props: OrganizationFieldsProps)=>{
         touched,
         errors,
     } = props
-
-    console.log("props", props)
+    
     return <AdaptableCard divider isLastChild className="mb-4">
         <h5>Status</h5>
         <p className="mb-6">Section to config the category status</p>

@@ -1,13 +1,20 @@
 import { DataTable } from "@/components/shared"
 import { useEffect, useMemo } from "react"
 import { getCategory, useAppDispatch, useAppSelector, setSelectedCategory, setTableData, toggleDeleteConfirmation } from "../store"
-import { Badge } from "@/components/ui"
+import { Avatar, Badge } from "@/components/ui"
 import cloneDeep from "lodash/cloneDeep"
 import { HiOutlinePencil, HiOutlineTrash } from "react-icons/hi"
 import { useNavigate } from "react-router-dom"
 import useThemeClass from "@/utils/hooks/useThemeClass"
 import { CategoryDeleteConfirmation } from "./CategoryDeleteConfirmation"
+import { FiPackage } from "react-icons/fi"
 
+type Category = {
+    id: string
+    category_name: string
+    img: string
+    status: string
+}
 
 const inventoryStatusColor:any = {
     0: {
@@ -22,7 +29,7 @@ const inventoryStatusColor:any = {
     }
 }
 
-const ActionColumn = ({row}: {row: any})=>{
+const ActionColumn = ({row}: {row: Category})=>{
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
     const { textTheme } = useThemeClass()
@@ -65,6 +72,21 @@ const ActionColumn = ({row}: {row: any})=>{
         
     )
 
+}
+
+const CategoryColumn = ({ row }: { row: Category }) => {
+    const avatar = row.img ? (
+        <Avatar src={row.img} />
+    ) : (
+        <Avatar icon={<FiPackage />} />
+    )
+
+    return (
+        <div className="flex items-center">
+            {avatar}
+            <span className={`ml-2 rtl:mr-2 font-semibold`}>{row.category_name}</span>
+        </div>
+    )
 }
 
 export const CategoryTable = ()=>{
@@ -110,6 +132,10 @@ export const CategoryTable = ()=>{
             {
                 header: 'Category Name',
                 accessorKey: 'category_name',
+                cell:(props: any) =>{
+                    const row = props.row.original
+                    return <CategoryColumn row={row}/>
+                }
             },
             {
                 header: 'Status',

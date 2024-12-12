@@ -1,5 +1,5 @@
 import { injectReducer, useAppDispatch } from "@/store"
-import reducer, { deleteSubCategory, getSubCategory, updateSubCategory, useAppSelector } from "./store"
+import reducer, { deleteSubCategory, getImageUrl, getSubCategory, updateSubCategory, useAppSelector } from "./store"
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { DoubleSidedImage, Loading } from "@/components/shared";
@@ -8,6 +8,11 @@ import { OnDeleteCallback, SubCategoryForm, SubCategoryFormModel, SubCategorySet
 import { toast, Notification } from "@/components/ui";
 
 injectReducer('shopSubCategoryEdit', reducer)
+
+type ImageUrlResponse = {
+    response: any
+    fileUrl: string
+}
 
 const SubCategoryEdit = ()=>{
 
@@ -49,12 +54,29 @@ const SubCategoryEdit = ()=>{
         setSubmitting: SubCategorySetSubmitting
     ) =>{
         setSubmitting(true);
-        const categoryData = {
+        let subCategoryData = {
             ...values,
             id:id
         };
 
-        const success = await updateSubCategory(categoryData);
+        if(values.imgList && values.imgList[0] !== undefined){
+            const {url, img} = values.imgList[0];
+
+            if(url === null  || url.startsWith('h')){
+                console.log('no image changes')
+            }
+            else if(url.startsWith('b')){
+                const fileData = {img};
+
+                const getUrl:ImageUrlResponse = await getImageUrl(fileData);
+                subCategoryData = {...values, url: getUrl.fileUrl, id: id}
+            }
+        }
+        else{
+            subCategoryData = {...values, url: '', id: id};
+        }
+
+        const success = await updateSubCategory(subCategoryData);
         setSubmitting(false);
 
         if(success){

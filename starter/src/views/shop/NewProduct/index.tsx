@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import ProductForm, { FormModel, SetSubmitting } from "../ProductForm"
-import { apiCreateShopProduct, apiGetShopProductImageUrl } from "@/services/ShopService"
+import { apiCreateShopProduct, apiGetImageUrl} from "@/services/ShopService"
 import { Notification, toast } from "@/components/ui"
 
 type ImageUrlResponse = {
@@ -25,7 +25,7 @@ const NewProduct = ()=>{
             }
         }
         console.log("metadata", data)
-        const response = await apiGetShopProductImageUrl<T, U>(data)
+        const response = await apiGetImageUrl<T, U>(data)
         console.log(response.data)
         return response.data
     }
