@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deletCategoryById, deleteShopProduct, deletSubCategoryById, exportList, fetchAllCategory, fetchAllProducts, fetchCategoryById, fetchCategoryList, fetchCategoryStatus, fetchOneProduct, fetchSubCategory, fetchSubCategoryById, fetchSubCategoryList, storeNewCategory, storeNewProduct, storeNewSubCategory, updateCategoryById, updateProductById, updateSubCatgoryById } from "../services/category.service";
+import { deletCategoryById, deleteShopProduct, deletSubCategoryById, exportList, fetchAllCategory, fetchAllProducts, fetchCategoryById, fetchCategoryList, fetchCategoryStatus, fetchOneProduct, fetchSubCategory, fetchSubCategoryById, fetchSubCategoryList, getNewCategoryUsingExcel, storeNewCategory, storeNewProduct, storeNewSubCategory, updateCategoryById, updateProductById, updateSubCatgoryById } from "../services/category.service";
 
 const allCategory = async(req:Request, res:Response)=>{
 
@@ -293,6 +293,19 @@ const callOnExport = async(req: Request, res: Response)=>{
     }
 }
 
+const recieveExcelCategory = async(req: Request, res: Response)=>{
+    try{
+        await getNewCategoryUsingExcel(req)
+        res.status(201).json({
+            msg: 'File Uploaded successfully'
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            err
+        })
+    }
+}
 export{
     allCategory,
     allSubCategory,
@@ -312,5 +325,6 @@ export{
     getCategoryStatus,
     deleteCategory,
     deleteSubCategory,
-    callOnExport
+    callOnExport,
+    recieveExcelCategory
 } 

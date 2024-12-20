@@ -1,183 +1,190 @@
 import { Request } from "express";
 import pool from "../utils/mysql";
+import multer from "multer";
+import xlsx from "xlsx";
 import { RowDataPacket } from "mysql2";
 import { pagination } from "../utils/pagination";
-import json2csv, { Parser } from 'json2csv'
+import json2csv, { Parser } from "json2csv";
+import formidable, { Fields, Files } from "formidable";
 
-const fetchAllCategory = async (req:Request)=>{
+const fetchAllCategory = async (req: Request) => {
+  const { pageIndex, limit, offset } = pagination(
+    req.body.pageIndex,
+    req.body.pageSize
+  );
+  const query = req.body.query;
 
+  let sqlQuery = `SELECT category_name, status, id, img FROM category `;
 
-    const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
-    const query = req.body.query
+  const sqlParams: (string | number)[] = [];
+  if (query) {
+    sqlQuery += `WHERE category.category_name REGEXP ?`;
+    sqlParams.push(`^${query}`);
+  }
 
-    let sqlQuery = `SELECT category_name, status, id, img FROM category `
+  sqlQuery += "LIMIT ? OFFSET ?";
+  sqlParams.push(limit, offset);
+  const [totalRows] = await pool.query<RowDataPacket[]>(
+    `SELECT COUNT(*) AS total FROM category`
+  );
 
-    const sqlParams: (string | number)[] = [];
-    if(query){
-        sqlQuery += `WHERE category.category_name REGEXP ?`
-        sqlParams.push(`^${query}`);
+  const total = totalRows[0].total;
+
+  let brand_value: Record<string, any> = {};
+
+  const [categoryData] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
+
+  for (let i = 0; i < categoryData.length; i++) {
+    let id = categoryData[i].id;
+    const [brandName] = await pool.query<RowDataPacket[]>(
+      `SELECT category_name AS brand, status FROM category
+                where id = ?`,
+      [id]
+    );
+
+    const [totalBrand] = await pool.query<RowDataPacket[]>(
+      `SELECT COUNT(*) AS value FROM sub_category
+                WHERE category_id = ?`,
+      [id]
+    );
+    const store_brand = brandName[0].brand;
+    const store_value = totalBrand[0].value;
+    brand_value[store_brand] = store_value;
+  }
+
+  for (let i = 0; i < categoryData.length; i++) {
+    const store = categoryData[i].category_name;
+
+    if (store in brand_value) {
+      categoryData[i].brand = brand_value[store];
     }
+  }
 
-    sqlQuery += 'LIMIT ? OFFSET ?';
-    sqlParams.push(limit, offset)
-    const [totalRows] = await pool.query<RowDataPacket[]>(
-        `SELECT COUNT(*) AS total FROM category`
-    )
-    
-    const total = totalRows[0].total;
+  return {
+    categoryData,
+    total,
+  };
+};
 
-    let brand_value:Record<string, any> = {}
+const fetchSubCategory = async (req: Request) => {
+  if (!req.query.id) {
+    throw new Error("no id found in query");
+  }
+  const { pageIndex, limit, offset } = pagination(
+    req.body.pageIndex,
+    req.body.pageSize
+  );
+  const query = req.body.query;
+  const category_id = req.query.id;
 
-    const [categoryData] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
-
-    for(let i = 0; i  < categoryData.length; i++){
-        let id = categoryData[i].id
-        const [brandName] = await pool.query<RowDataPacket[]>(
-            `SELECT category_name AS brand, status FROM category
-                where id = ?`,[id]
-        )
-    
-        const [totalBrand] = await pool.query<RowDataPacket[]>(
-            `SELECT COUNT(*) AS value FROM sub_category
-                WHERE category_id = ?`,[id]
-        )
-        const store_brand = brandName[0].brand
-        const store_value = totalBrand[0].value
-        brand_value[store_brand] =  store_value
-    }
-
-    for(let i = 0; i < categoryData.length; i++){
-        const store = categoryData[i].category_name
-
-        if(store in brand_value){
-            categoryData[i].brand = brand_value[store]
-        }
-    }
-
-    return {
-        categoryData,
-        total,
-    };
-
-    
-}   
-
-const fetchSubCategory = async (req: Request)=>{
-    if(!req.query.id){
-        throw new Error("no id found in query")
-    }
-    const {pageIndex, limit, offset } = pagination(req.body.pageIndex, req.body.pageSize)
-    const query = req.body.query
-    const category_id = req.query.id;
-
-    let sqlQuery = `
+  let sqlQuery = `
     SELECT sub_category_name, status, id, img
     FROM sub_category
-    WHERE category_id = ? `
-    const sqlParams:(string| number)[] = [];
-    sqlParams.push(`${category_id}`)
-    if(query){
-        sqlQuery += `AND sub_category.sub_category_name REGEXP ? `
+    WHERE category_id = ? `;
+  const sqlParams: (string | number)[] = [];
+  sqlParams.push(`${category_id}`);
+  if (query) {
+    sqlQuery += `AND sub_category.sub_category_name REGEXP ? `;
 
-        sqlParams.push(`^${query}`)
+    sqlParams.push(`^${query}`);
+  }
+
+  sqlQuery += "LIMIT ? OFFSET ?";
+  sqlParams.push(limit, offset);
+
+  const [totalRows] = await pool.query<RowDataPacket[]>(
+    `SELECT COUNT(*) AS total FROM sub_category
+            WHERE category_id = ?`,
+    [category_id]
+  );
+
+  const total = totalRows[0].total;
+
+  let product_value: Record<string, any> = {};
+
+  const [productName] = await pool.query<RowDataPacket[]>(
+    `SELECT sub_category_name AS product, id FROM sub_category
+                where category_id = ?`,
+    [category_id]
+  );
+
+  for (let i = 0; i < productName.length; i++) {
+    let id = productName[i].id;
+    const [totalProduct] = await pool.query<RowDataPacket[]>(
+      `SELECT COUNT(*) AS value FROM product
+                WHERE sub_category_id = ?`,
+      [id]
+    );
+
+    const store_brand = productName[i].product as string;
+    const store_value = totalProduct[0].value;
+    product_value[store_brand] = store_value;
+  }
+
+  const [subCategory] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
+
+  for (let i = 0; i < subCategory.length; i++) {
+    const store = subCategory[i].sub_category_name;
+
+    if (store in product_value) {
+      subCategory[i].products = product_value[store];
     }
+  }
 
-    sqlQuery += 'LIMIT ? OFFSET ?';
-    sqlParams.push(limit, offset)
+  return {
+    data: subCategory,
+    total,
+  };
+};
 
-    const [totalRows] = await pool.query<RowDataPacket[]>(
-        `SELECT COUNT(*) AS total FROM sub_category
-            WHERE category_id = ?`, [category_id]
-    )
-    
-    const total = totalRows[0].total;
+const fetchCategoryList = async (req: Request) => {
+  const [allCategory] = await pool.query<RowDataPacket[]>(
+    ` SELECT category_name AS label, id AS value FROM category`
+  );
 
-    let product_value:Record<string, any> = {}
+  return allCategory;
+};
 
-        const [productName] = await pool.query<RowDataPacket[]>(
-            `SELECT sub_category_name AS product, id FROM sub_category
-                where category_id = ?`,[category_id]
-        )
-        
-    for(let i = 0; i < productName.length; i++){
-        let id = productName[i].id
-        const [totalProduct] = await pool.query<RowDataPacket[]>(
-            `SELECT COUNT(*) AS value FROM product
-                WHERE sub_category_id = ?`,[id]
-        )
+const fetchSubCategoryList = async (req: Request) => {
+  const cat_id = req.body.category_id;
+  if (!cat_id) {
+    throw new Error("no id found");
+  }
 
-        const store_brand = (productName[i].product) as string
-        const store_value = totalProduct[0].value
-        product_value[store_brand] =  store_value
-    }
+  const [allCategory] = await pool.query<RowDataPacket[]>(
+    ` SELECT sub_category_name AS label, id AS value FROM sub_category
+            WHERE category_id = ?`,
+    [cat_id]
+  );
 
-    const [subCategory] = await pool.query<RowDataPacket[]>(
-        sqlQuery, sqlParams
-    )
+  return allCategory;
+};
 
-    for(let i = 0; i < subCategory.length; i++){
-        const store = subCategory[i].sub_category_name
+const fetchCategoryStatus = async (req: Request) => {
+  const id = req.body.id;
 
-        if(store in product_value){
-            subCategory[i].products = product_value[store]
-        }
-    }
+  if (!id) {
+    throw new Error("no id found in query");
+  }
 
-
-    return {
-        data: subCategory,
-        total
-    }
-}
-
-const fetchCategoryList = async (req: Request)=>{
-    const [allCategory] = await pool.query<RowDataPacket[]>(
-       ` SELECT category_name AS label, id AS value FROM category`
-    )
-
-    return allCategory
-}
-
-const fetchSubCategoryList = async (req: Request)=>{
-
-    const cat_id = req.body.category_id;
-    if(!cat_id){
-        throw new Error("no id found")
-    }
-
-    const [allCategory] = await pool.query<RowDataPacket[]>(
-        ` SELECT sub_category_name AS label, id AS value FROM sub_category
-            WHERE category_id = ?`,[cat_id]
-    )
-
-    return allCategory
-}
-
-const fetchCategoryStatus = async(req: Request)=>{
-    const id = req.body.id
-
-    if(!id){
-        throw new Error("no id found in query")
-    }
-
-    const [status] = await pool.query<RowDataPacket[]>(
-        `
+  const [status] = await pool.query<RowDataPacket[]>(
+    `
         SELECT status FROM category
         WHERE id = ?
         `,
-        [id]
-    )
+    [id]
+  );
 
-    return status[0]
-}
+  return status[0];
+};
 
 const fetchAllProducts = async (req: Request) => {
-    if (!req.query.id) {
-        throw new Error("no id found in query");
-    }
-    const sub_category_id = req.query.id;
+  if (!req.query.id) {
+    throw new Error("no id found in query");
+  }
+  const sub_category_id = req.query.id;
 
-    let sqlQuery = `
+  let sqlQuery = `
         SELECT 
             product.product_name, 
             product.status, 
@@ -199,131 +206,114 @@ const fetchAllProducts = async (req: Request) => {
             product.sub_category_id = ? 
     `;
 
-    const sqlParams: (string | any)[] = [];
+  const sqlParams: (string | any)[] = [];
 
-    const { limit, offset } = pagination(req.body.pageIndex, req.body.pageSize);
-    const query = req.body.query;
-    sqlParams.push(sub_category_id);
+  const { limit, offset } = pagination(req.body.pageIndex, req.body.pageSize);
+  const query = req.body.query;
+  sqlParams.push(sub_category_id);
 
-    if (query) {
-        sqlQuery += `AND product.product_name LIKE ? `;
-        sqlParams.push(`%${query}%`);
-    }
+  if (query) {
+    sqlQuery += `AND product.product_name LIKE ? `;
+    sqlParams.push(`%${query}%`);
+  }
 
-    sqlQuery += `LIMIT ? OFFSET ?`;
-    sqlParams.push(limit, offset);
+  sqlQuery += `LIMIT ? OFFSET ?`;
+  sqlParams.push(limit, offset);
 
-    // Total row count query
-    const [totalRows] = await pool.query<RowDataPacket[]>(
-        `SELECT COUNT(*) AS total FROM product 
+  // Total row count query
+  const [totalRows] = await pool.query<RowDataPacket[]>(
+    `SELECT COUNT(*) AS total FROM product 
          WHERE sub_category_id = ?`,
-        [sub_category_id]
-    );
-    const total = totalRows[0].total;
+    [sub_category_id]
+  );
+  const total = totalRows[0].total;
 
-    // Main product query
-    const [products] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
+  // Main product query
+  const [products] = await pool.query<RowDataPacket[]>(sqlQuery, sqlParams);
 
-    return {
-        data: products,
-        total,
-    };
+  return {
+    data: products,
+    total,
+  };
 };
 
-const storeNewProduct = async(req: Request)=>{
+const storeNewProduct = async (req: Request) => {
+  if (!req.body) throw new Error();
+  console.log("body", req.body.url);
+  const { product_name, sub_category, status, price, sku, discount, tax, url } =
+    req.body;
 
-    if(!req.body) throw new Error
-    console.log("body", req.body.url)
-    const {
-        product_name,
-        sub_category,
-        status,
-        price, 
-        sku,
-        discount,
-        tax,
-        url
-    } = req.body;
+  const sub_category_id = sub_category.value;
 
-    const sub_category_id = sub_category.value
-
-    const [newProduct] = await pool.query<RowDataPacket[]>(
-        `INSERT INTO product (product_name, sub_category_id, created_date, updated_date, status, img) 
+  const [newProduct] = await pool.query<RowDataPacket[]>(
+    `INSERT INTO product (product_name, sub_category_id, created_date, updated_date, status, img) 
         VALUES 
-        (?, ?, now(), now(), ?, ?)`,[product_name, sub_category_id, status, url]
-    ) 
-    const productId = (newProduct as any).insertId  
-    console.log("id, sku", productId, sku)
-    const [newSku] = await pool.query<RowDataPacket[]>(
-        `INSERT INTO sku_table (product_id, sku, unit, price, tax, discount)
+        (?, ?, now(), now(), ?, ?)`,
+    [product_name, sub_category_id, status, url]
+  );
+  const productId = (newProduct as any).insertId;
+  console.log("id, sku", productId, sku);
+  const [newSku] = await pool.query<RowDataPacket[]>(
+    `INSERT INTO sku_table (product_id, sku, unit, price, tax, discount)
         VALUES
         (?, ?, ?, ?, ?,?)
-        `, [productId, sku, 10, price, tax, discount]
-    )
+        `,
+    [productId, sku, 10, price, tax, discount]
+  );
 
-    const skuId = (newSku as any).insertId
+  const skuId = (newSku as any).insertId;
 
-    await pool.query<RowDataPacket[]>(
-        `UPDATE product SET sku_id = ? WHERE id = ?`,
-        [skuId, productId]
-    )
-    
-    return
-}
+  await pool.query<RowDataPacket[]>(
+    `UPDATE product SET sku_id = ? WHERE id = ?`,
+    [skuId, productId]
+  );
 
-const storeNewCategory = async(req: Request)=>{
+  return;
+};
 
-    const {
-        category_name,
-        url,
-    } = req.body;
+const storeNewCategory = async (req: Request) => {
+  const { category_name } = req.body;
+  let url = "";
+  if (req.body.url) {
+    url = req.body.url;
+  }
 
-    let status = req.body.status
-    if (status === null) status = 2;
+  let status = req.body.status;
+  if (status === null) status = 2;
 
-    await pool.query<RowDataPacket[]>(
-        `INSERT INTO category (category_name, created_date, updated_date, status, img)
+  await pool.query<RowDataPacket[]>(
+    `INSERT INTO category (category_name, created_date, updated_date, status, img)
         VALUES
-        (?, now(), now(), ?, ?)`, 
-        [category_name, status, url]
-    )
+        (?, now(), now(), ?, ?)`,
+    [category_name, status, url]
+  );
 
-    return
-}
+  return;
+};
 
-const storeNewSubCategory = async(req: Request)=>{
+const storeNewSubCategory = async (req: Request) => {
+  const { sub_category_name, category_id, status, url } = req.body;
 
-    const {
-        sub_category_name,
-        category_id,
-        status,
-        url,
-    } = req.body
-
-
-
-    await pool.query<RowDataPacket[]>(
-        `INSERT INTO sub_category (category_id, sub_category_name, created_date, updated_date, status, img)
+  await pool.query<RowDataPacket[]>(
+    `INSERT INTO sub_category (category_id, sub_category_name, created_date, updated_date, status, img)
         VALUES
         (?, ?, now(), now(), ?, ?)`,
-        [category_id, sub_category_name, status, url]
-    )
-}
+    [category_id, sub_category_name, status, url]
+  );
+};
 
-const deleteShopProduct = async(req: Request)=>{
-    const {
-        product_id
-    } = req.body
-    await pool.query<RowDataPacket[]>(
-        `UPDATE product SET status = 1 WHERE id = ?`,[product_id]
-    )
-}
+const deleteShopProduct = async (req: Request) => {
+  const { product_id } = req.body;
+  await pool.query<RowDataPacket[]>(
+    `UPDATE product SET status = 1 WHERE id = ?`,
+    [product_id]
+  );
+};
 
-const fetchOneProduct = async(req: Request)=>{
+const fetchOneProduct = async (req: Request) => {
+  const product_id = req.body.id;
 
-    const product_id = req.body.id;
-
-    const [result] = await pool.query<RowDataPacket[]>(
+  const [result] = await pool.query<RowDataPacket[]>(
     `
     SELECT 
         p.id,
@@ -345,153 +335,153 @@ const fetchOneProduct = async(req: Request)=>{
         p.id = ?
     `,
     [product_id]
+  );
+
+  const category = {
+    value: result[0].category_id,
+    label: result[0].category_name,
+  };
+
+  const sub_category = {
+    value: result[0].sub_category_id,
+    label: result[0].sub_category_name,
+  };
+
+  const img = result[0].img;
+
+  const imgList = [
+    {
+      id: "img-001",
+      name: "img-01",
+      url: img,
+      img: {},
+    },
+  ];
+
+  const skuIds = result[0].sku_id.split(",");
+  if (skuIds) {
+    const [skuDetails] = await pool.query<RowDataPacket[]>(
+      `SELECT price, tax, discount, sku, unit 
+             FROM sku_table 
+             WHERE id IN (?)`,
+      [skuIds]
     );
 
-    const category = { value: result[0].category_id, 
-        label: result[0].category_name
-    }
+    const all = {
+      ...result[0],
+      imgList,
+      ...skuDetails[0],
+      category,
+      sub_category,
+    };
 
-    const sub_category = {
-        value: result[0].sub_category_id,
-        label: result[0].sub_category_name
-    }
+    return all;
+  }
 
-    const img = result[0].img 
+  return {
+    ...[result][0],
+    imgList,
+    category,
+    sub_category,
+  };
+};
 
-    const imgList = [{
-        id: 'img-001',
-        name: 'img-01',
-        url: img,
-        img: {}
-    }]
+const updateProductById = async (req: Request) => {
+  const {
+    id,
+    product_name,
+    price,
+    discount,
+    sku,
+    url,
+    status,
+    sku_id,
+    category,
+    sub_category,
+  } = req.body;
 
-    const skuIds = result[0].sku_id.split(',');
-    if(skuIds){
-
-        const [skuDetails] = await pool.query<RowDataPacket[]>(
-            `SELECT price, tax, discount, sku, unit 
-             FROM sku_table 
-             WHERE id IN (?)`, 
-            [skuIds]
-        );
-
-        const all = {
-            ...result[0],
-            imgList,
-            ...skuDetails[0],
-            category,
-            sub_category
-        }
-        
-        return all
-    }
-
-
-    return {
-        ...[result][0],
-        imgList,
-        category,
-        sub_category
-    }
-}
-
-const updateProductById = async(req: Request)=>{
-
-    const {
-        id,
-        product_name, 
-        price,
-        discount,
-        sku,
-        status,
-        sku_id,
-        category,
-        sub_category
-    } = req.body;
-    
-    const [updateProduct] = await pool.query<RowDataPacket[]>(
-        `
+  const [updateProduct] = await pool.query<RowDataPacket[]>(
+    `
         UPDATE product  
-        SET product_name = ?, sub_category_id = ?, status = ?
+        SET product_name = ?, sub_category_id = ?, status = ?, img = ?
         WHERE id = ?
     `,
-    [product_name, sub_category.value, status, id]
-    )
+    [product_name, sub_category.value, status, url, id]
+  );
 
-    const [updateSub] = await pool.query<RowDataPacket[]>(
-        `
+  const [updateSub] = await pool.query<RowDataPacket[]>(
+    `
     UPDATE sub_category
     SET category_id = ? 
-    WHERE id = ?`,  
-    [category.value, sub_category.value]);
+    WHERE id = ?`,
+    [category.value, sub_category.value]
+  );
 
-
-    const [updateSku] = await pool.query<RowDataPacket[]>(
-        `
+  const [updateSku] = await pool.query<RowDataPacket[]>(
+    `
         UPDATE sku_table
         SET price = ?, discount = ?, sku = ?
         WHERE id = ?
         `,
-        [price, discount, sku, sku_id[0]]
-    )
+    [price, discount, sku, sku_id[0]]
+  );
 
-    return
-    
-}
+  return;
+};
 
-const updateCategoryById = async(req: Request)=>{
+const updateCategoryById = async (req: Request) => {
+  if (!req.body) throw new Error();
 
-    if(!req.body) throw new Error
+  const { id, category_name, status, url } = req.body;
 
-    const {id, category_name, status, url} = req.body;
-
-    await pool.query<RowDataPacket[]>(
-        `
+  await pool.query<RowDataPacket[]>(
+    `
         UPDATE category SET category_name = ?, status = ?, img = ?
         WHERE id = ?
         `,
-        [category_name, status, url, id]
-    )
+    [category_name, status, url, id]
+  );
 
-    return 
-}
+  return;
+};
 
-const fetchCategoryById = async(req: Request)=>{
+const fetchCategoryById = async (req: Request) => {
+  if (!req.body) throw new Error();
 
-    if(!req.body) throw new Error 
+  const { id } = req.body;
 
-    const {id} = req.body
-
-    const [name] = await pool.query<RowDataPacket[]>(
-        `
+  const [name] = await pool.query<RowDataPacket[]>(
+    `
         SELECT id, category_name, status, img from category
         WHERE id = ?
         `,
-        [id]
-    )
+    [id]
+  );
 
-    const img = name[0].img
+  const img = name[0].img;
 
-    const imgList = [{
-        id: 'img-001',
-        name: 'img-01',
-        url: img,
-        img: {}
-    }]
+  const imgList = [
+    {
+      id: "img-001",
+      name: "img-01",
+      url: img,
+      img: {},
+    },
+  ];
 
-    return {
-        ...name[0],
-        imgList,
-    }
-}
+  return {
+    ...name[0],
+    imgList,
+  };
+};
 
-const fetchSubCategoryById = async(req: Request)=>{
+const fetchSubCategoryById = async (req: Request) => {
+  if (!req.body.id) throw new Error();
 
-    if(!req.body.id) throw new Error 
+  const id = req.body.id;
 
-    const id = req.body.id
-
-    const [name] = await pool.query<RowDataPacket[]>(`
+  const [name] = await pool.query<RowDataPacket[]>(
+    `
        SELECT 
         sc.id,
         sc.status,
@@ -506,123 +496,201 @@ const fetchSubCategoryById = async(req: Request)=>{
     WHERE 
         sc.id = ?
     `,
-    [id])
+    [id]
+  );
 
-    const category = { value: name[0].category_id, 
-        label: name[0].category_name
-    }
+  const category = { value: name[0].category_id, label: name[0].category_name };
 
-    const img = name[0].img
+  const img = name[0].img;
 
-    const imgList = [{
-        id: 'img-001',
-        name: 'img-01',
-        url: img,
-        img: {}
-    }]
+  const imgList = [
+    {
+      id: "img-001",
+      name: "img-01",
+      url: img,
+      img: {},
+    },
+  ];
 
+  const all = {
+    ...name[0],
+    category,
+    imgList,
+  };
 
-    const all = {
-        ...name[0],
-        category,
-        imgList
-    }
+  return all;
+};
 
-    return all
-}
+const updateSubCatgoryById = async (req: Request) => {
+  if (!req.body) throw new Error();
 
-const updateSubCatgoryById = async(req: Request)=>{
+  const { id, url, sub_category_name, category, status } = req.body;
 
-    if(!req.body) throw new Error
+  const category_id = category.value;
 
-    const {
-        id,
-        url,
-        sub_category_name,
-        category,
-        status
-    } = req.body
-
-    const category_id = category.value 
-
-    await pool.query<RowDataPacket[]>(
-        `
+  await pool.query<RowDataPacket[]>(
+    `
         UPDATE sub_category SET category_id = ?, sub_category_name = ?, status = ?, img = ?
             WHERE id = ?
         `,
-        [category_id, sub_category_name, status, url, id])
+    [category_id, sub_category_name, status, url, id]
+  );
 
-    return
-}
+  return;
+};
 
-const deletCategoryById = async(req: Request)=>{
+const deletCategoryById = async (req: Request) => {
+  if (!req.body) throw new Error();
+  const { id } = req.body;
+  await pool.query<RowDataPacket[]>(
+    `UPDATE category SET status = 1 WHERE id = ?`,
+    [id]
+  );
 
-    if(!req.body) throw new Error
-    const {id} = req.body
-    await pool.query<RowDataPacket[]>(
-        `UPDATE category SET status = 1 WHERE id = ?`,[id]
-    )
+  return;
+};
 
-    return
-}
+const deletSubCategoryById = async (req: Request) => {
+  if (!req.body) throw new Error();
+  const { id } = req.body;
+  await pool.query<RowDataPacket[]>(
+    `UPDATE sub_category SET status = 1 WHERE id = ?`,
+    [id]
+  );
 
-const deletSubCategoryById = async(req: Request)=>{
+  return;
+};
 
-    if(!req.body) throw new Error
-    const {id} = req.body
-    await pool.query<RowDataPacket[]>(
-        `UPDATE sub_category SET status = 1 WHERE id = ?`,[id]
-    )
-
-    return
-}
-
-type ExportType = 'category' | 'subcategory' | 'product';
+type ExportType = "category" | "subcategory" | "product";
 type FieldMap = Record<ExportType, string[]>;
 
 const FIELD_MAP: FieldMap = {
-    category: ['category_name', 'status', 'id', 'brand'],
-    subcategory: ['sub_category_name', 'status', 'id', 'brand'],
-    product: ['product_name', 'price', 'id', 'status', 'sku_id', 'tax', 'discount', 'sku', 'unit'],
+  category: ["category_name", "status", "id", "brand"],
+  subcategory: ["sub_category_name", "status", "id", "brand"],
+  product: [
+    "product_name",
+    "price",
+    "id",
+    "status",
+    "sku_id",
+    "tax",
+    "discount",
+    "sku",
+    "unit",
+  ],
 };
 
-const exportList = async(req: Request)=>{
+const exportList = async (req: Request) => {
+  const type: ExportType = req.body.type;
+  const data = req.body.data;
 
-    const type:ExportType = req.body.type;
-    const data = req.body.data;
+  if (!type || !FIELD_MAP[type]) {
+    throw new Error(`Invalid type provided: ${type}`);
+  }
+  const fields = FIELD_MAP[type];
+  const json2csvParser = new Parser({ fields });
+  try {
+    const csv = json2csvParser.parse(data);
+    return csv;
+  } catch (error) {
+    console.error("Error generating CSV:", error);
+    throw new Error("Failed to generate CSV");
+  }
+};
 
-    if (!type || !FIELD_MAP[type]) {
-        throw new Error(`Invalid type provided: ${type}`);
+const getNewCategoryUsingExcel = async (req: Request) => {
+  const form = formidable({ multiples: true });
+
+  form.parse(req, async (err: Error | null, fields: Fields, files: Files) => {
+    if (err) {
+      console.log("Error parsing form:", err);
+      throw new Error("Error parsing form data");
     }
-    const fields = FIELD_MAP[type];
-    const json2csvParser = new Parser({ fields });
-    try {
-        const csv = json2csvParser.parse(data);
-        return csv;
-    } catch (error) {
-        console.error('Error generating CSV:', error);
-        throw new Error('Failed to generate CSV');
+    const uploadedFile = files.file;
+    let type
+    if(fields.type) type = fields.type[0];
+
+    if (!uploadedFile) {
+      throw new Error("No file uploaded");
     }
-}
+    const filesArray = Array.isArray(uploadedFile)
+      ? uploadedFile
+      : [uploadedFile];
+    for (const uploadedFile of filesArray) {
+      if (!uploadedFile.filepath) {
+        throw new Error("File missing filepath");
+      }
+      const filePath = uploadedFile.filepath;
+      const wb = xlsx.readFile(filePath);
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const data = xlsx.utils.sheet_to_json(sheet);
+      let query;
+      let values;
+
+      if(type === "category"){
+        query =
+        "INSERT INTO category (category_name, status, created_date, updated_date, img) VALUES ?";
+        values = data.map((row: any) => [
+          row.category_name,
+          row.status,
+          new Date(),
+          new Date(),
+          "",
+        ]);
+      }
+
+      if(type === "subcategory"){
+        query =
+        "INSERT INTO sub_category (category_id, sub_category_name, status, created_date, updated_date, img) VALUES ?";
+        values = data.map((row: any) => [
+          row.category_id,
+          row.sub_category_name,
+          row.status,
+          new Date(),
+          new Date(),
+          "",
+        ]);
+      }
+
+      if(type === 'product'){
+        query =
+        "INSERT INTO product (sub_category_id, product_name, status, created_date, updated_date, img) VALUES ?";
+        values = data.map((row: any) => [
+          row.sub_category_id,
+          row.product_name,
+          row.status,
+          new Date(),
+          new Date(),
+          "",
+        ]);
+      }
+
+      if(query)
+        await pool.query(query, [values]);
+      return 
+    }
+  });
+};
 
 export {
-    fetchAllCategory,
-    fetchSubCategory,
-    fetchCategoryList,
-    fetchSubCategoryList,
-    fetchAllProducts,
-    storeNewProduct,
-    storeNewCategory,
-    storeNewSubCategory,
-    deleteShopProduct,
-    fetchOneProduct,
-    updateProductById,
-    updateCategoryById,
-    fetchCategoryById,
-    fetchSubCategoryById,
-    updateSubCatgoryById,
-    fetchCategoryStatus,
-    deletCategoryById,
-    deletSubCategoryById,
-    exportList
-}
+  fetchAllCategory,
+  fetchSubCategory,
+  fetchCategoryList,
+  fetchSubCategoryList,
+  fetchAllProducts,
+  storeNewProduct,
+  storeNewCategory,
+  storeNewSubCategory,
+  deleteShopProduct,
+  fetchOneProduct,
+  updateProductById,
+  updateCategoryById,
+  fetchCategoryById,
+  fetchSubCategoryById,
+  updateSubCatgoryById,
+  fetchCategoryStatus,
+  deletCategoryById,
+  deletSubCategoryById,
+  exportList,
+  getNewCategoryUsingExcel,
+};

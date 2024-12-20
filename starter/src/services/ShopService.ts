@@ -165,4 +165,15 @@ export async function apiGetImageUrl<T, U extends Record<string, unknown>>(data:
     })
 }
 
+export async function apiImportExcelCategory(data:any){
+    return ApiService.fetchData({
+        url:'/shop/importcategory',
+        method:'post',
+        data,
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        },
+    })
+}
+
 

@@ -33,7 +33,7 @@ const NewSubCategory = () => {
                     placement: "top-center",
                 }
             );
-            navigate("/app/subcategory");
+            navigate("/category");
         }
     };
 

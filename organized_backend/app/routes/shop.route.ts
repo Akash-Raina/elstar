@@ -1,5 +1,5 @@
 import express  from "express";
-import { allCategory, allProductList, allSubCategory, callOnExport, categoryList, deleteCategory, deleteSubCategory, getCategoryById, getCategoryStatus, getProduct, getSubCategoryByid, removeProduct, shopNewCategory, shopNewProduct, shopNewSubCategory, subCategoryList, updateSingleCategory, updateSingleProduct, updateSingleSubCategory } from "../controller/shop.controller";
+import { allCategory, allProductList, allSubCategory, callOnExport, categoryList, deleteCategory, deleteSubCategory, getCategoryById, getCategoryStatus, getProduct, getSubCategoryByid, recieveExcelCategory, removeProduct, shopNewCategory, shopNewProduct, shopNewSubCategory, subCategoryList, updateSingleCategory, updateSingleProduct, updateSingleSubCategory } from "../controller/shop.controller";
 
 const router = express.Router()
 
@@ -22,6 +22,7 @@ router.post('/getcategorystatus', getCategoryStatus)
 router.delete('/deletecategorybyid', deleteCategory)
 router.delete('/deletesubcategorybyid', deleteSubCategory)
 router.post('/downloadlist', callOnExport)
+router.post('/importcategory', recieveExcelCategory)
 
 
 export default router

@@ -171,7 +171,7 @@ export const ProductImage = (props: ProductImagesProps)=>{
     )=>{
         console.log("testing delete",values.imgList)
         let imgList = cloneDeep(values.imgList)
-        imgList = imgList.filter((img)=> img.url !== deletedImg.id)
+        imgList = imgList.filter((img)=> img.url = "")
         form.setFieldValue(field.name, imgList)
     }
 

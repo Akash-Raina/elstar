@@ -36,7 +36,7 @@ const NewCategory = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/app/subcategory"); // Navigate to another page after submission
+            navigate("/category");
         }
     };
     

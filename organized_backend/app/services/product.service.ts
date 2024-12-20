@@ -283,7 +283,6 @@ const hitS3Api = async (req: Request) => {
         reject({ error: "Error parsing form data" });
         return;
       }
-      console.log("file", files)
       const uploadedFile = files.img;
 
       if (!uploadedFile) {

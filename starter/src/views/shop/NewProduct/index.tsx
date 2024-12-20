@@ -49,7 +49,7 @@ const NewProduct = ()=>{
                     placement: 'top-center',
                 }
             )
-            navigate('/app/productlist/newproduct')
+            navigate('/category')
         }
     }
 
