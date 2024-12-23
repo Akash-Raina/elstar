@@ -1,5 +1,5 @@
 import Button from '@/components/ui/Button'
-import { HiDownload, HiPhone, HiPlusCircle } from 'react-icons/hi'
+import { HiDownload, HiPlusCircle } from 'react-icons/hi'
 import { Link, useNavigate } from 'react-router-dom'
 import CategoryTableSearch from './CategoryTableSearch'
 import { useAppSelector } from '@/store'

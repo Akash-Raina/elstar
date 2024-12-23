@@ -85,6 +85,36 @@ export const protectedRoutes = [
         key: 'shopMeny.item9',
         path: '/subcategory/editsubcategory/:id',
         component: lazy(()=>import('@/views/shop/SubCategoryEdit'))
+    },
+    {
+        key: 'purchaseMenu.countrylist',
+        path: '/countrylist',
+        component: lazy(()=>import ('@/views/purchase-master/countryMaster'))
+    },
+    {
+        key: 'purchaseMenu.countrylist',
+        path: '/addcountry',
+        component: lazy(()=>import('@/views/purchase-master/newCountry'))
+    },
+    {
+        key: 'purchaseMenu.statelist',
+        path: '/statelist',
+        component: lazy(()=>import('@/views/purchase-master/stateMaster'))
+    },
+    {
+        key: 'purchaseMenu.statelist',
+        path: '/addstate',
+        component: lazy(()=>import('@/views/purchase-master/newState'))
+    },
+    {
+        key: 'purchaseMenu.districtlist',
+        path: '/districtlist',
+        component: lazy(()=>import('@/views/purchase-master/districtMaster'))        
+    },
+    {
+        key: 'purchaseMenu.districtlist',
+        path: '/adddistrict',
+        component: lazy(()=>import('@/views/purchase-master/newDistrict'))
     }
 
 ]

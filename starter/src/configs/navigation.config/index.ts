@@ -159,6 +159,48 @@ const navigationConfig: NavigationTree[] = [
 
         ],
     },
+    {
+        key: 'purchaseMenu',
+        path: '',
+        title: 'Purchase',
+        translateKey: 'nav.purchaseMenu.purchaseMenu',
+        icon: '',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: [],
+        subMenu: [
+            {
+                key: 'purchaseMenu.countrylist',
+                path: '/countrylist',
+                title: 'Country Master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.statelist',
+                path: '/statelist',
+                title: 'State Master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.districtlist',
+                path: '/districtlist',
+                title: 'District Master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            }
+
+        ]
+    }
 ]
 
 export default navigationConfig
