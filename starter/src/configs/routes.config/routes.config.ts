@@ -3,6 +3,7 @@ import authRoute from './authRoute'
 import type { Routes } from '@/@types/routes'
 import { components } from 'react-select'
 import path from 'path'
+import { m } from 'framer-motion'
 
 export const publicRoutes: Routes = [...authRoute]
 
@@ -115,6 +116,76 @@ export const protectedRoutes = [
         key: 'purchaseMenu.districtlist',
         path: '/adddistrict',
         component: lazy(()=>import('@/views/purchase-master/newDistrict'))
+    },
+    {
+        key: 'purchaseMenu.mainlist',
+        path: '/mainlist',
+        component: lazy(()=>import('@/views/purchase-master/mainGroup'))
+    },
+    {
+        key: 'purchaseMenu.mainlist',
+        path: '/addmain',
+        component: lazy(()=>import('@/views/purchase-master/newMain'))
+    },
+    {
+        key: 'purchaseMenu.sublist',
+        path: '/sublist',
+        component: lazy(()=>import('@/views/purchase-master/subGroup'))
+    },
+    {
+        key: 'purchaseMenu.sublist',
+        path: '/addsub',
+        component: lazy(()=>import('@/views/purchase-master/newSub'))
+    },
+    {
+        key: 'purchaseMenu.godown',
+        path: '/godown',
+        component: lazy(()=> import('@/views/purchase-master/goDown'))
+    },
+    {
+        key: 'purchaseMenu.godown',
+        path: '/addgodown',
+        component: lazy(()=> import('@/views/purchase-master/newGoDown'))
+    },
+    {
+        key: 'purchaseMenu.measure',
+        path: '/measure',
+        component: lazy(()=> import('@/views/purchase-master/measuringUnit'))
+    },
+    {
+        key: 'purchaseMenu.measure',
+        path: '/addunit',
+        component: lazy(()=>import('@/views/purchase-master/newUnit'))
+    },
+    {
+        key: 'purchaseMenu.order',
+        path: '/order',
+        component: lazy(()=>import('@/views/purchase-master/purchaseOrderType'))
+    },
+    {
+        key: 'purchaseMenu.order',
+        path: '/addorder',
+        component: lazy(()=>import('@/views/purchase-master/newPurchase'))
+    },
+    {
+        key: 'purchaseMenu.terms',
+        path: '/termslist',
+        component: lazy(()=>import('@/views/purchase-master/termsConditions'))
+    },
+    {
+        key: 'purchase.terms',
+        path: '/addterms',
+        component: lazy(()=>import('@/views/purchase-master/newTerms'))
+    },
+    {
+        key: 'purchase.setting',
+        path: '/settinglist',
+        component: lazy(()=>import('@/views/purchase-master/glSetting'))
+    },
+    {
+        key: 'purchase.setting',
+        path: '/addsetting',
+        component: lazy(()=>import('@/views/purchase-master/newSetting'))
     }
 
 ]
