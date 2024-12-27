@@ -5,7 +5,7 @@ const GlSetting = ()=>{
 
     return <>
         <div className="flex justify-between mb-4">
-            <h3>District Master</h3>
+            <h3>Gl setting for admin charges</h3>
             <SettingTableTools/>
         </div>
         <SettingList/>

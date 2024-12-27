@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { MainForm } from "../mainForm";
+import { IssueForm } from "../issueForm";
 
-const NewMain = ()=>{
+const NewIssue = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/orderlist')
+        navigate('/issuelist')
     }
 
     const ifSuccess = (success: any) => {
@@ -18,23 +18,23 @@ const NewMain = ()=>{
                     type="success"
                     duration={2500}
                 >
-                    Order successfully added
+                    Issue successfully added
                 </Notification>,
                 {
                     placement: "top-center",
                 }
             );
-            navigate("/orderlist");
+            navigate("/issuelist");
         }
     };
 
     return <>
-        <MainForm
+        <IssueForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
         />
-    </> 
+    </>
 }
 
-export default NewMain
+export default NewIssue

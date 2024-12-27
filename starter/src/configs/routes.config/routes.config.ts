@@ -186,6 +186,46 @@ export const protectedRoutes = [
         key: 'purchase.setting',
         path: '/addsetting',
         component: lazy(()=>import('@/views/purchase-master/newSetting'))
+    },
+    {
+        key: 'purchase.supplier',
+        path: '/supplierlist',
+        component: lazy(()=>import('@/views/purchase-master/supplierType'))
+    },
+    {
+        key: 'purchase.supplier',
+        path: '/addsupplier',
+        component: lazy(()=>import('@/views/purchase-master/newSupplier'))
+    },
+    {
+        key: 'purchase.tender',
+        path: '/tenderlist',
+        component: lazy(()=>import('@/views/purchase-master/tenderType'))
+    },
+    {
+        key: 'purchase.tender',
+        path: '/addtender',
+        component: lazy(()=>import('@/views/purchase-master/newTender'))
+    },
+    {
+        key: 'purchase.issue',
+        path: '/issuelist',
+        component: lazy(()=>import('@/views/purchase-master/issueType'))
+    },
+    {
+        key: 'purchase.issue',
+        path: '/addissue',
+        component: lazy(()=>import('@/views/purchase-master/newIssue'))
+    },
+    {
+        key: 'purchase.item',
+        path: '/itemlist',
+        component: lazy(()=>import('@/views/purchase-master/itemMaster'))
+    },
+    {
+        key: 'purchase.suppliermaster',
+        path: '/suppliermasterlist',
+        component: lazy(()=>import('@/views/purchase-master/supplierMaster'))
     }
 
 ]
