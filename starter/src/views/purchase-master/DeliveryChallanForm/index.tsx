@@ -13,39 +13,54 @@ import BasicInformationFields from "./components/BasicInformationFields";
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    code: number
-    name: string
+    number: number
+    member_type: string
+    type:string
+    order_no: number
+    sales_type: string
+    release_order_type: string
+    description: string
 }
 
-export type IssueFormModel = InitialData
+export type DeliveryFormModel = InitialData
 
-export type IssueSetSubmitting = (isSubmitting: boolean) => void
+export type DeliverySetSubmitting = (isSubmitting: boolean) => void
 
 export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 
 type OnDelete = (Callback: OnDeleteCallback) => void
 
-type MainForm = {
+type DeliveryForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard ?: ()=>void
     onDelete ?: OnDelete
-    onFormSubmit: (FormData: InitialData, setSubmitting: IssueSetSubmitting) => void
+    onFormSubmit: (FormData: InitialData, setSubmitting: DeliverySetSubmitting) => void
 }
 
 const validationSchema = Yup.object().shape({
-    code: Yup.number().required('Sub Code required'),
-    name: Yup.string().required('Country Name required'),
+    number: Yup.number().required(' Code required'),
+    member_type: Yup.string().required(' Name required'),
+    type: Yup.string().required(' Name required'),
+    order_no: Yup.number().required(' Name required'),
+    sales_type: Yup.string().required(' Name required'),
+    release_order_type: Yup.string().required(' Name required'),
+    description: Yup.string().required(' Name required'),
 })
 
-export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const DeliveryChallanForm = forwardRef<FormikRef, DeliveryForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            code: '',
-            name: '',
+            number: '',
+            member_type: '',
+            type: '',
+            order_no: '',
+            sales_type: '',
+            release_order_type: '',
+            description: ''
         },
         onFormSubmit,
         onDiscard, 
@@ -57,7 +72,7 @@ export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
             innerRef={ref}
             initialValues={initialData}
             validationSchema={validationSchema}
-            onSubmit={(values:IssueFormModel, {setSubmitting})=>{
+            onSubmit={(values:DeliveryFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
                 onFormSubmit?.(formData, setSubmitting)
             }}
@@ -100,4 +115,4 @@ export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-IssueForm.displayName = 'IssueForm'
+DeliveryChallanForm.displayName = 'DeliveryChallanForm'

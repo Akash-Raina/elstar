@@ -318,6 +318,36 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.challantype',
+                path: '/challantype',
+                title: 'Delivery challan type',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.tarrifheading',
+                path: '/tarrifheading',
+                title: 'Tarrif Heading',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.locationcategory',
+                path: '/locationcategory',
+                title: 'Location category master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
             }
         ]
     }

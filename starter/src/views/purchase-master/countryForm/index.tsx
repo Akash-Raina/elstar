@@ -60,6 +60,7 @@ export const CountryForm = forwardRef<FormikRef, CountryForm>((props, ref)=>{
                 const formData = cloneDeep(values)
                 onFormSubmit?.(formData, setSubmitting)
             }}
+        
         >
             {({values, touched, errors, isSubmitting}) => (
                     <Form>
@@ -73,7 +74,13 @@ export const CountryForm = forwardRef<FormikRef, CountryForm>((props, ref)=>{
                                 className="-mx-8 px-8 flex justify-end py-4"
                                 stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                             >
-                                <div className="md:flex items-center mt-36">
+                                <div className="md:flex items-center mt-36 flex gap-3">
+                                    <Button 
+                                        size="sm"
+                                        onClick={onDiscard}
+                                    >
+                                        Discard
+                                    </Button>
                                     <Button
                                         size="sm"
                                         loading={isSubmitting}
@@ -84,6 +91,7 @@ export const CountryForm = forwardRef<FormikRef, CountryForm>((props, ref)=>{
                                     >
                                         Save
                                     </Button>
+                                    
                                 </div>
                             </StickyFooter>
                         </FormContainer>

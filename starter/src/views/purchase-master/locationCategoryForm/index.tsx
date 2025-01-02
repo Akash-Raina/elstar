@@ -14,38 +14,59 @@ type FormikRef = FormikProps<any>
 
 type InitialData = {
     code: number
-    name: string
+    location_category: string
+    location_type: string
+    location_desc: string
+    rout_throw_item: number
+    revenue_center: string
+    asset_life: string
+    salvage_value: string
+    depreciation_provision_gl:string
+    accumulated_deprecation_gl:string
+    accumulated_deprecation_account:string
+    capitalization_gl:string
 }
 
-export type IssueFormModel = InitialData
+export type LocationFormModel = InitialData
 
-export type IssueSetSubmitting = (isSubmitting: boolean) => void
+export type LocationSetSubmitting = (isSubmitting: boolean) => void
 
 export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 
 type OnDelete = (Callback: OnDeleteCallback) => void
 
-type MainForm = {
+type LocationForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard ?: ()=>void
     onDelete ?: OnDelete
-    onFormSubmit: (FormData: InitialData, setSubmitting: IssueSetSubmitting) => void
+    onFormSubmit: (FormData: InitialData, setSubmitting: LocationSetSubmitting) => void
 }
 
 const validationSchema = Yup.object().shape({
-    code: Yup.number().required('Sub Code required'),
-    name: Yup.string().required('Country Name required'),
+    district_code: Yup.number().required('Country Code required'),
+    district_name: Yup.string().required('Country Name required'),
+    state: Yup.string().required('Country Name required')
 })
 
-export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const LocationForm = forwardRef<FormikRef, LocationForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            code: '',
-            name: '',
+            code: "",
+            location_category: "",
+            location_type: "",
+            location_desc: "",
+            rout_throw_item: "",
+            revenue_center: "",
+            asset_life: "",
+            salvage_value: "",
+            depreciation_provision_gl:"",
+            accumulated_deprecation_gl:"",
+            accumulated_deprecation_account:"",
+            capitalization_gl:""
         },
         onFormSubmit,
         onDiscard, 
@@ -57,7 +78,7 @@ export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
             innerRef={ref}
             initialValues={initialData}
             validationSchema={validationSchema}
-            onSubmit={(values:IssueFormModel, {setSubmitting})=>{
+            onSubmit={(values:LocationFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
                 onFormSubmit?.(formData, setSubmitting)
             }}
@@ -100,4 +121,4 @@ export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-IssueForm.displayName = 'IssueForm'
+LocationForm.displayName = 'LocationForm'

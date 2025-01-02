@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { MainForm } from "../mainForm";
+import { DeliveryChallanForm } from "../DeliveryChallanForm";
 
-const NewMain = ()=>{
+const NewDistrict = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/order')
+        navigate('/challantype')
     }
 
     const ifSuccess = (success: any) => {
@@ -18,23 +18,23 @@ const NewMain = ()=>{
                     type="success"
                     duration={2500}
                 >
-                    Order successfully added
+                    District successfully added
                 </Notification>,
                 {
                     placement: "top-center",
                 }
             );
-            navigate("/orderlist");
+            navigate("/challantype");
         }
     };
 
     return <>
-        <MainForm
+        <DeliveryChallanForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
         />
-    </> 
+    </>
 }
 
-export default NewMain
+export default NewDistrict

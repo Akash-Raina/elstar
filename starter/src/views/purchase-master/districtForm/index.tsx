@@ -76,7 +76,13 @@ export const DistrictForm = forwardRef<FormikRef, DistrictForm>((props, ref)=>{
                             <div
                                 className="-mx-8 px-8 flex justify-end py-4"
                             >
-                                <div className="md:flex items-center mt-8">
+                                <div className="md:flex items-center mt-36 flex gap-3">
+                                    <Button 
+                                        size="sm"
+                                        onClick={onDiscard}
+                                    >
+                                        Discard
+                                    </Button>
                                     <Button
                                         size="sm"
                                         loading={isSubmitting}
@@ -87,6 +93,7 @@ export const DistrictForm = forwardRef<FormikRef, DistrictForm>((props, ref)=>{
                                     >
                                         Save
                                     </Button>
+                                    
                                 </div>
                             </div>
                         </FormContainer>

@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { MainForm } from "../mainForm";
+import { TarrifForm } from "../tarrifForm";
 
-const NewMain = ()=>{
+const NewTarrif = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/order')
+        navigate('/tarrifheading')
     }
 
     const ifSuccess = (success: any) => {
@@ -18,23 +18,23 @@ const NewMain = ()=>{
                     type="success"
                     duration={2500}
                 >
-                    Order successfully added
+                    District successfully added
                 </Notification>,
                 {
                     placement: "top-center",
                 }
             );
-            navigate("/orderlist");
+            navigate("/tarrifheading");
         }
     };
 
     return <>
-        <MainForm
+        <TarrifForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
         />
-    </> 
+    </>
 }
 
-export default NewMain
+export default NewTarrif

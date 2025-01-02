@@ -7,7 +7,7 @@ import { ConfirmDialog, StickyFooter } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { AiOutlineSave } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
-import BasicInformationFields from "./components/BasicInformationFields";
+import BasicInformationFields from "./components/BasicInformation";
 
 
 type FormikRef = FormikProps<any>
@@ -15,37 +15,43 @@ type FormikRef = FormikProps<any>
 type InitialData = {
     code: number
     name: string
+    description: string
+    type: string
 }
 
-export type IssueFormModel = InitialData
+export type TarrifFormModel = InitialData
 
-export type IssueSetSubmitting = (isSubmitting: boolean) => void
+export type TarrifSetSubmitting = (isSubmitting: boolean) => void
 
 export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 
 type OnDelete = (Callback: OnDeleteCallback) => void
 
-type MainForm = {
+type DistrictForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard ?: ()=>void
     onDelete ?: OnDelete
-    onFormSubmit: (FormData: InitialData, setSubmitting: IssueSetSubmitting) => void
+    onFormSubmit: (FormData: InitialData, setSubmitting: TarrifSetSubmitting) => void
 }
 
 const validationSchema = Yup.object().shape({
-    code: Yup.number().required('Sub Code required'),
+    code: Yup.number().required('Country Code required'),
     name: Yup.string().required('Country Name required'),
+    description: Yup.string().required('Country Name required'),
+    type: Yup.string().required('Type required')
 })
 
-export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const TarrifForm = forwardRef<FormikRef, DistrictForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            code: '',
-            name: '',
+            code: "",
+            name: "",
+            description: "",
+            type: ""
         },
         onFormSubmit,
         onDiscard, 
@@ -57,7 +63,7 @@ export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
             innerRef={ref}
             initialValues={initialData}
             validationSchema={validationSchema}
-            onSubmit={(values:IssueFormModel, {setSubmitting})=>{
+            onSubmit={(values:TarrifFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
                 onFormSubmit?.(formData, setSubmitting)
             }}
@@ -100,4 +106,4 @@ export const IssueForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-IssueForm.displayName = 'IssueForm'
+TarrifForm.displayName = 'TarrifForm'

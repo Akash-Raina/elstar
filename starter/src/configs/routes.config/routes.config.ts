@@ -226,6 +226,35 @@ export const protectedRoutes = [
         key: 'purchase.suppliermaster',
         path: '/suppliermasterlist',
         component: lazy(()=>import('@/views/purchase-master/supplierMaster'))
+    },
+    {
+        key: 'purchase.challantype',
+        path: '/challantype',
+        component: lazy(()=>import('@/views/purchase-master/deliveryChallanType'))
+    },
+    {   
+        key: 'purchase.challantype',
+        path: '/addchallan',
+        component: lazy(()=>import('@/views/purchase-master/newDeliveryChallan'))
+    },
+    {
+        key: 'purchase.tarrifheading',
+        path: '/tarrifheading',
+        component: lazy(()=>import('@/views/purchase-master/tarrifHeading'))
+    },{
+        key: 'purchase.tarrifheading',
+        path: '/addtarrif',
+        component: lazy(()=>import('@/views/purchase-master/newTarrif'))
+    },
+    {
+        key: 'purchase.locationcategory',
+        path: '/locationcategory',
+        component: lazy(()=>import('@/views/purchase-master/locationCategoryMaster'))
+    },
+    {
+        key: 'purchase.locationcategory',
+        path: '/addlocation',
+        component: lazy(()=>import('@/views/purchase-master/newLocationCategory'))
     }
 
 ]
