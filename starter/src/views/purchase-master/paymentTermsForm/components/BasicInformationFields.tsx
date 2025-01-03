@@ -5,9 +5,8 @@ import { useRef } from "react"
 
 type FormFieldsName = {
     code: number
-    name: string
     description: string
-    type: string
+    payment_type: string
 }
 
 type BasicInformationFields = {
@@ -20,7 +19,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
 
     return <>
         <AdaptableCard divider className="mb-4">
-            <h3 className="mb-8">Add Tarrif Heading</h3>
+            <h3 className="mb-8">Add Payment term type master</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4"> 
                 <div className="col-span-1">
                     <FormItem
@@ -38,53 +37,19 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                 </div>
                 <div className="col-span-1">  
                     <FormItem
-                    label = "Name"
-                    invalid = {(errors.name && touched.name)}
-                    errorMessage={errors.name}
+                    label = "Payment Type"
+                    invalid = {(errors.payment_type && touched.payment_type)}
+                    errorMessage={errors.payment_type}
                     >
                         <Field
                             type = "text"
-                            name = "name"
+                            name = "payment_type"
                             placeholder = ""
                             component = {Input}
                         />
                     </FormItem>
                 </div>
-                <div className="col-span-1">  
-                    <FormItem
-                    label = "Type"
-                    invalid = {(errors.type && touched.type)}
-                    errorMessage={errors.type}
-                    >
-                        <Field
-                            type = "text"
-                            name = "type"
-                            placeholder = ""
-                            component = {Input}
-                        />
-                    </FormItem>
-                </div>
-                <div className="col-span-1">
-                    <input type="checkbox" />
-                    <label className="ml-2">Revenue</label>
-                </div>
-                <div className="col-span-1">
-                    <input type="checkbox" />
-                    <label className="ml-2">Capital</label>
-                </div>
-                <div className="col-span-3 w-[145%] mt-10">  
-                    {/* <FormItem
-                    label = "Description"
-                    invalid = {(errors.description && touched.description)}
-                    errorMessage={errors.description}
-                    >
-                        <Field
-                            type = "text"
-                            name = "description"
-                            placeholder = ""
-                            component = {Input}
-                        />
-                    </FormItem> */}
+                <div className="col-span-3 w-[150%] mt-10">  
                     <DescriptionEditor/>
                 </div>
             </div>
@@ -101,7 +66,7 @@ const DescriptionEditor: React.FC = () => {
   };
 
   return (
-    <div className="space-y-2 w-full">
+    <div className=" space-y-2 w-full">
       <label htmlFor="description" className="block text-gray-500 font-bold">
         Description
       </label>

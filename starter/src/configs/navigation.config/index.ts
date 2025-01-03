@@ -348,7 +348,58 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.locationmaster',
+                path: '/locationmaster',
+                title: 'Location master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.workordertypes',
+                path: '/workordertypes',
+                title: 'Work order types',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.paymentterms',
+                path: '/paymentterms',
+                title: 'Payment term type master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.workordertype',
+                path: '/workordertype',
+                title: 'Work order type',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'purchaseMenu.payterms',
+                path: '/payterms',
+                title: 'Pay terms type master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
             }
+
         ]
     }
 ]

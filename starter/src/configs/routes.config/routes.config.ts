@@ -1,9 +1,6 @@
 import { lazy } from 'react'
 import authRoute from './authRoute'
 import type { Routes } from '@/@types/routes'
-import { components } from 'react-select'
-import path from 'path'
-import { m } from 'framer-motion'
 
 export const publicRoutes: Routes = [...authRoute]
 
@@ -173,88 +170,139 @@ export const protectedRoutes = [
         component: lazy(()=>import('@/views/purchase-master/termsConditions'))
     },
     {
-        key: 'purchase.terms',
+        key: 'purchaseMenu.terms',
         path: '/addterms',
         component: lazy(()=>import('@/views/purchase-master/newTerms'))
     },
     {
-        key: 'purchase.setting',
+        key: 'purchaseMenu.setting',
         path: '/settinglist',
         component: lazy(()=>import('@/views/purchase-master/glSetting'))
     },
     {
-        key: 'purchase.setting',
+        key: 'purchaseMenu.setting',
         path: '/addsetting',
         component: lazy(()=>import('@/views/purchase-master/newSetting'))
     },
     {
-        key: 'purchase.supplier',
+        key: 'purchaseMenu.supplier',
         path: '/supplierlist',
         component: lazy(()=>import('@/views/purchase-master/supplierType'))
     },
     {
-        key: 'purchase.supplier',
+        key: 'purchaseMenu.supplier',
         path: '/addsupplier',
         component: lazy(()=>import('@/views/purchase-master/newSupplier'))
     },
     {
-        key: 'purchase.tender',
+        key: 'purchaseMenu.tender',
         path: '/tenderlist',
         component: lazy(()=>import('@/views/purchase-master/tenderType'))
     },
     {
-        key: 'purchase.tender',
+        key: 'purchaseMenu.tender',
         path: '/addtender',
         component: lazy(()=>import('@/views/purchase-master/newTender'))
     },
     {
-        key: 'purchase.issue',
+        key: 'purchaseMenu.issue',
         path: '/issuelist',
         component: lazy(()=>import('@/views/purchase-master/issueType'))
     },
     {
-        key: 'purchase.issue',
+        key: 'purchaseMenu.issue',
         path: '/addissue',
         component: lazy(()=>import('@/views/purchase-master/newIssue'))
     },
     {
-        key: 'purchase.item',
+        key: 'purchaseMenu.item',
         path: '/itemlist',
         component: lazy(()=>import('@/views/purchase-master/itemMaster'))
     },
     {
-        key: 'purchase.suppliermaster',
+        key: 'purchaseMenu.suppliermaster',
         path: '/suppliermasterlist',
         component: lazy(()=>import('@/views/purchase-master/supplierMaster'))
     },
     {
-        key: 'purchase.challantype',
+        key: 'purchaseMenu.challantype',
         path: '/challantype',
         component: lazy(()=>import('@/views/purchase-master/deliveryChallanType'))
     },
     {   
-        key: 'purchase.challantype',
+        key: 'purchaseMenu.challantype',
         path: '/addchallan',
         component: lazy(()=>import('@/views/purchase-master/newDeliveryChallan'))
     },
     {
-        key: 'purchase.tarrifheading',
+        key: 'purchaseMenu.tarrifheading',
         path: '/tarrifheading',
         component: lazy(()=>import('@/views/purchase-master/tarrifHeading'))
-    },{
-        key: 'purchase.tarrifheading',
+    },
+    {
+        key: 'purchaseMenu.tarrifheading',
         path: '/addtarrif',
         component: lazy(()=>import('@/views/purchase-master/newTarrif'))
     },
     {
-        key: 'purchase.locationcategory',
+        key: 'purchaseMenu.locationcategory',
         path: '/locationcategory',
         component: lazy(()=>import('@/views/purchase-master/locationCategoryMaster'))
     },
     {
-        key: 'purchase.locationcategory',
+        key: 'purchaseMenu.locationcategory',
         path: '/addlocation',
         component: lazy(()=>import('@/views/purchase-master/newLocationCategory'))
+    },
+    {
+        key: 'purchaseMenu.locationmaster',
+        path: '/locationmaster',
+        component: lazy(()=>import('@/views/purchase-master/locationMaster'))
+    },
+    {
+        key: 'purchaseMenu.locationmaster',
+        path: '/addlocationmaster',
+        component: lazy(()=>import('@/views/purchase-master/newLocationMaster'))
+    },
+    {
+        key: 'purchaseMenu.workordertypes',
+        path: '/workordertypes',
+        component: lazy(()=>import('@/views/purchase-master/workOrderTypes'))
+    },
+    {
+        key: 'purchaseMenu.workordertypes',
+        path: '/addworkordertypes',
+        component: lazy(()=>import('@/views/purchase-master/newWorkTypes'))
+    },
+    {
+        key: 'purchaseMenu.paymentterms',
+        path: '/paymentterms',
+        component: lazy(()=>import('@/views/purchase-master/paymentTermTypeMaster'))
+    },
+    {
+        key: 'purchaseMenu.paymentterms',
+        path: '/addpaymentterms',
+        component: lazy(()=>import('@/views/purchase-master/newPaymentTerms'))
+    },
+    {
+        key: 'purchaseMenu.workordertype',
+        path: '/workordertype',
+        component: lazy(()=>import('@/views/purchase-master/workOrderType'))
+    },
+    {
+        key: 'purchaseMenu.workordertype',
+        path: '/addworkordertype',
+        component:lazy(()=>import('@/views/purchase-master/newWorkType'))
+    },
+    {
+        key: 'purchaseMenu.payterms',
+        path: '/payterms',
+        component: lazy(()=>import('@/views/purchase-master/payTermsTypeMaster'))
+    },
+    {
+        key: 'purchaseMenu.payterms',
+        path: '/addpayterms',
+        component: lazy(()=>import('@/views/purchase-master/newPayTerms'))
     }
 
 ]

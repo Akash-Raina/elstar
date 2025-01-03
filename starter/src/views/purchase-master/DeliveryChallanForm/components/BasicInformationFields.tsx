@@ -124,7 +124,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                         </Field>
                 </FormItem>
                 </div>
-                <div className="col-span-2 w-[155%]">  
+                <div className="col-span-2 w-[145%]">  
                     <DescriptionEditor/>
                 </div>
             </div>
@@ -140,8 +140,8 @@ const DescriptionEditor: React.FC = () => {
   };
 
   return (
-    <div className="p-4 space-y-2 w-full">
-      <label htmlFor="description" className="block text-gray-700 font-medium">
+    <div className="space-y-2 w-full">
+      <label htmlFor="description" className="block text-gray-500 font-bold">
         Description
       </label>
       <div className="border border-gray-300 rounded-lg">

@@ -1,13 +1,14 @@
 import Button from '@/components/ui/Button'
 import { HiDownload, HiPlusCircle, HiOutlineFilter } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
-import SupplierTableSearch from '../../supplierType/components/SupplierTableSearch'
+import WorkOrderSearch from './WorkOrderSearch'
 
-export const SupplierMasterTableTools = () => {
+
+export const WorkOrderTableTools = () => {
     const navigate = useNavigate()
     return (
         <div className="flex flex-col lg:flex-row lg:items-center">
-            <SupplierTableSearch/>
+            <WorkOrderSearch/>
             <div className="block lg:inline-block md:mx-2 md:mb-0 mb-4">
                 <Button block size='sm' icon={<HiOutlineFilter/>}>Filter</Button>
             </div>
@@ -19,7 +20,7 @@ export const SupplierMasterTableTools = () => {
                 </Button>
             </div>
             <div className="block lg:inline-block md:mb-0 mb-4">
-                <Button block variant="solid" color='red' size="sm" icon={<HiPlusCircle />} onClick={()=>{navigate('/addsupplier')}}>
+                <Button block variant="solid" color='red' size="sm" icon={<HiPlusCircle />} onClick={()=>{navigate('/addworkordertype')}}>
                     Add
                 </Button>
             </div>
