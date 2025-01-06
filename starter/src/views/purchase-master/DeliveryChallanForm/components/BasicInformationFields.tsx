@@ -22,9 +22,9 @@ const options = [
     {label: 'Data', value: 0},
     {label: 'Dummy', value: 1},
     {label: 'Text', value: 2},
-    {label: 'Data', value: 0},
-    {label: 'Dummy', value: 1},
-    {label: 'Text', value: 2},
+    {label: 'Data', value: 3},
+    {label: 'Dummy', value: 4},
+    {label: 'Text', value: 5},
 ]
 
 const BasicInformationFields = (props: BasicInformationFields)=>{
@@ -117,7 +117,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                                 <Select
                                 field={field}
                                 form={form}
-                                value={options}
+                                value={options[0]}
                                 options={options}
                             />
                             )}
@@ -147,23 +147,23 @@ const DescriptionEditor: React.FC = () => {
       <div className="border border-gray-300 rounded-lg">
         {/* Toolbar */}
         <div className="flex items-center gap-2 p-2 border-b border-gray-300 bg-gray-100">
-            <button className="px-2 py-1 font-semibold hover:bg-gray-200 rounded" onClick={()=>applyStyle("")}>Normal</button>
+            <button className="px-1 py-1 font-semibold hover:bg-gray-200 rounded" onClick={()=>applyStyle("")}>Normal</button>
           <button
-            className="px-2 py-1 font-bold hover:bg-gray-200 rounded"
+            className="px-1 py-1 font-bold hover:bg-gray-200 rounded"
             title="Bold"
             onClick={() => applyStyle("bold")}
           >
             B
           </button>
           <button
-            className="px-2 py-1 italic hover:bg-gray-200 rounded"
+            className="px-1 py-1 italic hover:bg-gray-200 rounded"
             title="Italic"
             onClick={() => applyStyle("italic")}
           >
             /
           </button>
           <button
-            className="px-2 py-1 underline hover:bg-gray-200 rounded"
+            className="px-1 py-1 underline hover:bg-gray-200 rounded"
             title="Underline"
             onClick={() => applyStyle("underline")}
           >

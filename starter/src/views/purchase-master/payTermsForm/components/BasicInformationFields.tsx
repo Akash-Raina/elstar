@@ -57,7 +57,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                                     <Select
                                     field={field}
                                     form={form}
-                                    value={options}
+                                    value={options[0]}
                                     options={options}
                                 />
                                 )}
@@ -86,24 +86,27 @@ const DescriptionEditor: React.FC = () => {
       <div className="border border-gray-300 rounded-lg">
         {/* Toolbar */}
         <div className="flex items-center gap-2 p-2 border-b border-gray-300 bg-gray-100">
+          <button className="px-1 py-1 font-semibold hover:bg-gray-200 rounded" onClick={()=>applyStyle("")}>
+            Normal
+          </button>
           <button
-            onClick={() => applyStyle("bold")}
-            className="px-2 py-1 font-bold hover:bg-gray-200 rounded"
+            className="px-1 py-1 font-bold hover:bg-gray-200 rounded"
             title="Bold"
+            onClick={() => applyStyle("bold")}
           >
             B
           </button>
           <button
-            onClick={() => applyStyle("italic")}
-            className="px-2 py-1 italic hover:bg-gray-200 rounded"
+            className="px-1 py-1 italic hover:bg-gray-200 rounded"
             title="Italic"
+            onClick={() => applyStyle("italic")}
           >
             /
           </button>
           <button
-            onClick={() => applyStyle("underline")}
-            className="px-2 py-1 underline hover:bg-gray-200 rounded"
+            className="px-1 py-1 underline hover:bg-gray-200 rounded"
             title="Underline"
+            onClick={() => applyStyle("underline")}
           >
             U
           </button>

@@ -13,8 +13,19 @@ import BasicInformationFields from "./components/BasicInformationFields";
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    code: number
-    name: string
+    sub_group: number
+    bin_card_no: number
+    item_name: string
+    extra_desc: string
+    storing_unit: number
+    ordering_unit: string
+    conversing_factor: string
+    storing_location: string
+    opening_balance:string
+    weight:string
+    used_for:string
+    maintain_sr_no:number
+    prefix: string
 }
 
 export type SupplierFormModel = InitialData
@@ -35,17 +46,27 @@ type MainForm = {
 }
 
 const validationSchema = Yup.object().shape({
-    code: Yup.number().required('Sub Code required'),
-    name: Yup.string().required('Country Name required'),
+    supplier_code: Yup.number().required('Supplier Code required')
 })
 
-export const SupplierForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const ItemMasterForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            code: '',
-            name: '',
+            sub_group: "",
+            bin_card_no: "",
+            item_name: "",
+            extra_desc: "",
+            storing_unit: "",
+            ordering_unit: "",
+            conversing_factor: "",
+            storing_location: "",
+            opening_balance:"",
+            weight:"",
+            used_for: "",
+            maintain_sr_no:"",
+            prefix: ""
         },
         onFormSubmit,
         onDiscard, 
@@ -65,8 +86,8 @@ export const SupplierForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
             {({values, touched, errors, isSubmitting}) => (
                     <Form>
                         <FormContainer>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
-                                <div className="lg:col-span-2">
+                        <div className="grid grid-cols-1 gap-4">
+                                <div className="lg:col-span-1">
                                     <BasicInformationFields touched={touched} errors={errors} />
                                 </div>
                         </div>
@@ -100,4 +121,4 @@ export const SupplierForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-SupplierForm.displayName = 'SupplierForm'
+ItemMasterForm.displayName = 'ItemMasterForm'

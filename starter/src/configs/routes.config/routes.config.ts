@@ -303,6 +303,16 @@ export const protectedRoutes = [
         key: 'purchaseMenu.payterms',
         path: '/addpayterms',
         component: lazy(()=>import('@/views/purchase-master/newPayTerms'))
+    },
+    {
+        key: 'purchaseMenu.supplierMaster',
+        path: '/addsuppliermaster',
+        component: lazy(()=>import('@/views/purchase-master/newSupplierMaster'))
+    },
+    {
+        key: 'purchaseMenu.item',
+        path: '/additem',
+        component: lazy(()=>import('@/views/purchase-master/newItemMaster'))
     }
 
 ]

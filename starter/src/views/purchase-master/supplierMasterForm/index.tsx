@@ -7,14 +7,22 @@ import { ConfirmDialog, StickyFooter } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { AiOutlineSave } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
-import BasicInformationFields from "./components/BasicInformationFields";
+import BasicInformation from "./components/BasicInformation";
 
 
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    code: number
-    name: string
+    supplier_code: number
+    supplier_name: string
+    type: string
+    trade_name: string
+    sub_type: string
+    legal_name: string
+    rd_urd: string
+    ecommerce_operator: string
+    document_type: string
+    image:File
 }
 
 export type SupplierFormModel = InitialData
@@ -35,8 +43,7 @@ type MainForm = {
 }
 
 const validationSchema = Yup.object().shape({
-    code: Yup.number().required('Sub Code required'),
-    name: Yup.string().required('Country Name required'),
+    supplier_code: Yup.number().required('Supplier Code required')
 })
 
 export const SupplierForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
@@ -44,8 +51,16 @@ export const SupplierForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     const {
         type, 
         initialData = {
-            code: '',
-            name: '',
+            supplier_code: '',
+            supplier_name: '',
+            type: '',
+            trade_name: '',
+            sub_type: '',
+            legal_name: '',
+            rd_urd: '',
+            ecommerce_operator: '',
+            document_type: '',
+            image:[]
         },
         onFormSubmit,
         onDiscard, 
@@ -65,9 +80,9 @@ export const SupplierForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
             {({values, touched, errors, isSubmitting}) => (
                     <Form>
                         <FormContainer>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
-                                <div className="lg:col-span-2">
-                                    <BasicInformationFields touched={touched} errors={errors} />
+                        <div className="grid grid-cols-1 gap-4">
+                                <div className="lg:col-span-1">
+                                    <BasicInformation touched={touched} errors={errors} />
                                 </div>
                         </div>
                             <div

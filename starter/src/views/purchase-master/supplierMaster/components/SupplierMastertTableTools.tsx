@@ -19,7 +19,7 @@ export const SupplierMasterTableTools = () => {
                 </Button>
             </div>
             <div className="block lg:inline-block md:mb-0 mb-4">
-                <Button block variant="solid" color='red' size="sm" icon={<HiPlusCircle />} onClick={()=>{navigate('/addsupplier')}}>
+                <Button block variant="solid" color='red' size="sm" icon={<HiPlusCircle />} onClick={()=>{navigate('/addsuppliermaster')}}>
                     Add
                 </Button>
             </div>

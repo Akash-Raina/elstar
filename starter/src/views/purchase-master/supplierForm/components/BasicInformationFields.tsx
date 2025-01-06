@@ -18,7 +18,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
     return <>
         <AdaptableCard divider className="mb-4">
             <h3 className="mb-8">Add Supplier Type  </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2"> 
                 <div className="col-span-1">  
                     <FormItem
                     label = "Code"
