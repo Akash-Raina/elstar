@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { Rates } from "./Rates";
+import { OtherDetails } from "./OtherDetails";
+import { PreCurrentDetails } from "./PreCurrentDetails";
+import { ReOrderLevel } from "./ReOrderLevel";
+import { TaxDetails } from "./TaxDetails";
 
 
 const Navbar = () => {
@@ -8,10 +12,10 @@ const Navbar = () => {
   const tabs = [
     { label: "Godown", key: "godown", component: ''},
     { label: "Rates", key: "rates", component: <Rates/>},
-    { label: "Re-order Level", key: "reorder", component: ''},
-    { label: "Percurrent Details", key: "percurrent", component: ''},
-    { label: "Other Details", key: "other", component: ''},
-    { label: "HSN Details", key: "hsn" },
+    { label: "Re-order Level", key: "reorder", component: <ReOrderLevel/>},
+    { label: "Percurrent Details", key: "percurrent", component: <PreCurrentDetails/>},
+    { label: "Other Details", key: "other", component: <OtherDetails/>},
+    { label: "HSN Details", key: "hsn", component: <TaxDetails/> },
   ];
 
   return (

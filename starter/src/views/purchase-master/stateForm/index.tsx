@@ -80,7 +80,7 @@ export const StateFrom = forwardRef<FormikRef, StateForm>((props, ref)=>{
                         <div
                             className="-mx-8 px-8 flex justify-end py-4"
                         >
-                            <div className="md:flex items-center mt-36 flex gap-3">
+                            <div className="md:flex items-center  flex gap-3">
                                     <Button 
                                         size="sm"
                                         onClick={onDiscard}

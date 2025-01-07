@@ -9,57 +9,46 @@ import { AiOutlineSave } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
 import BasicInformationFields from "./components/BasicInformationFields";
 
-
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    terms_code: number
-    document_no: string
-    description: string
-    default_value: string
-    printing_index: string
+    code: number
+    name: string
 }
 
-export type TermsFormModel = InitialData
+export type ReleaseFormModel = InitialData
 
-export type TermsSetSubmitting = (isSubmitting: boolean) => void
+export type ReleaseSetSubmitting = (isSubmitting: boolean) => void
 
 export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 
 type OnDelete = (Callback: OnDeleteCallback) => void
 
-type TermsForm = {
+type ReleaseForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard ?: ()=>void
     onDelete ?: OnDelete
-    onFormSubmit: (FormData: InitialData, setSubmitting: TermsSetSubmitting) => void
+    onFormSubmit: (FormData: InitialData, setSubmitting: ReleaseSetSubmitting) => void
 }
 
 const validationSchema = Yup.object().shape({
-    terms_code: Yup.number().required('State Code required'),
-    document_no: Yup.string().required('State Name required'),
-    descprition: Yup.number().required('State Code required'),
-    default_value: Yup.string().required('State Name required'),
-    printing_index: Yup.string().required('State Name required')
+    code: Yup.number().required('Code required'),
+    name: Yup.string().required('Name required')
 })
 
-export const TermsFrom = forwardRef<FormikRef, TermsForm>((props, ref)=>{
+export const ReleaseOrderForm = forwardRef<FormikRef, ReleaseForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            terms_code: '',
-            document_no: '',
-            description: '',
-            default_value: '',
-            printing_index: ''
+            code: '',
+            name: '',
         },
         onFormSubmit,
         onDiscard, 
         onDelete
-
     } = props
 
     return <>
@@ -67,23 +56,25 @@ export const TermsFrom = forwardRef<FormikRef, TermsForm>((props, ref)=>{
             innerRef={ref}
             initialValues={initialData}
             validationSchema={validationSchema}
-            onSubmit={(values:TermsFormModel, {setSubmitting})=>{
+            onSubmit={(values:ReleaseFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
                 onFormSubmit?.(formData, setSubmitting)
             }}
+        
         >
-            {({values, touched, errors, isSubmitting}) =>(
-                <Form>
-                    <FormContainer>
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                            <div className="lg:col-span-2">
-                                <BasicInformationFields touched={touched} errors={errors} />
-                            </div>
-                    </div>
-                        <div
-                            className="-mx-8 px-8 flex justify-end py-4"
-                        >
-                            <div className="md:flex items-center flex gap-3">
+            {({values, touched, errors, isSubmitting}) => (
+                    <Form>
+                        <FormContainer>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div className="lg:col-span-2">
+                                    <BasicInformationFields touched={touched} errors={errors} />
+                                </div>
+                        </div>
+                            <StickyFooter
+                                className="-mx-8 px-8 flex justify-end py-4"
+                                stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                            >
+                                <div className="md:flex items-center mt-36 flex gap-3">
                                     <Button 
                                         size="sm"
                                         onClick={onDiscard}
@@ -102,12 +93,12 @@ export const TermsFrom = forwardRef<FormikRef, TermsForm>((props, ref)=>{
                                     </Button>
                                     
                                 </div>
-                        </div>
-                    </FormContainer>
-                </Form>
-            )}
+                            </StickyFooter>
+                        </FormContainer>
+                    </Form>
+                )}
         </Formik>
     </>
 })
 
-TermsFrom.displayName = 'TermsForm'
+ReleaseOrderForm.displayName = 'ReleaseOrderForm'

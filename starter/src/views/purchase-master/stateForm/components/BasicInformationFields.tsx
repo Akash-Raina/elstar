@@ -31,7 +31,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                     <Field
                         type = "text"
                         name = "state_code"
-                        placeholder = "State Code"
+                        placeholder = ""
                         component = {Input}
                     />
                     </FormItem>
@@ -45,7 +45,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                         <Field
                             type = "text"
                             name = "state_name"
-                            placeholder = "State Name"
+                            placeholder = ""
                             component = {Input}
                         />
                     </FormItem>
@@ -59,7 +59,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                         <Field
                             type = "text"
                             name = "state_code_gst"
-                            placeholder = "GST"
+                            placeholder = ""
                             component = {Input}
                         />
                     </FormItem>
@@ -73,7 +73,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                         <Field
                             type = "text"
                             name = "country_name"
-                            placeholder = "Country Name"
+                            placeholder = ""
                             component = {Input}
                         />
                     </FormItem>

@@ -1,17 +1,19 @@
 import { FormItem, Input } from "@/components/ui"
 import { Field } from "formik"
 
-export const Rates = ()=>{
+export const ReOrderLevel = ()=>{
+
+
     return <div className="w-full">
     <div className="flex flex-col mt-[17px] w-full"> 
         <div className="flex ml-[31px]">
             <div className="w-[241px]">
                 <FormItem
-                    label = "Purchase Rate"
+                    label = "Minimum Stock"
                 >
                     <Field
                         type = "text"
-                        name = "purchase_rate"
+                        name = "minimum_stock"
                         placeholder = ""
                         component = {Input}
                     />
@@ -19,11 +21,11 @@ export const Rates = ()=>{
             </div>
             <div className="flex w-[241px] ml-[65px]">
                 <FormItem
-                    label = "Terrif Subheading"
+                    label = "Re-order level stock"
                 >
                     <Field
                         type = "text"
-                        name = "terrif_subheading"
+                        name = "reorder_level"
                         placeholder = ""
                         component = {Input}
                     />
@@ -32,11 +34,11 @@ export const Rates = ()=>{
         </div>
         <div className="flex w-[241px] ml-[31px]">
             <FormItem
-                label = "Sales Rate"
+                label = "Maximum Stock"
             >
                 <Field
                     type = "text"
-                    name = "sales_rate"
+                    name = "maximum_stock"
                     placeholder = ""
                     component = {Input}
                 />

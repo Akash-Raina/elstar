@@ -29,7 +29,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                     <Field
                         type = "text"
                         name = "district_code"
-                        placeholder = "District Code"
+                        placeholder = ""
                         component = {Input}
                     />
                     </FormItem>
@@ -43,7 +43,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                         <Field
                             type = "text"
                             name = "district_name"
-                            placeholder = "District Name"
+                            placeholder = ""
                             component = {Input}
                         />
                     </FormItem>
@@ -57,7 +57,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                         <Field
                             type = "text"
                             name = "state"
-                            placeholder = "State"
+                            placeholder = ""
                             component = {Input}
                         />
                     </FormItem>

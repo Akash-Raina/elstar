@@ -401,6 +401,67 @@ const navigationConfig: NavigationTree[] = [
             }
 
         ]
+    },
+    {
+        key: 'salesMaster',
+        path: '',
+        title: 'Sales Master',
+        translateKey: 'nav.salesMaster.salesMaster',
+        icon: '',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: [],
+        subMenu: [
+            {
+                key: 'salesMaster.item1',
+                path: '/salesinvoice',
+                title: 'Sales Invoice Bank Details',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'salesMaster.item2',
+                path: '/molasseslocalsetting',
+                title: 'Molasses local setting',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'salesMaster.item3',
+                path: '/customermaster',
+                title: 'Customer Master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'salesMaster.item4',
+                path: '/releaseorder',
+                title: 'Release Order Type',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],                
+            },
+            {
+                key: 'salesMaster.item5',
+                path: '/currency',
+                title: 'Currency',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [], 
+            }
+        ]
     }
 ]
 

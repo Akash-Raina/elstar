@@ -313,6 +313,56 @@ export const protectedRoutes = [
         key: 'purchaseMenu.item',
         path: '/additem',
         component: lazy(()=>import('@/views/purchase-master/newItemMaster'))
+    },
+    {
+        key: 'salesMaster.item1',
+        path: '/salesinvoice',
+        component: lazy(()=>import('@/views/sales-master/salesInvoice'))
+    },
+    {
+        key: 'salesMaster.item1',
+        path: '/addsalesinvoice',
+        component: lazy(()=>import('@/views/sales-master/newSalesInvoice'))
+    },
+    {
+        key: 'salesMaster.item2',
+        path: '/molasseslocalsetting',
+        component: lazy(()=>import('@/views/sales-master/molassesLocalSetting'))
+    },
+    {
+        key: 'salesMaster.item2',
+        path: '/addmolasseslocal',
+        component: lazy(()=>import('@/views/sales-master/newMolassesLocal'))
+    },
+    {
+        key: 'salesMaster.item3',
+        path: '/customermaster',
+        component: lazy(()=>import('@/views/sales-master/customerMaster'))
+    },
+    {
+        key: 'salesMaster.item3',
+        path: '/addcustomermaster',
+        component: lazy(()=>import('@/views/sales-master/newCustomerMaster'))
+    },
+    {
+        key: 'salesMaster.item4',
+        path:'/releaseorder',
+        component: lazy(()=>import('@/views/sales-master/releaseorder'))
+    },
+    {
+        key: 'salesMaster.item4',
+        path: '/addreleaseorder',
+        component: lazy(()=>import('@/views/sales-master/newReleaseOrder'))
+    },
+    {
+        key: 'salesMaster.item5',
+        path: '/currency',
+        component: lazy(()=>import('@/views/sales-master/currency'))
+    },
+    {
+        key: 'salesMaster.item5',
+        path: '/addcurrency',
+        component: lazy(()=>import('@/views/sales-master/newCurrency'))
     }
 
 ]

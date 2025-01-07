@@ -7,30 +7,22 @@ import { ConfirmDialog, StickyFooter } from "@/components/shared";
 import { Button } from "@/components/ui";
 import { AiOutlineSave } from "react-icons/ai";
 import { HiOutlineTrash } from "react-icons/hi";
-import BasicInformationFields from "./components/BasicInformationFields";
+import BasicInformation from "./components/BasicInformation";
 
 
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    sub_group: number
-    bin_card_no: number
-    item_name: string
-    extra_desc: string
-    storing_unit: number
-    ordering_unit: string
-    conversing_factor: string
-    storing_location: string
-    opening_balance:string
-    weight:string
-    used_for:string
-    maintain_sr_no:number
-    prefix: string
+    bank_name: string
+    branch_name: string
+    ifsc_code: string
+    beneficiary_name: string
+    account_no: number
 }
 
-export type SupplierFormModel = InitialData
+export type SalesFormModel = InitialData
 
-export type SupplierSetSubmitting = (isSubmitting: boolean) => void
+export type SalesSetSubmitting = (isSubmitting: boolean) => void
 
 export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
@@ -42,31 +34,28 @@ type MainForm = {
     type: 'edit' | 'new'
     onDiscard ?: ()=>void
     onDelete ?: OnDelete
-    onFormSubmit: (FormData: InitialData, setSubmitting: SupplierSetSubmitting) => void
+    onFormSubmit: (FormData: InitialData, setSubmitting: SalesSetSubmitting) => void
 }
 
 const validationSchema = Yup.object().shape({
-    supplier_code: Yup.number().required('Supplier Code required')
+    
 })
 
-export const ItemMasterForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const SalesInvoiceForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            sub_group: "",
-            bin_card_no: "",
-            item_name: "",
-            extra_desc: "",
-            storing_unit: "",
-            ordering_unit: "",
-            conversing_factor: "",
-            storing_location: "",
-            opening_balance:"",
-            weight:"",
-            used_for: "",
-            maintain_sr_no:"",
-            prefix: ""
+            supplier_code: '',
+            supplier_name: '',
+            type: '',
+            trade_name: '',
+            sub_type: '',
+            legal_name: '',
+            rd_urd: '',
+            ecommerce_operator: '',
+            document_type: '',
+            image:[]
         },
         onFormSubmit,
         onDiscard, 
@@ -78,7 +67,7 @@ export const ItemMasterForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
             innerRef={ref}
             initialValues={initialData}
             validationSchema={validationSchema}
-            onSubmit={(values:SupplierFormModel, {setSubmitting})=>{
+            onSubmit={(values:SalesFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
                 onFormSubmit?.(formData, setSubmitting)
             }}
@@ -88,7 +77,13 @@ export const ItemMasterForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
                         <FormContainer>
                         <div className="grid grid-cols-1 gap-4">
                                 <div className="lg:col-span-1">
-                                    <BasicInformationFields touched={touched} errors={errors} />
+                                    <h3 className="mb-8">Sales Invoice Bank Details </h3>
+                                    <BasicInformation touched={touched} errors={errors} type={"1"} />
+                                    <div className=" flex gap-2 mb-2">
+                                        <input type="checkbox"  className="w-[27px] h-[23px]"/>
+                                        <label className="text-lg font-semibold text-black">Alternate Bank</label>
+                                    </div>
+                                    <BasicInformation touched={touched} errors={errors} type={"2"} />
                                 </div>
                         </div>
                             <div
@@ -121,4 +116,4 @@ export const ItemMasterForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-ItemMasterForm.displayName = 'ItemMasterForm'
+SalesInvoiceForm.displayName = 'SalesInvoiceForm'

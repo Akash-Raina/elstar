@@ -3,8 +3,8 @@ import { FormItem, Input } from "@/components/ui"
 import { Field, FormikErrors, FormikTouched } from "formik"
 
 type FormFieldsName = {
-    country_code: number
-    country_name: string
+    currency_name: string
+    name: string
 }
 
 type BasicInformationFields = {
@@ -17,17 +17,17 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
 
     return <>
         <AdaptableCard divider className="mb-4">
-            <h3 className="mb-8">Add Country Master</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
+            <h3 className="mb-8">Currency</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4"> 
                 <div className="col-span-1">
                     <FormItem
-                        label = "Country Code"
-                        invalid = {(errors.country_code && touched.country_code)}
-                        errorMessage={errors.country_code}
+                        label = "Currency Name"
+                        invalid = {(errors.currency_name && touched.currency_name)}
+                        errorMessage={errors.currency_name}
                     >
                     <Field
                         type = "text"
-                        name = "country_code"
+                        name = "currency_name"
                         placeholder = ""
                         component = {Input}
                     />
@@ -35,13 +35,13 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                 </div>
                 <div>  
                     <FormItem
-                    label = "Country Name"
-                    invalid = {(errors.country_name && touched.country_name)}
-                    errorMessage={errors.country_name}
+                    label = "Name"
+                    invalid = {(errors.name && touched.name)}
+                    errorMessage={errors.name}
                     >
                         <Field
                             type = "text"
-                            name = "country_name"
+                            name = "name"
                             placeholder = ""
                             component = {Input}
                         />
