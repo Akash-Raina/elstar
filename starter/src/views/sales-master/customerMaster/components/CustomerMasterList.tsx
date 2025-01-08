@@ -20,6 +20,7 @@ const countryData = [
         ecommerce_operator: 'No'
     },
 ]
+
 const CustomerMasterList = ()=>{
 
     const columns: ColumnDef<CustomerList>[] = useMemo(

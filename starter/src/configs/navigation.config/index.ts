@@ -460,6 +460,16 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [], 
+            },
+            {
+                key: 'salesMaster.item6',
+                path: '/molassescustomersetting',
+                title: 'Molasses sale setting',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [], 
             }
         ]
     }

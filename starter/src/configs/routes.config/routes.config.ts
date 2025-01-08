@@ -363,6 +363,11 @@ export const protectedRoutes = [
         key: 'salesMaster.item5',
         path: '/addcurrency',
         component: lazy(()=>import('@/views/sales-master/newCurrency'))
+    },
+    {
+        key: 'salesMaster.item6',
+        path: '/molassescustomersetting',
+        component: lazy(()=>import('@/views/sales-master/molassesCustomerSetting'))
     }
 
 ]
