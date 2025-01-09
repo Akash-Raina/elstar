@@ -140,11 +140,6 @@ export const protectedRoutes = [
         component: lazy(()=> import('@/views/purchase-master/goDown'))
     },
     {
-        key: 'purchaseMenu.godown',
-        path: '/addgodown',
-        component: lazy(()=> import('@/views/purchase-master/newGoDown'))
-    },
-    {
         key: 'purchaseMenu.measure',
         path: '/measure',
         component: lazy(()=> import('@/views/purchase-master/measuringUnit'))
@@ -368,6 +363,52 @@ export const protectedRoutes = [
         key: 'salesMaster.item6',
         path: '/molassescustomersetting',
         component: lazy(()=>import('@/views/sales-master/molassesCustomerSetting'))
+    },
+    {
+        key: 'salesMaster.item6',
+        path: '/addmolassescustomer',
+        component: lazy(()=>import('@/views/sales-master/newMolassesCustomer'))
+    },
+    {
+        key: 'salesMaster.item7',
+        path: '/districtmaster',
+        component: lazy(()=>import('@/views/sales-master/districtMaster'))
+    },
+    {
+        key: 'salesMaster.item7',
+        path: '/adddistrictmaster',
+        component: lazy(()=>import('@/views/sales-master/newDistrictMaster'))
+    },
+    {
+        key: 'salesMaster.item8',
+        path: '/bagassecustomer',
+        component: lazy(()=>import('@/views/sales-master/balasseSaleSetting'))
+    },
+    {
+        key: 'salesMaster.item8',
+        path: '/addbalassecustomer',
+        component: lazy(()=>import('@/views/sales-master/newBalasseSale'))
+    },
+    {
+        key: 'salesMaster.godown',
+        path: '/godown',
+        component: lazy(()=>import('@/views/sales-master/godown'))
+    },
+    {
+        key: 'salesMaster.godown',
+        path: '/addgodown',
+        component: lazy(()=>import("@/views/sales-master/newGodown"))
+    },
+    {
+        key: 'salesMaster.order',
+        path: '/ordertype',
+        component: lazy(()=>import('@/views/sales-master/orderAcceptanceType'))
+    },
+
+    {
+        key: 'salesMaster.order',
+        path: '/addordertype',
+        component: lazy(()=>import('@/views/sales-master/newOrderType'))
     }
 
 ]

@@ -1,14 +1,16 @@
 
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
+import { SalesInvoiceForm } from "../salesInvoiceForm";
 import { MolassesLocalForm } from "../molassesLocalForm";
+import { MolassesCustomerForm } from "../molassesCustomerForm";
 
 const NewMolassesLocal = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/molasseslocalsetting')
+        navigate('/molassescustomersetting')
     }
 
     const ifSuccess = (success: any) => {
@@ -25,12 +27,12 @@ const NewMolassesLocal = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/molasseslocalsetting");
+            navigate("/molassescustomersetting");
         }
     };
 
     return <>
-        <MolassesLocalForm
+        <MolassesCustomerForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}

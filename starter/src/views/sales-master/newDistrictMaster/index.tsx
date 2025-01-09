@@ -1,14 +1,17 @@
 
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
+import { SalesInvoiceForm } from "../salesInvoiceForm";
 import { MolassesLocalForm } from "../molassesLocalForm";
+import { MolassesCustomerForm } from "../molassesCustomerForm";
+import { DistrictMasterForm } from "../districtMasterForm";
 
-const NewMolassesLocal = ()=>{
+const NewDistrictMaster = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/molasseslocalsetting')
+        navigate('/districtmaster')
     }
 
     const ifSuccess = (success: any) => {
@@ -25,12 +28,12 @@ const NewMolassesLocal = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/molasseslocalsetting");
+            navigate("/districtmaster");
         }
     };
 
     return <>
-        <MolassesLocalForm
+        <DistrictMasterForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -38,4 +41,4 @@ const NewMolassesLocal = ()=>{
     </>
 }
 
-export default NewMolassesLocal
+export default NewDistrictMaster
