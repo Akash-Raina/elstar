@@ -1,9 +1,10 @@
+
 import Button from '@/components/ui/Button'
 import { HiDownload, HiPlusCircle, HiOutlineFilter } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import CountryTableSearch from './CountryTableSearch'
 
-export const CountryTableTools = () => {
+export const GoDownTableTools = () => {
     const navigate = useNavigate()
     return (
         <div className="flex flex-col lg:flex-row lg:items-center">

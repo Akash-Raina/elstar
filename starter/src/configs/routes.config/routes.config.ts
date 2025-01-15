@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import authRoute from './authRoute'
 import type { Routes } from '@/@types/routes'
+import { m } from 'framer-motion'
 
 export const publicRoutes: Routes = [...authRoute]
 
@@ -409,6 +410,56 @@ export const protectedRoutes = [
         key: 'salesMaster.order',
         path: '/addordertype',
         component: lazy(()=>import('@/views/sales-master/newOrderType'))
+    },
+    {
+        key: 'salesMaster.country',
+        path: '/country',
+        component: lazy(()=>import('@/views/sales-master/country'))
+    },
+    {
+        key: 'salesMaster.country',
+        path: '/addnewcountry',
+        component: lazy(()=>import('@/views/sales-master/newCountry'))
+    },
+    {
+        key: 'salesMaster.state',
+        path: '/state',
+        component: lazy(()=>import('@/views/sales-master/stateMaster'))
+    },
+    {
+        key: 'salesMaster.state',
+        path: '/addnewstate',
+        component: lazy(()=>import('@/views/sales-master/newStateMaster'))
+    },
+    {
+        key: 'salesMaster.shippingport',
+        path: '/shippingport',
+        component: lazy(()=>import('@/views/sales-master/shippingPort'))
+    },
+    {
+        key: 'salesMaster.shippingport',
+        path: '/addnewport',
+        component: lazy(()=>import('@/views/sales-master/newShippingPort'))
+    },
+    {
+        key: 'salesMaster.pressmudsetting',
+        path: '/pressmudsetting',
+        component: lazy(()=>import('@/views/sales-master/pressmudsetting'))
+    },
+    {
+        key: 'salesMaster.pressmudsetting',
+        path: '/addpressmudsetting',
+        component: lazy(()=>import('@/views/sales-master/newPressmudSetting'))
+    },
+    {
+        key: 'salesMaster.itemmaster',
+        path: '/itemmaster',
+        component: lazy(()=>import('@/views/sales-master/itemMaster'))
+    },
+    {
+        key: 'salesMaster.itemmaster',
+        path: '/addnewitem',
+        component: lazy(()=>import('@/views/sales-master/newItemMaster'))
     }
 
 ]

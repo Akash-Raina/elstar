@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { CurrencyForm } from "../currencyForm";
+import { ShippingPortForm } from "../shippingPortForm";
 
-const NewCurrency = ()=>{
+const NewShippingPort = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/currency')
+        navigate('/shippingport')
     }
 
     const ifSuccess = (success: any) => {
@@ -24,12 +24,12 @@ const NewCurrency = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/currency");
+            navigate("/shippingport");
         }
     };
 
     return <>
-        <CurrencyForm
+        <ShippingPortForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -37,4 +37,4 @@ const NewCurrency = ()=>{
     </>
 }
 
-export default NewCurrency
+export default NewShippingPort

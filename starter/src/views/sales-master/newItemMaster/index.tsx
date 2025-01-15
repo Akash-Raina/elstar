@@ -1,13 +1,14 @@
+
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { CurrencyForm } from "../currencyForm";
+import { ItemMasterForm } from "../itemMasterForm";
 
-const NewCurrency = ()=>{
+const NewItemMaster = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/currency')
+        navigate('/itemmaster')
     }
 
     const ifSuccess = (success: any) => {
@@ -24,12 +25,12 @@ const NewCurrency = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/currency");
+            navigate("/itemmaster");
         }
     };
 
     return <>
-        <CurrencyForm
+        <ItemMasterForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -37,4 +38,4 @@ const NewCurrency = ()=>{
     </>
 }
 
-export default NewCurrency
+export default NewItemMaster
