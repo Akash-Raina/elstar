@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Bill } from "./Bill";
+import { DeliveryAddress } from "./DeliveryAddress";
+import { ContactDetails } from "./ContactDetails";
+import { BillingAddress } from "./BillingAddress";
 
 
 const Navbar = () => {
   const [activeTab, setActiveTab] = useState<"billing" | "delivery" | "shipping" | "contact"  | "tax" | "bill" | null>("bill");
 
   const tabs = [
-    { label: "Billing Address", key: "billing", component: ''},
-    { label: "Delivery Address", key: "delivery", component: ''},
-    { label: "Shipping Address", key: "shipping", component: ''},
-    { label: "Contact Details", key: "contact", component: ''},
-    { label: "Tax Details", key: "tax", component: ''},
+    { label: "Billing Address", key: "billing", component: <BillingAddress/>},
+    { label: "Delivery Address", key: "delivery", component: <DeliveryAddress/>},
+    { label: "Shipping Address", key: "shipping", component: <BillingAddress/>},
+    { label: "Contact Details", key: "contact", component: <ContactDetails/>},
+    { label: "Tax Details", key: "tax", component: <ContactDetails/>},
     { label: "Bill Type Wise GLPL", key: "bill", component: <Bill/> },
   ];
 

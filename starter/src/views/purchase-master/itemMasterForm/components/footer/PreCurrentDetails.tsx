@@ -30,5 +30,5 @@ export const PreCurrentDetails = ()=>{
             </FormItem>
         </div>
     </div>
-</div>
+    </div>
 }
