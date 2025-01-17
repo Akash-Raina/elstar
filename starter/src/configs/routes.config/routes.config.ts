@@ -1,7 +1,6 @@
 import { lazy } from 'react'
 import authRoute from './authRoute'
 import type { Routes } from '@/@types/routes'
-import { m } from 'framer-motion'
 
 export const publicRoutes: Routes = [...authRoute]
 
@@ -460,6 +459,36 @@ export const protectedRoutes = [
         key: 'salesMaster.itemmaster',
         path: '/addnewitem',
         component: lazy(()=>import('@/views/sales-master/newItemMaster'))
+    },
+    {
+        key: 'salesMaster.producttype',
+        path: '/producttype',
+        component: lazy(()=>import('@/views/sales-master/productType'))
+    },
+    {
+        key: 'salesMaster.producttype',
+        path: '/addproducttype',
+        component: lazy(()=>import('@/views/sales-master/newProductType'))
+    },
+    {
+        key: 'salesMaster.product',
+        path: '/product',
+        component: lazy(()=>import('@/views/sales-master/products'))
+    },
+    {
+        key: 'salesMaster.product',
+        path: '/addnewproduct',
+        component: lazy(()=>import('@/views/sales-master/newProduct'))
+    },
+    {
+        key: 'salesMaster.items',
+        path: '/items',
+        component: lazy(()=>import('@/views/sales-master/items'))
+    },
+    {
+        key: 'salesMaster.items',
+        path: '/addsubitem',
+        component: lazy(()=>import('@/views/sales-master/newItem'))
     }
 
 ]
