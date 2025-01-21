@@ -132,7 +132,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                             />
                         </FormItem>
                     </div>
-                    <div className="ml-[80px] w-60">
+                    <div className="ml-[37px] w-60">
                         <FormItem
                             label = "Sugar License Number"
                             invalid = {(errors.sugar_license_number && touched.sugar_license_number)}
@@ -176,7 +176,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                             />
                         </FormItem>
                     </div>
-                    <div className="ml-[80px] w-60">
+                    <div className="ml-[37px] w-60">
                         <FormItem
                             label = "Godown State"
                             invalid = {(errors.godown_state && touched.godown_state)}
@@ -192,7 +192,7 @@ const BasicInformationFields = (props: BasicInformationFields)=>{
                     </div>
                 </div>
                 <div className="grid-col-1 flex gap-2">
-                    <div className=" w-60">
+                    <div className="w-60">
                         <FormItem
                             label = "Godown State"
                             invalid = {(errors.godown_state && touched.godown_state)}

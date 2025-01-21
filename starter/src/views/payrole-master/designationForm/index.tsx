@@ -6,70 +6,47 @@ import cloneDeep from "lodash/cloneDeep";
 import { Button } from "@/components/ui";
 import { AiOutlineSave } from "react-icons/ai";
 import BasicInformationFields from "./components/BasicInformationFields";
-import { ProcurememtDetails } from "./components/ProcurementDetails";
-import { OtherDetails } from "./components/OtherDetails";
-import { ItemDetails } from "./components/ItemDetails";
+
+
 
 
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    product_type: string
     code: string
-    item_name: string
-    description: string
-    storing_unit: string
-    ordering_unit:string
-    conversing_factor:string
-    storing_location:string
-    weight:string
-    weight_unit: string
-    unit: string
-    hsn_code:string
-    godown:string
-    opening_balance:string
+    sequence_no: string
+    designation_name: string
 }
 
-export type GoDownFormModel = InitialData
+export type LocalFormModel = InitialData
 
-export type GoDownSetSubmitting = (isSubmitting: boolean) => void
+export type LocalSetSubmitting = (isSubmitting: boolean) => void
 
 export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 
 type OnDelete = (Callback: OnDeleteCallback) => void
 
-type GoDownForm = {
+type MainForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard ?: ()=>void
     onDelete ?: OnDelete
-    onFormSubmit: (FormData: InitialData, setSubmitting: GoDownSetSubmitting) => void
+    onFormSubmit: (FormData: InitialData, setSubmitting: LocalSetSubmitting) => void
 }
 
 const validationSchema = Yup.object().shape({
-
+    
 })
 
-export const ItemForm = forwardRef<FormikRef, GoDownForm>((props, ref)=>{
+export const DesignationForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            product_type: '',
             code: '',
-            item_name:'',
-            description: '',
-            storing_unit: '',
-            ordering_unit:'',
-            conversing_factor:'',
-            storing_location:'',
-            weight:'',
-            weight_unit: '',
-            unit: '',
-            hsn_code:'',
-            godown:'',
-            opening_balance:''
+            sequence_no: '',
+            designation_name: '',
         },
         onFormSubmit,
         onDiscard, 
@@ -81,7 +58,7 @@ export const ItemForm = forwardRef<FormikRef, GoDownForm>((props, ref)=>{
             innerRef={ref}
             initialValues={initialData}
             validationSchema={validationSchema}
-            onSubmit={(values:GoDownFormModel, {setSubmitting})=>{
+            onSubmit={(values:LocalFormModel, {setSubmitting})=>{
                 const formData = cloneDeep(values)
                 onFormSubmit?.(formData, setSubmitting)
             }}
@@ -89,21 +66,15 @@ export const ItemForm = forwardRef<FormikRef, GoDownForm>((props, ref)=>{
             {({values, touched, errors, isSubmitting}) => (
                     <Form>
                         <FormContainer>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                                <div className="lg:col-span-3">
-                                    <BasicInformationFields touched={touched} errors={errors} />
-                                    <div className="flex gap-7">
-                                        <ProcurememtDetails touched={touched} errors={errors}/>
-                                        <OtherDetails touched={touched} errors={errors}/>
-                                    </div>
-                                    
-                                    <ItemDetails/>
+                        <div className="grid grid-cols-1 gap-4">
+                                <div className="lg:col-span-1">
+                                    <BasicInformationFields touched={touched} errors={errors}/>
                                 </div>
                         </div>
                             <div
                                 className="-mx-8 px-8 flex justify-end py-4"
                             >
-                                <div className="md:flex items-center mt-6 flex gap-3">
+                                <div className="md:flex items-center flex gap-3">
                                     <Button 
                                         size="sm"
                                         onClick={onDiscard}
@@ -130,4 +101,4 @@ export const ItemForm = forwardRef<FormikRef, GoDownForm>((props, ref)=>{
     </>
 })
 
-ItemForm.displayName = 'ItemForm'
+DesignationForm.displayName = 'DesignationForm'

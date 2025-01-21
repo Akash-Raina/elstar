@@ -489,6 +489,36 @@ export const protectedRoutes = [
         key: 'salesMaster.items',
         path: '/addsubitem',
         component: lazy(()=>import('@/views/sales-master/newItem'))
+    },
+    {
+        key: 'payroleMaster.employeemaster',
+        path: '/employeemaster',
+        component: lazy(()=>import('@/views/payrole-master/employeeMaster'))
+    },
+    {
+        key: 'payroleMaster.employeemaster',
+        path: '/addemployeemaster',
+        component: lazy(()=>import('@/views/payrole-master/newEmployeeMaster'))
+    },
+    {
+        key: 'payroleMaster.employeetype',
+        path: '/employeetype',
+        component: lazy(()=>import('@/views/payrole-master/employeetype'))
+    },
+    {
+        key: 'payroleMaster.employeetype',
+        path: '/addemployeetype',
+        component: lazy(()=>import('@/views/payrole-master/newEmployeeType'))
+    },
+    {
+        key: 'payroleMaster.designation',
+        path: '/designation',
+        component: lazy(()=>import('@/views/payrole-master/designation'))
+    },
+    {
+        key:'payroleMaster.designation',
+        path: '/adddesignation',
+        component: lazy(()=>import('@/views/payrole-master/newDesignation'))
     }
 
 ]

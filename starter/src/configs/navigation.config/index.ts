@@ -592,6 +592,47 @@ const navigationConfig: NavigationTree[] = [
                 subMenu: [],
             }
         ]
+    },
+    {
+        key: 'payroleMaster',
+        path: '',
+        title: 'Payrole Master',
+        translateKey: 'nav.payroleMaster.payroleMaster',
+        icon: '',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: [],
+        subMenu: [
+            {
+                key: 'payroleMaster.employeemaster',
+                path: '/employeemaster',
+                title: 'Employee Master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.employetype',
+                path: '/employeetype',
+                title: 'Employee Type',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.designation',
+                path: '/designation',
+                title: 'Designation',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            }
+        ]
     }
 ]
 
