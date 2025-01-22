@@ -11,8 +11,9 @@ type FormikRef = FormikProps<any>
 
 type InitialData = {
     code: string
-    sequence_no: string
-    designation_name: string
+    printing_sequence: string
+    grade: string
+    retention_applicable:string
 }
 
 export type LocalFormModel = InitialData
@@ -36,14 +37,15 @@ const validationSchema = Yup.object().shape({
     
 })
 
-export const DesignationForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const GradeForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
             code: '',
-            sequence_no: '',
-            designation_name: '',
+            printing_sequence: '',
+            grade: '',
+            retention_applicable:''
         },
         onFormSubmit,
         onDiscard, 
@@ -98,4 +100,4 @@ export const DesignationForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-DesignationForm.displayName = 'DesignationForm'
+GradeForm.displayName = 'GradeForm'

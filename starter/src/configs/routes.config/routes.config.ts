@@ -1,6 +1,7 @@
 import { lazy } from 'react'
 import authRoute from './authRoute'
 import type { Routes } from '@/@types/routes'
+import path from 'path'
 
 export const publicRoutes: Routes = [...authRoute]
 
@@ -519,6 +520,61 @@ export const protectedRoutes = [
         key:'payroleMaster.designation',
         path: '/adddesignation',
         component: lazy(()=>import('@/views/payrole-master/newDesignation'))
+    },
+    {
+        key:'payroleMaster.grade',
+        path:'/grade',
+        component: lazy(()=>import('@/views/payrole-master/grade'))
+    },
+    {
+        key:'payroleMaster.grade',
+        path:'/addgrade',
+        component: lazy(()=>import('@/views/payrole-master/newGrade'))
+    },
+    {
+        key: 'payroleMaster.department',
+        path: '/department',
+        component: lazy(()=>import('@/views/payrole-master/department'))
+    },
+    {
+        key: 'payroleMaster.department',
+        path: '/adddepartment',
+        component: lazy(()=>import('@/views/payrole-master/newDepartment'))
+    },
+    {
+        key: 'payroleMaster.section',
+        path: '/section',
+        component: lazy(()=>import('@/views/payrole-master/section'))
+    },
+    {
+        key: 'payroleMaster.section',
+        path: '/addsection',
+        component: lazy(()=>import('@/views/payrole-master/newSection'))
+    },
+    {
+        key: 'payroleMaster.bankbranchmaster',
+        path: '/bankbranchmaster',
+        component: lazy(()=>import('@/views/payrole-master/bankbranchmaster'))
+    },
+    {
+        key: 'payroleMaster.bankbranchmaster',
+        path: '/addbankbranchmaster',
+        component: lazy(()=>import('@/views/payrole-master/newBankBranchMaster'))
+    },
+    {
+        key: 'payroleMaster.bank',
+        path: '/bank',
+        component: lazy(()=>import('@/views/payrole-master/bank'))
+    },
+    {
+        key: 'payroleMaster.bank',
+        path: '/addbank',
+        component: lazy(()=>import('@/views/payrole-master/newBank'))
+    },
+    {
+        key: 'payroleMaster.deduction',
+        path: '/deductionheadandslab',
+        component: lazy(()=>import('@/views/payrole-master/deductionheadandslab'))
     }
 
-]
+] 

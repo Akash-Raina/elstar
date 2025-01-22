@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { EmployeeForm } from "../EmployeeMasterForm";
+import { BankBranchMasterForm } from "../bankbranchForm";
 
-const NewEmployeeMaster = ()=>{
+const NewBankBranchMaster = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/employeemaster')
+        navigate('/bankbranchmaster')
     }
 
     const ifSuccess = (success: any) => {
@@ -24,12 +24,12 @@ const NewEmployeeMaster = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/employeemaster");
+            navigate("/bankbranchmaster");
         }
     };
 
     return <>
-        <EmployeeForm
+        <BankBranchMasterForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -37,4 +37,4 @@ const NewEmployeeMaster = ()=>{
     </>
 }
 
-export default NewEmployeeMaster
+export default NewBankBranchMaster

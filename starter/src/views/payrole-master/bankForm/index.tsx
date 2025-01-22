@@ -10,9 +10,8 @@ import BasicInformationFields from "./components/BasicInformationFields";
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    code: string
-    sequence_no: string
-    designation_name: string
+    branch_code: number
+    branch_name: string
 }
 
 export type LocalFormModel = InitialData
@@ -36,14 +35,13 @@ const validationSchema = Yup.object().shape({
     
 })
 
-export const DesignationForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const BankForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            code: '',
-            sequence_no: '',
-            designation_name: '',
+            branch_code: '',
+            branch_name: ''
         },
         onFormSubmit,
         onDiscard, 
@@ -98,4 +96,4 @@ export const DesignationForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-DesignationForm.displayName = 'DesignationForm'
+BankForm.displayName = 'BankForm'

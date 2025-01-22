@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { EmployeeForm } from "../EmployeeMasterForm";
+import { GradeForm } from "../gradeForm";
 
-const NewEmployeeMaster = ()=>{
+const NewGrade = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/employeemaster')
+        navigate('/grade')
     }
 
     const ifSuccess = (success: any) => {
@@ -24,12 +24,12 @@ const NewEmployeeMaster = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/employeemaster");
+            navigate("/grade");
         }
     };
 
     return <>
-        <EmployeeForm
+        <GradeForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -37,4 +37,4 @@ const NewEmployeeMaster = ()=>{
     </>
 }
 
-export default NewEmployeeMaster
+export default NewGrade
