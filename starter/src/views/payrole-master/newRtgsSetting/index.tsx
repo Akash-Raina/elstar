@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { DepartmentForm } from "../departmentForm";
-import { DeductionHeadandslapForm } from "../DeductionHeadandslapForm";
+import { OverTimeTypeForm } from "../overTimeTypeForm";
+import { RtgsSettingForm } from "../rtgsForm";
 
-const NewDeductionHeadandSlap = ()=>{
+const NewRtgsSetting = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/deductionheadandslab')
+        navigate('/rtgssetting')
     }
 
     const ifSuccess = (success: any) => {
@@ -25,12 +25,12 @@ const NewDeductionHeadandSlap = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/deductionheadandslab");
+            navigate("/rtgssetting");
         }
     };
 
     return <>
-        <DeductionHeadandslapForm
+        <RtgsSettingForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -38,4 +38,4 @@ const NewDeductionHeadandSlap = ()=>{
     </>
 }
 
-export default NewDeductionHeadandSlap
+export default NewRtgsSetting

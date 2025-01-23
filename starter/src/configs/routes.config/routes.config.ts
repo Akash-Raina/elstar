@@ -575,6 +575,81 @@ export const protectedRoutes = [
         key: 'payroleMaster.deduction',
         path: '/deductionheadandslab',
         component: lazy(()=>import('@/views/payrole-master/deductionheadandslab'))
+    },
+    {
+        key: 'payroleMaster.deduction',
+        path: '/adddeductionheadandslab',
+        component: lazy(()=>import('@/views/payrole-master/newDeductionHeadandSlap'))
+    },
+    {
+        key: 'payroleMaster.basicslab',
+        path: '/basicslab',
+        component: lazy(()=>import('@/views/payrole-master/basicSlab'))
+    },
+    {
+        key: 'payroleMaster.basicslab',
+        path: '/addbasicslab',
+        component: lazy(()=>import('@/views/payrole-master/newBasicSlab'))
+    },
+    {
+        key: 'payroleMaster.overtimetype',
+        path: '/overtimetype',
+        component: lazy(()=>import('@/views/payrole-master/overTimeType'))
+    },
+    {
+        key: 'payroleMaster.overtimetype',
+        path: '/addovertimetype',
+        component: lazy(()=>import('@/views/payrole-master/newOverTimeType'))
+    },
+    {
+        key: 'payroleMaster.salaryhead',
+        path: '/salaryhead',
+        component: lazy(()=>import('@/views/payrole-master/salaryhead'))
+    },
+    {
+        key: 'payroleMaster.salaryhead',
+        path: '/addsalaryhead',
+        component: lazy(()=>import('@/views/payrole-master/newSalaryHead'))
+    },
+    {
+        key: 'payroleMaster.rtgssetting',
+        path: '/rtgssetting',
+        component: lazy(()=>import('@/views/payrole-master/rtgsSetting'))
+    },
+    {
+        key: 'payroleMaster.rtgssetting',
+        path: '/addrtgssetting',
+        component: lazy(()=>import('@/views/payrole-master/newRtgsSetting'))
+    },
+    {
+        key: 'payroleMaster.plsanctionsetting',
+        path: '/plsanctionsetting',
+        component: lazy(()=>import('@/views/payrole-master/plSanctionSetting'))
+    },
+    {
+        key: 'payroleMaster.plsanctionsetting',
+        path: '/addplsanctionsetting',
+        component: lazy(()=>import('@/views/payrole-master/newPlSanctionSetting'))
+    },
+    {
+        key: 'payroleMaster.otherincomehead',
+        path: '/otherincomehead',
+        component: lazy(()=>import('@/views/payrole-master/otherIncomeHead'))
+    },
+    {
+        key: 'payroleMaster.otherincomehead',
+        path: '/addotherincomehead',
+        component: lazy(()=>import('@/views/payrole-master/newOtherIncomeHead'))
+    },
+    {
+        key: 'payroleMaster.castmaster',
+        path: '/castmaster',
+        component: lazy(()=>import('@/views/payrole-master/castMaster'))
+    },
+    {
+        key: 'payroleMaster.castmaster',
+        path: '/addcastmaster',
+        component: lazy(()=>import('@/views/payrole-master/newCastMaster'))
     }
 
 ] 

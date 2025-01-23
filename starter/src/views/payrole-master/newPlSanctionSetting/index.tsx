@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { DepartmentForm } from "../departmentForm";
-import { DeductionHeadandslapForm } from "../DeductionHeadandslapForm";
+import { OverTimeTypeForm } from "../overTimeTypeForm";
+import { PlSanctionSettingForm } from "../plSanctionSettingForm";
 
-const NewDeductionHeadandSlap = ()=>{
+const NewPlSanctionSetting = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/deductionheadandslab')
+        navigate('/overtimetype')
     }
 
     const ifSuccess = (success: any) => {
@@ -25,12 +25,12 @@ const NewDeductionHeadandSlap = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/deductionheadandslab");
+            navigate("/overtimetype");
         }
     };
 
     return <>
-        <DeductionHeadandslapForm
+        <PlSanctionSettingForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -38,4 +38,4 @@ const NewDeductionHeadandSlap = ()=>{
     </>
 }
 
-export default NewDeductionHeadandSlap
+export default NewPlSanctionSetting

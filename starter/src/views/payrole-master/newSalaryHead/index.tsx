@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { DepartmentForm } from "../departmentForm";
-import { DeductionHeadandslapForm } from "../DeductionHeadandslapForm";
+import { SalaryHeadForm } from "../salaryheadForm";
 
-const NewDeductionHeadandSlap = ()=>{
+const NewSalaryHead = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/deductionheadandslab')
+        navigate('/salaryhead')
     }
 
     const ifSuccess = (success: any) => {
@@ -25,12 +24,12 @@ const NewDeductionHeadandSlap = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/deductionheadandslab");
+            navigate("/salaryhead");
         }
     };
 
     return <>
-        <DeductionHeadandslapForm
+        <SalaryHeadForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -38,4 +37,4 @@ const NewDeductionHeadandSlap = ()=>{
     </>
 }
 
-export default NewDeductionHeadandSlap
+export default NewSalaryHead

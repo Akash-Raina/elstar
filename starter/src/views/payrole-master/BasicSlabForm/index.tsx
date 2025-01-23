@@ -10,9 +10,7 @@ import BasicInformationFields from "./components/BasicInformationFields";
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    applicable_income_amount_from: number
-    applicable_income_amount_to: number
-    tax_amount: string
+    basic_slab_id: string
 }
 
 export type LocalFormModel = InitialData
@@ -36,14 +34,12 @@ const validationSchema = Yup.object().shape({
     
 })
 
-export const DeductionHeadandslapForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const BasicSlabForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            applicable_income_amount_from: '',
-            applicable_income_amount_to: '',
-            tax_amount: ''
+            basic_slab_id: ''
         },
         onFormSubmit,
         onDiscard, 
@@ -98,4 +94,4 @@ export const DeductionHeadandslapForm = forwardRef<FormikRef, MainForm>((props, 
     </>
 })
 
-DeductionHeadandslapForm.displayName = 'DeductionHeadandslapForm'
+BasicSlabForm.displayName = 'BasicSlabForm'
