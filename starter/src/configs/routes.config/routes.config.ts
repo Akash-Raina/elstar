@@ -650,6 +650,16 @@ export const protectedRoutes = [
         key: 'payroleMaster.castmaster',
         path: '/addcastmaster',
         component: lazy(()=>import('@/views/payrole-master/newCastMaster'))
+    },
+    {
+        key: 'payroleMaster.holidaymaster',
+        path: '/holidaymaster',
+        component: lazy(()=>import('@/views/payrole-master/holidayMaster'))
+    },
+    {
+        key: 'payroleMaster.holidaymaster',
+        path: '/addholidaymaster',
+        component: lazy(()=>import('@/views/payrole-master/newHolidayMaster'))
     }
 
 ] 

@@ -762,6 +762,16 @@ const navigationConfig: NavigationTree[] = [
                 authority: [],
                 subMenu: [],
             },
+            {
+                key: 'payroleMaster.holidaymaster',
+                path: '/holidaymaster',
+                title: 'Holiday Master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            }
 
         ]
     }
