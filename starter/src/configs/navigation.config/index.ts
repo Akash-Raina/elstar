@@ -771,6 +771,36 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'payroleMaster.openingleavebalance',
+                path: '/openingleavebalance',
+                title: 'Opening Leave Balance',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.reason',
+                path: '/reason',
+                title: 'Reason',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.SalaryStatusMaster',
+                path: '/salarystatus',
+                title: 'Salary Status Master',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
             }
 
         ]

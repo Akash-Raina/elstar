@@ -660,6 +660,35 @@ export const protectedRoutes = [
         key: 'payroleMaster.holidaymaster',
         path: '/addholidaymaster',
         component: lazy(()=>import('@/views/payrole-master/newHolidayMaster'))
-    }
+    },
+    {
+        key: 'payroleMaster.openingleavebalance',
+        path: '/openingleavebalance',
+        component: lazy(()=>import('@/views/payrole-master/openingLeaveBalance'))
+    },
+    {
+        key: 'payroleMaster.openingleavebalance',
+        path: '/addopeningleave',
+        component: lazy(()=>import('@/views/payrole-master/newOpeningLeaveBalance'))
+    },
+    {
+        key: 'payroleMaster.reason',
+        path: '/reason',
+        component: lazy(()=>import('@/views/payrole-master/reason'))
+    },
+    {
+        key: 'payroleMaster.reason',
+        path: '/addreason',
+        component: lazy(()=>import('@/views/payrole-master/newReason'))
+    },
+    {
+        key: 'payroleMaster.SalaryStatusMaster',
+        path: '/salarystatus',
+        component: lazy(()=>import('@/views/payrole-master/salaryStatusMaster'))
+    },
+    {
+        key: 'payroleMaster.SalaryStatusMaster',
+        path: '/addsalarystatus',
+        component: lazy(()=>import('@/views/payrole-master/newSalaryStatusMaster'))}
 
 ] 
