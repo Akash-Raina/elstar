@@ -689,6 +689,11 @@ export const protectedRoutes = [
     {
         key: 'payroleMaster.SalaryStatusMaster',
         path: '/addsalarystatus',
-        component: lazy(()=>import('@/views/payrole-master/newSalaryStatusMaster'))}
-
+        component: lazy(()=>import('@/views/payrole-master/newSalaryStatusMaster'))
+    },
+    {
+        key: 'payroleMaster.from16setting',
+        path: '/from16setting',
+        component: lazy(()=>import('@/views/payrole-master/from16Setting'))
+    },
 ] 

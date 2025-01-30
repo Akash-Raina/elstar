@@ -801,6 +801,16 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'payroleMaster.from16setting',
+                path: '/from16setting',
+                title: 'From 16 Setting',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
             }
 
         ]
