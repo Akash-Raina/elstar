@@ -696,4 +696,24 @@ export const protectedRoutes = [
         path: '/from16setting',
         component: lazy(()=>import('@/views/payrole-master/from16Setting'))
     },
+    {
+        key: 'payroleMaster.from16setting',
+        path: '/addfrom16setting',
+        component: lazy(()=>import('@/views/payrole-master/newForm16Setting'))
+    },
+    {
+        key: 'payroleMaster.systemsetting',
+        path: '/systemsetting',
+        component: lazy(()=>import('@/views/payrole-master/systemSetting'))
+    },
+    {
+        key: 'payroleMaster.leavetype',
+        path: '/leavetype',
+        component: lazy(()=>import('@/views/payrole-master/leaveType'))
+    },
+    {
+        key: 'payroleMaster.leavetype',
+        path: '/addleavetype',
+        component: lazy(()=>import('@/views/payrole-master/newLeaveType'))
+    }
 ] 

@@ -7,17 +7,20 @@ import { Button } from "@/components/ui";
 import { AiOutlineSave } from "react-icons/ai";
 import BasicInformationFields from "./components/BasicInformationFields";
 
+
+
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    pan_deductor: string
-    tan_deductor: string
-    issuing_authority_name: string
-    issuing_authority_father_name: string
-    designation_of_issuing_authority: string
-    place: string
-    date: Date
-    chapter_vi_a_limit: number
+    code: string
+    short_name: string
+    leave_type_dev: string
+    leave_type: string
+    bal_carry_forward_to_next_year: string
+    paid_leave: string
+    min_number_of_days: string
+    max_number_of_days: string
+    check_balance: string
 }
 
 export type LocalFormModel = InitialData
@@ -41,19 +44,20 @@ const validationSchema = Yup.object().shape({
     
 })
 
-export const From16SettingForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
+export const LeaveTypeForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
 
     const {
         type, 
         initialData = {
-            pan_deductor: '',
-            tan_deductor: '',
-            issuing_authority_name: '',
-            issuing_authority_father_name: '',
-            designation_of_issuing_authority: '',
-            place: '',
-            date: Date,
-            chapter_vi_a_limit: ''
+            code: '',
+            short_name: '',
+            leave_type_dev: '',
+            leave_type: '',
+            bal_carry_forward_to_next_year: '',
+            paid_leave: '',
+            min_number_of_days: '',
+            max_number_of_days: '',
+            check_balance: ''
         },
         onFormSubmit,
         onDiscard, 
@@ -108,4 +112,4 @@ export const From16SettingForm = forwardRef<FormikRef, MainForm>((props, ref)=>{
     </>
 })
 
-From16SettingForm.displayName = 'From16SettingForm'
+LeaveTypeForm.displayName = 'LeaveTypeForm'
