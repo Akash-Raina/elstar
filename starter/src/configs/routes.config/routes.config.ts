@@ -707,6 +707,11 @@ export const protectedRoutes = [
         component: lazy(()=>import('@/views/payrole-master/systemSetting'))
     },
     {
+        key: 'payroleMaster.systemsetting',
+        path: '/addsystemsetting',
+        component: lazy(()=>import('@/views/payrole-master/newSystemSetting'))
+    },
+    {
         key: 'payroleMaster.leavetype',
         path: '/leavetype',
         component: lazy(()=>import('@/views/payrole-master/leaveType'))
