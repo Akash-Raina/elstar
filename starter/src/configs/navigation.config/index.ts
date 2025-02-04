@@ -448,7 +448,7 @@ const navigationConfig: NavigationTree[] = [
                 translateKey: '',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: [], 
                 subMenu: [],                
             },
             {
@@ -831,8 +831,37 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'payroleMaster.AllowanceAndDeduction',
+                path: '/allowance',
+                title: 'Allowance and Deduction',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.leaveSanction',
+                path: '/leavesanction',
+                title: 'Leave Sanction-Additional',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.overtime',
+                path: '/overtime',
+                title: 'Overtime',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
             }
-
         ]
     }
 ]

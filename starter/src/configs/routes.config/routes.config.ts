@@ -720,5 +720,35 @@ export const protectedRoutes = [
         key: 'payroleMaster.leavetype',
         path: '/addleavetype',
         component: lazy(()=>import('@/views/payrole-master/newLeaveType'))
+    },
+    {
+        key: 'payroleMaster.AllowanceAndDeduction',
+        path: '/allowance',
+        component: lazy(()=>import('@/views/payrole-master/allowanceAndDeduction'))
+    },
+    {
+        key: 'payroleMaster.AllowanceAndDeduction',
+        path: '/addallowance',
+        component: lazy(()=>import('@/views/payrole-master/newAllowanceAndDeduction'))
+    },
+    {
+        key: 'payroleMaster.overtime',
+        path: '/overtime',
+        component: lazy(()=>import('@/views/payrole-master/overtime'))
+    },
+    {
+        key: 'payroleMaster.overtime',
+        path: '/addovertime',
+        component: lazy(()=>import('@/views/payrole-master/newOverTime'))
+    },
+    {
+        key: 'payroleMaster.leaveSanction',
+        path: '/leavesanction',
+        component: lazy(()=>import('@/views/payrole-master/leaveSanctionAdditional'))
+    },
+    {
+        key: 'payroleMaster.leaveSanction',
+        path: '/addleavesanction',
+        component: lazy(()=>import('@/views/payrole-master/newLeaveSanction'))
     }
 ] 
