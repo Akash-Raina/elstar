@@ -750,5 +750,15 @@ export const protectedRoutes = [
         key: 'payroleMaster.leaveSanction',
         path: '/addleavesanction',
         component: lazy(()=>import('@/views/payrole-master/newLeaveSanction'))
+    },
+    {
+        key: 'payroleMaster.otherincome',
+        path: '/otherincome',
+        component: lazy(()=>import('@/views/payrole-master/otherincome'))
+    },
+    {
+        key: 'payroleMaster.otherincome',
+        path: '/addotherincome',
+        component: lazy(()=>import('@/views/payrole-master/newOtherIncome'))
     }
 ] 
