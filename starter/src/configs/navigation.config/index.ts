@@ -871,6 +871,26 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'payroleMaster.retention',
+                path: '/retention',
+                title: 'Retention',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.outduty',
+                path: '/outduty',
+                title: 'Out Duty',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
             }
         ]
     }

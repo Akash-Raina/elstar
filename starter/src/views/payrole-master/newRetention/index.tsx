@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
-import { OtherIncomeHeadForm } from "../otherIncomeHeadForm";
+import { RetentionForm } from "../retentionForm";
 
-const NewOtherIncomeHead = ()=>{
+const NewRetention = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/otherincomehead')
+        navigate('/retention')
     }
 
     const ifSuccess = (success: any) => {
@@ -24,12 +24,12 @@ const NewOtherIncomeHead = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/otherincomehead");
+            navigate("/retention");
         }
     };
 
     return <>
-        <OtherIncomeHeadForm
+        <RetentionForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -37,4 +37,4 @@ const NewOtherIncomeHead = ()=>{
     </>
 }
 
-export default NewOtherIncomeHead
+export default NewRetention

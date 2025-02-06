@@ -760,5 +760,25 @@ export const protectedRoutes = [
         key: 'payroleMaster.otherincome',
         path: '/addotherincome',
         component: lazy(()=>import('@/views/payrole-master/newOtherIncome'))
+    },
+    {
+        key: 'payroleMaster.retention',
+        path: '/retention',
+        component: lazy(()=>import('@/views/payrole-master/retention'))
+    },
+    {
+        key: 'payroleMaster.retention',
+        path: '/addretention',
+        component: lazy(()=>import('@/views/payrole-master/newRetention'))
+    },
+    {
+        key: 'payroleMaster.outduty',
+        path: '/outduty',
+        component: lazy(()=>import('@/views/payrole-master/outduty'))
+    },
+    {
+        key: 'payroleMaster.outduty',
+        path: '/addoutduty',
+        component: lazy(()=>import('@/views/payrole-master/newOutDuty'))
     }
 ] 

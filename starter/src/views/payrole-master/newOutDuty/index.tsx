@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom"
 import { toast, Notification } from "@/components/ui";
+import { GradeForm } from "../gradeForm";
 import { OtherIncomeHeadForm } from "../otherIncomeHeadForm";
+import { OutDutyForm } from "../outdutyform";
 
-const NewOtherIncomeHead = ()=>{
+const NewOutDuty = ()=>{
 
     const navigate =useNavigate();
 
     const handleDiscard = () => {
-        navigate('/otherincomehead')
+        navigate('/outduty')
     }
 
     const ifSuccess = (success: any) => {
@@ -24,12 +26,12 @@ const NewOtherIncomeHead = ()=>{
                     placement: "top-center",
                 }
             );
-            navigate("/otherincomehead");
+            navigate("/outduty");
         }
     };
 
     return <>
-        <OtherIncomeHeadForm
+        <OutDutyForm
             type="new"
             onFormSubmit={()=>{ifSuccess(true)}}
             onDiscard={handleDiscard}
@@ -37,4 +39,4 @@ const NewOtherIncomeHead = ()=>{
     </>
 }
 
-export default NewOtherIncomeHead
+export default NewOutDuty
