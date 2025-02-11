@@ -891,6 +891,26 @@ const navigationConfig: NavigationTree[] = [
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: [],
+            },
+            {
+                key: 'payroleMaster.changemonth',
+                path: '/changemonth',
+                title: 'Change Month',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'payroleMaster.leaveemployeededuction',
+                path: '/leaveemployeededuction',
+                title: 'Leave Employee Deduction',
+                translateKey: '',
+                icon: '',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
             }
         ]
     }

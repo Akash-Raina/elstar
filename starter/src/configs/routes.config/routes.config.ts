@@ -780,5 +780,26 @@ export const protectedRoutes = [
         key: 'payroleMaster.outduty',
         path: '/addoutduty',
         component: lazy(()=>import('@/views/payrole-master/newOutDuty'))
+    },
+    {
+        key: 'payroleMaster.changemonth',                               
+        path: '/changemonth',
+        component: lazy(()=>import('@/views/payrole-master/changemonth'))
+    },
+    {
+        key: 'payroleMaster.changemonth',                               
+        path: '/addchangemonth',
+        component: lazy(()=>import('@/views/payrole-master/newchangemonth'))
+    },
+    {
+        key: 'payroleMaster.leaveemployeededuction',                               
+        path: '/leaveemployeededuction',
+        component: lazy(()=>import('@/views/payrole-master/leaveemployeededuction'))
+    },
+    {
+        key: 'payroleMaster.leaveemployeededuction',                               
+        path: '/addleaveemployeededuction',
+        component: lazy(()=>import('@/views/payrole-master/newleaveemployeededuction'))
     }
+
 ] 
